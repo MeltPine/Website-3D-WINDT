@@ -32,13 +32,13 @@ const Datenschutz = () => {
             <div className="bg-gray-50 p-6 rounded-lg">
               <div className="space-y-2">
                 <p className="font-semibold">3D Print Pro</p>
-                <p>Max Mustermann</p>
-                <p>Musterstraße 123</p>
-                <p>12345 Musterstadt</p>
+                <p>Sebastian Windt</p>
+                <p>Doktor-Weinholz_Straße</p>
+                <p>63110 Rodgau</p>
                 <p>Deutschland</p>
                 <p className="mt-4">
-                  <strong>E-Mail:</strong> info@3dprintpro.de<br />
-                  <strong>Telefon:</strong> +49 (0) 123 456 789
+                  <strong>E-Mail:</strong> support@3d-windt.de<br />
+                  <strong>Telefon:</strong> +49 (0) 1512 5534623
                 </p>
               </div>
             </div>
@@ -237,9 +237,9 @@ const Datenschutz = () => {
                 kontaktieren Sie uns gerne:
               </p>
               <div className="space-y-2">
-                <p><strong>E-Mail:</strong> datenschutz@3dprintpro.de</p>
-                <p><strong>Telefon:</strong> +49 (0) 123 456 789</p>
-                <p><strong>Post:</strong> 3D Print Pro, Musterstraße 123, 12345 Musterstadt</p>
+                <p><strong>E-Mail:</strong> datenschutz@3d-windt.de</p>
+                <p><strong>Telefon:</strong> +49 (0) 1512 5534623</p>
+                <p><strong>Post:</strong> 3D-WINDT, Doktor-Weinholz-Straße 23, 63110 Rodgau</p>
               </div>
             </div>
           </section>
