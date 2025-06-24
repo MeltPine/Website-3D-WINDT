@@ -78,7 +78,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-1">E-Mail</h3>
-                  <p className="text-gray-600">info@3dprintpro.de</p>
+                  <p className="text-gray-600">support@3d-windt.de</p>
                   <p className="text-sm text-gray-500 mt-1">
                     Für allgemeine Anfragen und Projektberatung
                   </p>
@@ -91,7 +91,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-1">Telefon</h3>
-                  <p className="text-gray-600">+49 (0) 123 456 789</p>
+                  <p className="text-gray-600">+49 (0) 1512 5534623</p>
                   <p className="text-sm text-gray-500 mt-1">
                     Mo-Fr: 9:00 - 18:00 Uhr
                   </p>

@@ -13,7 +13,7 @@ const Footer = () => {
               <div className="bg-primary-500 p-2 rounded-lg">
                 <Printer className="h-6 w-6 text-white" />
               </div>
-              <span className="text-xl font-bold">3D Print Pro</span>
+              <span className="text-xl font-bold">3D-WINDT</span>
             </div>
             <p className="text-gray-300 mb-4 max-w-md">
               Ihr professioneller Partner für 3D-Druck, CAD-Modellierung und 3D-Scanning. 
@@ -22,11 +22,11 @@ const Footer = () => {
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4 text-primary-400" />
-                <span className="text-gray-300">info@3dprintpro.de</span>
+                <span className="text-gray-300">support@3d-windt.de</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4 text-primary-400" />
-                <span className="text-gray-300">+49 (0) 123 456 789</span>
+                <span className="text-gray-300">+49 (0) 1512 5534623</span>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4 text-primary-400" />
@@ -59,7 +59,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400">
-            © 2025 3D Print Pro. Alle Rechte vorbehalten.
+            © 2025 Sebastian Windt 3D-WINDT. Alle Rechte vorbehalten.
           </p>
         </div>
       </div>

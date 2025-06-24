@@ -55,9 +55,9 @@ const About = () => {
 
   const team = [
     {
-      name: 'Max Mustermann',
+      name: 'Sebastian Windt',
       role: 'Gründer & Geschäftsführer',
-      bio: 'Ingenieur mit 10+ Jahren Erfahrung in der additiven Fertigung',
+      bio: 'Langjährige Erfahrung in der additiven Fertigung',
       avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400'
     },
     {
@@ -67,7 +67,7 @@ const About = () => {
       avatar: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=400'
     },
     {
-      name: 'Tom Weber',
+      name: 'Sebastian Windt',
       role: 'Produktionsleiter',
       bio: 'Verantwortlich für Qualitätssicherung und optimale Druckparameter',
       avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=400'
@@ -212,12 +212,12 @@ const About = () => {
         {/* Statistics */}
         <div className="bg-primary-600 text-white p-8 rounded-2xl mb-16">
           <h2 className="text-3xl font-bold text-center mb-8">
-            3D Print Pro in Zahlen
+            3D-WINDT in Zahlen
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold mb-2">1000+</div>
-              <div className="text-primary-100">Abgeschlossene Projekte</div>
+              <div className="text-4xl font-bold mb-2">EU Zertifizierte</div>
+              <div className="text-primary-100">Materialien</div>
             </div>
             <div>
               <div className="text-4xl font-bold mb-2">50+</div>
@@ -237,7 +237,7 @@ const About = () => {
         {/* Why Choose Us */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">
-            Warum 3D Print Pro wählen?
+            Warum 3D-WINDT wählen?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-6">

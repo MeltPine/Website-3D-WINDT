@@ -6,7 +6,7 @@ const Services = () => {
     {
       icon: <Printer className="h-8 w-8" />,
       title: '3D-Druck',
-      price: '0,45€/g',
+      price: '0,35€/g',
       description: 'Professioneller 3D-Druck mit modernster FDM-Technologie',
       features: [
         'Hochwertige Materialien: PLA, PETG, ABS, ASA',

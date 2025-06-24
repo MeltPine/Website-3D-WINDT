@@ -133,7 +133,7 @@ const Home = () => {
                   3D-Druck
                 </h3>
                 <div className="text-3xl font-bold text-primary-600 mb-2">
-                  0,45€
+                  0,35€
                 </div>
                 <div className="text-gray-600 mb-4">pro Gramm</div>
                 <p className="text-sm text-gray-500">
@@ -194,7 +194,7 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Warum 3D Print Pro?
+                Warum 3D-WINDT?
               </h2>
               <p className="text-lg text-gray-600 mb-8">
                 Wir kombinieren modernste Technologie mit handwerklicher
