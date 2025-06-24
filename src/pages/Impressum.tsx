@@ -17,9 +17,9 @@ const Impressum = () => {
             <div className="bg-gray-50 p-6 rounded-lg">
               <div className="space-y-2">
                 <p className="font-semibold text-lg">3D Print Pro</p>
-                <p>Max Mustermann</p>
-                <p>Musterstraße 123</p>
-                <p>12345 Musterstadt</p>
+                <p>Sebastian Windt</p>
+                <p>Doktor-Weinholz-Straße 23</p>
+                <p>63110 Rodgau</p>
                 <p>Deutschland</p>
               </div>
             </div>
@@ -33,14 +33,14 @@ const Impressum = () => {
                 <Mail className="h-5 w-5 text-primary-600" />
                 <div>
                   <div className="font-medium text-gray-900">E-Mail</div>
-                  <div className="text-gray-600">info@3dprintpro.de</div>
+                  <div className="text-gray-600">support@3d-windt.de</div>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-primary-600" />
                 <div>
                   <div className="font-medium text-gray-900">Telefon</div>
-                  <div className="text-gray-600">+49 (0) 123 456 789</div>
+                  <div className="text-gray-600">+49 (0) 1512 5534623</div>
                 </div>
               </div>
             </div>
@@ -50,9 +50,9 @@ const Impressum = () => {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Registereintrag</h2>
             <div className="bg-gray-50 p-6 rounded-lg space-y-2">
-              <p><span className="font-medium">Handelsregister:</span> HRB 12345</p>
-              <p><span className="font-medium">Registergericht:</span> Amtsgericht Musterstadt</p>
-              <p><span className="font-medium">Geschäftsführer:</span> Max Mustermann</p>
+              <p><span className="font-medium">Handelsregister:</span> Wird Nachgetragen</p>
+              <p><span className="font-medium">Registergericht:</span> Amtsgericht Offenbach am Main</p>
+              <p><span className="font-medium">Geschäftsführer:</span> Sebastian Windt</p>
             </div>
           </section>
 
@@ -60,7 +60,7 @@ const Impressum = () => {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Umsatzsteuer-Identifikationsnummer</h2>
             <div className="bg-gray-50 p-6 rounded-lg">
-              <p><span className="font-medium">USt-IdNr.:</span> DE 123 456 789</p>
+              <p><span className="font-medium">USt-IdNr.:</span> DE 007 882 04567</p>
               <p className="text-sm text-gray-600 mt-2">
                 Gemäß § 27 a Umsatzsteuergesetz
               </p>
@@ -71,8 +71,9 @@ const Impressum = () => {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Berufsbezeichnung und berufsrechtliche Regelungen</h2>
             <div className="bg-gray-50 p-6 rounded-lg space-y-2">
-              <p><span className="font-medium">Berufsbezeichnung:</span> Ingenieur (verliehen in Deutschland)</p>
-              <p><span className="font-medium">Zuständige Kammer:</span> Ingenieurkammer Muster</p>
+              <p><span className="font-medium">Berufsbezeichnung:</span>   Spezialist für Additive Fertigung (FDM) und Maschinenentwicklung
+Zusätzliche Qualifikationen:Lackierer, erfahrener Programmierer, Konstrukteur und Anlagenmechaniker für 3D-Drucksysteme</p>
+              <p><span className="font-medium">Zuständige Kammer:</span> IHK Frankfurt am Main </p>
               <p><span className="font-medium">Verliehen durch:</span> Deutschland</p>
             </div>
           </section>
