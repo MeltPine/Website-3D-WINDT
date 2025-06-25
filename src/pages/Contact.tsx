@@ -94,7 +94,8 @@ const Contact = () => {
                   <p className="text-gray-600">+49 (0) 6106 6672571</p>
                   <p className="text-gray-600">+49 (0) 1512 5534623</p>
                   <p className="text-sm text-gray-500 mt-1">
-                    Mo-Fr: 8:00 - 17:00 Uhr
+                  <p>Mo-Do: 8:00 - 17:00 Uhr</p>
+                  <p>Fr: 8:00 - 15:00 Uhr</p>
                   </p>
                 </div>
               </div>
