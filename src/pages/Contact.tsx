@@ -120,7 +120,7 @@ const Contact = () => {
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-1">Öffnungszeiten</h3>
                   <div className="text-gray-600 space-y-1">
-                    <p>Montag -Donnerstag: 8:00 - 17:00</p>
+                    <p>Montag - Donnerstag: 8:00 - 17:00</p>
                     <p>Freitag: 8:00 - 15:00</p>
                     <p>Samstag: Geschlossen</p>
                     <p>Sonntag: Geschlossen</p>
