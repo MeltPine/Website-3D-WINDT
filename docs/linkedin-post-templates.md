@@ -37,3 +37,11 @@ Wenn Sie einen konkreten Anwendungsfall haben,
 melden Sie sich mit Foto, Skizze oder Datei – wir geben eine schnelle technische Einschätzung.
 
 **CTA:** https://3d-windt.de/montagehilfen-vorrichtungen
+
+---
+
+## Posting-Rhythmus (empfohlen)
+- Woche 1: Ersatzteile-Case + CTA `/projekt-starten`
+- Woche 2: Prototypen-Case + CTA `/prototypen-3d-druck`
+- Woche 3: Montagehilfe-Case + CTA `/montagehilfen-vorrichtungen`
+- Woche 4: Praxis-Learnings aus einem anonymisierten Kundenfall + CTA `/projekt-starten`

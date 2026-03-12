@@ -147,9 +147,9 @@ export const routeSeo: Record<string, RouteSeoConfig> = {
     path: '/nachhaltigkeit',
   },
   '/galerie': {
-    title: `Industrie-Anwendungen (anonymisiert) | ${BRAND.publicName}`,
+    title: `Industrie-Fallbeispiele (anonymisiert + freigegeben) | ${BRAND.publicName}`,
     description:
-      'Anonymisierte B2B-Anwendungsfälle aus Ersatzteilfertigung, Prototyping und Vorrichtungsbau mit technischem Fokus.',
+      'Anonymisierte und schrittweise freigegebene B2B-Fallbeispiele aus Ersatzteilfertigung, Prototyping und Vorrichtungsbau.',
     path: '/galerie',
   },
   '/impressum': {

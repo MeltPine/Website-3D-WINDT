@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Anonymisierte CAD-Ansicht Prototyp</title>
+  <desc id="desc">Technische Linienzeichnung als Platzhalter bis freigegebenes Kundenmaterial vorliegt.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc" />
+      <stop offset="1" stop-color="#e2e8f0" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#bg)" />
+  <g fill="none" stroke="#0f172a" stroke-width="2">
+    <polygon points="260,510 520,180 830,250 940,520" />
+    <polyline points="520,180 600,310 830,250" />
+    <polyline points="600,310 700,460 940,520" />
+    <path d="M360 430h220" />
+    <path d="M700 380h180" />
+    <circle cx="520" cy="180" r="10" />
+    <circle cx="830" cy="250" r="10" />
+    <circle cx="940" cy="520" r="10" />
+  </g>
+  <text x="70" y="80" fill="#0f172a" font-size="34" font-family="Arial, sans-serif" font-weight="700">3D-WINDT | CAD-Ansicht (anonymisiert)</text>
+  <text x="70" y="124" fill="#334155" font-size="24" font-family="Arial, sans-serif">Prototyp fuer Funktionspruefung</text>
+</svg>

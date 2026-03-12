@@ -66,3 +66,14 @@ Hinweis: `VITE_*` Variablen sind Build-Variablen und erfordern ein neues Deploy.
 7. Fehler-Monitoring prüfen:
    - Testweise Netlify-Form-Erkennung deaktivieren (nur kurz in Staging) oder absichtlich 500 simulieren
    - Prüfen, dass Alert-Mail `"[ALERT] Formularfehler ..."` ankommt
+
+## Ergaenzung: Proof- und Betriebsroutine (Maerz 2026)
+- Case-Asset-Board: `docs/case-asset-board.csv`
+- Taeglicher/Woechentlicher Rhythmus: `docs/operating-rhythm.md`
+- Lead-Board fuer Vertriebsstatus: `docs/lead-board.csv`
+
+## GA4 Conversion-Hinweis
+- In GA4 beide Events als Schluesselereignis markieren:
+  - `lead_form_submitted`
+  - `generate_lead`
+- `generate_lead` wird beim Formular-Submit automatisch mitgesendet.
