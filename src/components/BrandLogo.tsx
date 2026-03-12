@@ -19,8 +19,8 @@ const BrandLogo = ({
 }: BrandLogoProps) => {
   const isDark = theme === 'dark';
 
-  const markSize = size === 'sm' ? 'h-10 w-10' : 'h-12 w-12';
-  const markPadding = size === 'sm' ? 'p-1' : 'p-1.5';
+  const markSize = size === 'sm' ? 'h-12 w-12' : 'h-14 w-14';
+  const markPadding = size === 'sm' ? 'p-0.5' : 'p-1';
   const nameText = size === 'sm' ? 'text-lg' : 'text-xl';
 
   const nameColor = isDark ? 'text-white' : 'text-gray-900';
@@ -49,11 +49,7 @@ const BrandLogo = ({
         <span className={`block text-[11px] uppercase tracking-[0.16em] ${metaColor}`}>
           {BRAND.descriptor}
         </span>
-        {showTagline && (
-          <span className={`block text-xs ${metaColor} mt-1`}>
-            {BRAND.tagline}
-          </span>
-        )}
+        {showTagline && <span className={`block text-xs ${metaColor} mt-1`}>{BRAND.tagline}</span>}
       </div>
     </div>
   );

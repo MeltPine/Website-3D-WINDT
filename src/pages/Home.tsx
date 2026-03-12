@@ -133,7 +133,7 @@ const Home = () => {
           <img
             src="/logo/3dw-logo-full.webp"
             alt="3DW Additive Manufacturing Logo"
-            className="h-28 md:h-36 w-auto mx-auto mb-6"
+            className="h-36 md:h-44 w-auto mx-auto mb-6"
             loading="eager"
             decoding="async"
           />
