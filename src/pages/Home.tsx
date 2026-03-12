@@ -81,7 +81,7 @@ const Home = () => {
     {
       question: 'Welche Materialien sind für industrielle Anwendungen verfügbar?',
       answer:
-        'Je nach Einsatzfall arbeiten wir unter anderem mit PLA, PETG, ABS und ASA sowie weiteren technischen Werkstoffen auf Anfrage.',
+        'Je nach Einsatzfall arbeiten wir unter anderem mit PETG, ABS, ASA, PA/PA-CF, PC und TPU sowie weiteren technischen Werkstoffen auf Anfrage.',
     },
     {
       question: 'Welche Genauigkeit ist beim 3D-Druck realistisch?',

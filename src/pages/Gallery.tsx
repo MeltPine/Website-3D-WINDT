@@ -17,7 +17,7 @@ const Gallery = () => {
       id: 2,
       title: 'Architekturmodelle',
       category: 'B2B',
-      material: 'PLA',
+      material: 'PC',
       image: 'https://images.pexels.com/photos/7947664/pexels-photo-7947664.jpeg?auto=compress&cs=tinysrgb&w=800',
       description: 'Detaillierte Architekturmodelle für Planungsbüros und Immobilienentwickler.'
     },
@@ -33,7 +33,7 @@ const Gallery = () => {
       id: 4,
       title: 'Medizinische Hilfsmittel',
       category: 'B2B',
-      material: 'PLA',
+      material: 'PETG',
       image: 'https://images.pexels.com/photos/3845810/pexels-photo-3845810.jpeg?auto=compress&cs=tinysrgb&w=800',
       description: 'Individuelle Orthesen und Prothesen-Komponenten nach medizinischen Spezifikationen.'
     },
@@ -41,7 +41,7 @@ const Gallery = () => {
       id: 5,
       title: 'Künstlerische Objekte',
       category: 'B2C',
-      material: 'PLA',
+      material: 'ASA',
       image: 'https://images.pexels.com/photos/3760848/pexels-photo-3760848.jpeg?auto=compress&cs=tinysrgb&w=800',
       description: 'Kreative Skulpturen und Kunstwerke mit komplexen geometrischen Formen.'
     },
@@ -57,7 +57,7 @@ const Gallery = () => {
       id: 7,
       title: 'Haushaltshelfer',
       category: 'B2C',
-      material: 'PLA',
+      material: 'PETG',
       image: 'https://images.pexels.com/photos/3760769/pexels-photo-3760769.jpeg?auto=compress&cs=tinysrgb&w=800',
       description: 'Praktische Alltagsgegenstände und individuelle Lösungen für den Haushalt.'
     },
@@ -73,7 +73,7 @@ const Gallery = () => {
       id: 9,
       title: 'Schmuck & Accessories',
       category: 'B2C',
-      material: 'PLA',
+      material: 'PA12',
       image: 'https://images.pexels.com/photos/3846077/pexels-photo-3846077.jpeg?auto=compress&cs=tinysrgb&w=800',
       description: 'Filigraner Schmuck und modische Accessoires mit perfekter Oberflächenqualität.'
     }

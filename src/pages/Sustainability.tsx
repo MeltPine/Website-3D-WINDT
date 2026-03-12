@@ -19,9 +19,9 @@ const Sustainability = () => {
       title: 'Nachhaltige Materialien',
       description: 'Wir verwenden bevorzugt umweltfreundliche und recycelbare Materialien für unsere 3D-Drucke.',
       benefits: [
-        'PLA aus nachwachsenden Rohstoffen',
-        'Recycelte Filamente wo möglich',
-        'Biologisch abbaubare Optionen',
+        'Langlebige technische Werkstoffe wie PETG, ABS, ASA und PA',
+        'Rezyklat-Anteile bei geeigneten Materialtypen',
+        'Materialwahl nach Einsatzdauer und Funktion',
         'Minimaler Materialabfall durch präzise Produktion'
       ]
     },
@@ -239,30 +239,30 @@ const Sustainability = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white p-6 rounded-xl">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">PLA - Biokunststoff</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">PETG, ABS, ASA</h3>
               <ul className="text-sm text-gray-600 space-y-2">
-                <li>• Aus Maisstärke und Zuckerrohr</li>
-                <li>• Kompostierbar unter industriellen Bedingungen</li>
-                <li>• Geringe Produktionsenergie</li>
-                <li>• Ungiftig und lebensmittelecht</li>
+                <li>• Robuste technische Standardmaterialien</li>
+                <li>• Gute Balance aus Stabilität und Verfügbarkeit</li>
+                <li>• Geeignet für viele Industrie- und Werkstattanwendungen</li>
+                <li>• Lange Nutzungsdauer reduziert Ersatzbedarf</li>
               </ul>
             </div>
             <div className="bg-white p-6 rounded-xl">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Recycelte Filamente</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">PA/PA-CF und PC</h3>
               <ul className="text-sm text-gray-600 space-y-2">
-                <li>• Aus recycelten Plastikflaschen</li>
-                <li>• Reduziert Plastikabfall</li>
-                <li>• Gleiche Qualität wie Neuware</li>
-                <li>• Zertifiziert nachhaltige Herkunft</li>
+                <li>• Für höhere mechanische und thermische Anforderungen</li>
+                <li>• Materialeinsatz gezielt nach Lastprofil</li>
+                <li>• Technische Auslegung für längere Standzeiten</li>
+                <li>• Reproduzierbare Qualität durch stabile Prozessführung</li>
               </ul>
             </div>
             <div className="bg-white p-6 rounded-xl">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Wasserlösliche Stützen</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">TPU und Supportkonzepte</h3>
               <ul className="text-sm text-gray-600 space-y-2">
-                <li>• Umweltfreundlich abbaubar</li>
-                <li>• Keine giftigen Lösungsmittel</li>
-                <li>• Präzise Druckergebnisse</li>
-                <li>• Minimaler Materialverbrauch</li>
+                <li>• Flexible Bauteile für Dämpfung und Schutzfunktionen</li>
+                <li>• Angepasste Support-Strategien je Geometrie</li>
+                <li>• Saubere Nachbearbeitung für funktionale Oberflächen</li>
+                <li>• Materialeinsatz wird auf den Bedarf abgestimmt</li>
               </ul>
             </div>
           </div>
