@@ -8,6 +8,8 @@ const rootDir = path.resolve(__dirname, '..');
 const distDir = path.join(rootDir, 'dist');
 const distServerDir = path.join(rootDir, 'dist-server');
 const SITE_URL = 'https://3d-windt.de';
+const GA_MEASUREMENT_ID = (process.env.VITE_GA_MEASUREMENT_ID ?? '').trim();
+const GOOGLE_SITE_VERIFICATION = (process.env.VITE_GOOGLE_SITE_VERIFICATION ?? '').trim();
 
 const routes = [
   '/',
@@ -74,6 +76,9 @@ function addSeoTags(html, seo) {
   output = output.replace(/\n?\s*<link rel="canonical"[^>]*>/gi, '');
   output = output.replace(/\n?\s*<meta[^>]+data-prerender-seo="[^"]+"[^>]*>/gi, '');
   output = output.replace(/\n?\s*<script id="prerender-json-ld"[^>]*>[\s\S]*?<\/script>/gi, '');
+  output = output.replace(/\n?\s*<meta[^>]+data-prerender-google-site-verification="true"[^>]*>/gi, '');
+  output = output.replace(/\n?\s*<script id="prerender-ga-loader"[^>]*><\/script>/gi, '');
+  output = output.replace(/\n?\s*<script id="prerender-ga-inline"[^>]*>[\s\S]*?<\/script>/gi, '');
 
   const tags = [
     canonicalTag,
@@ -94,6 +99,18 @@ function addSeoTags(html, seo) {
     const safeSchema = JSON.stringify(seo.schema).replace(/</g, '\\u003c');
     const schemaTag = `<script id="prerender-json-ld" type="application/ld+json">${safeSchema}</script>`;
     output = output.replace('</head>', `${schemaTag}\n  </head>`);
+  }
+
+  if (GOOGLE_SITE_VERIFICATION) {
+    const verificationTag = `<meta name="google-site-verification" content="${escapeHtml(GOOGLE_SITE_VERIFICATION)}" data-prerender-google-site-verification="true" />`;
+    output = upsertTag(output, /<meta\s+name="google-site-verification"[^>]*>/i, verificationTag);
+  }
+
+  if (GA_MEASUREMENT_ID) {
+    const gaId = escapeHtml(GA_MEASUREMENT_ID);
+    const gaLoader = `<script id="prerender-ga-loader" async src="https://www.googletagmanager.com/gtag/js?id=${gaId}"></script>`;
+    const gaInline = `<script id="prerender-ga-inline">window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${gaId}', { anonymize_ip: true, send_page_view: false });</script>`;
+    output = output.replace('</head>', `${gaLoader}\n${gaInline}\n  </head>`);
   }
 
   return output;

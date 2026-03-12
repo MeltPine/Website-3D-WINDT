@@ -13,7 +13,7 @@ declare global {
 }
 
 function injectScript(id: string, src: string): void {
-  if (document.getElementById(id)) {
+  if (document.getElementById(id) || document.querySelector(`script[src*="${src}"]`)) {
     return;
   }
   const script = document.createElement('script');
@@ -32,6 +32,19 @@ function ensureDataLayerStub(): void {
   }
 }
 
+function flushPendingPageView(): void {
+  if (!pendingPagePath || typeof window.gtag !== 'function') {
+    return;
+  }
+
+  const path = pendingPagePath;
+  pendingPagePath = null;
+  window.gtag('event', 'page_view', {
+    page_path: path,
+    page_location: `${window.location.origin}${path}`,
+  });
+}
+
 function bootstrapAnalytics(): void {
   if (initialized || typeof window === 'undefined' || !GA_MEASUREMENT_ID) {
     return;
@@ -41,7 +54,7 @@ function bootstrapAnalytics(): void {
   ensureDataLayerStub();
 
   injectScript(
-    'ga4-script',
+    'ga4-script-fallback',
     `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_MEASUREMENT_ID)}`,
   );
 
@@ -51,14 +64,7 @@ function bootstrapAnalytics(): void {
     send_page_view: false,
   });
 
-  if (pendingPagePath) {
-    const path = pendingPagePath;
-    pendingPagePath = null;
-    window.gtag?.('event', 'page_view', {
-      page_path: path,
-      page_location: `${window.location.origin}${path}`,
-    });
-  }
+  flushPendingPageView();
 }
 
 function scheduleBootstrap(): void {
@@ -81,10 +87,16 @@ export function initAnalytics(): void {
     return;
   }
 
+  // If GA is already present in static HTML snippet, use it directly.
+  if (typeof window.gtag === 'function') {
+    initialized = true;
+    flushPendingPageView();
+    return;
+  }
+
   ensureDataLayerStub();
 
   const activate = () => bootstrapAnalytics();
-
   window.addEventListener('pointerdown', activate, { once: true, passive: true });
   window.addEventListener('keydown', activate, { once: true });
   window.addEventListener('scroll', activate, { once: true, passive: true });
