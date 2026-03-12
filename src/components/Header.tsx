@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Printer } from 'lucide-react';
-import { BRAND } from '../lib/brand';
+import { Menu, X } from 'lucide-react';
+import BrandLogo from './BrandLogo';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,20 +23,10 @@ const Header = () => {
     <header className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
-            <div className="bg-primary-500 p-2 rounded-lg group-hover:bg-primary-600 transition-colors">
-              <Printer className="h-6 w-6 text-white" />
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-xl font-bold text-gray-900">{BRAND.publicName}</span>
-              <span className="hidden sm:inline-flex text-xs font-semibold uppercase tracking-wide px-2 py-1 rounded bg-gray-100 text-gray-700">
-                {BRAND.shortName}
-              </span>
-            </div>
+          <Link to="/" className="group">
+            <BrandLogo theme="light" size="sm" />
           </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
             {navigation.map((item) => (
               <Link
@@ -62,20 +52,15 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Mobile menu button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="md:hidden p-2 rounded-md text-gray-700 hover:text-primary-600 hover:bg-gray-100 transition-colors"
+            aria-label={isMenuOpen ? 'Menü schließen' : 'Menü öffnen'}
           >
-            {isMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
 
-        {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden border-t border-gray-100 py-4 animate-fade-in">
             <nav className="flex flex-col space-y-4">

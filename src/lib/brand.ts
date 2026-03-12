@@ -2,6 +2,8 @@ export const BRAND = {
   publicName: '3D-WINDT',
   legalName: '3D-Windt GbR',
   shortName: '3DW',
+  descriptor: 'Industrieller 3D-Druck Service',
+  tagline: 'Zuverlässig. Technisch. Termintreu.',
 } as const;
 
 export const CONTACT = {
@@ -18,10 +20,7 @@ export const CONTACT = {
 } as const;
 
 export const LEGAL = {
-  legalRepresentatives: [
-    'Sebastian Windt',
-    'Alyssa Windt',
-  ],
+  legalRepresentatives: ['Sebastian Windt', 'Alyssa Windt'],
 } as const;
 
 export const SITE = {
