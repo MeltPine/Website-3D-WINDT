@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Award, Clock, Gauge, MessageSquare, ShieldCheck } from 'lucide-react';
+import { BRAND } from '../lib/brand';
 
 const About = () => {
   const principles = [
@@ -42,9 +43,9 @@ const About = () => {
     <div className="py-16 animate-fade-in">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Über 3D-WINDT</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Über {BRAND.publicName}</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            3D-WINDT steht für hochwertige, verlässliche Projektabwicklung im
+            {BRAND.publicName} steht für hochwertige, verlässliche Projektabwicklung im
             3D-Druck. Unser Anspruch ist eine Lösung, die technisch passt und im
             Alltag funktioniert.
           </p>
@@ -89,11 +90,10 @@ const About = () => {
           </article>
 
           <article className="bg-white border border-gray-200 rounded-2xl p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Inhaber</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Verantwortung & Ansprechpartner</h2>
             <p className="text-gray-700 mb-3">
-              Sebastian Windt begleitet Projekte bei 3D-WINDT mit Fokus auf
-              Fertigungsqualität, verlässliche Abläufe und praxisnahe
-              Lösungsfindung.
+              In der {BRAND.legalName} begleiten wir Projekte mit Fokus auf
+              Fertigungsqualität, verlässliche Abläufe und praxisnahe Lösungsfindung.
             </p>
             <p className="text-gray-700 mb-6">
               Ziel ist nicht nur ein druckbares Modell, sondern ein Bauteil, das

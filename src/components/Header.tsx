@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Printer } from 'lucide-react';
+import { BRAND } from '../lib/brand';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,7 +28,12 @@ const Header = () => {
             <div className="bg-primary-500 p-2 rounded-lg group-hover:bg-primary-600 transition-colors">
               <Printer className="h-6 w-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-gray-900">3D-WINDT</span>
+            <div className="flex items-center gap-2">
+              <span className="text-xl font-bold text-gray-900">{BRAND.publicName}</span>
+              <span className="hidden sm:inline-flex text-xs font-semibold uppercase tracking-wide px-2 py-1 rounded bg-gray-100 text-gray-700">
+                {BRAND.shortName}
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}

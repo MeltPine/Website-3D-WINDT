@@ -1,4 +1,6 @@
-export const SITE_URL = 'https://3d-windt.de';
+import { BRAND, CONTACT, SITE } from './brand';
+
+export const SITE_URL = SITE.url;
 
 export type SeoSchema = Record<string, unknown> | Array<Record<string, unknown>>;
 
@@ -13,22 +15,24 @@ export interface RouteSeoConfig {
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: '3D-WINDT',
+  name: BRAND.publicName,
+  alternateName: BRAND.shortName,
+  legalName: BRAND.legalName,
   url: SITE_URL,
-  email: 'support@3d-windt.de',
-  telephone: '+49 (0) 1512 5534623',
+  email: CONTACT.email,
+  telephone: CONTACT.phone,
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Doktor-Weinholz-Straße 23',
-    postalCode: '63110',
-    addressLocality: 'Rodgau',
-    addressCountry: 'DE',
+    streetAddress: CONTACT.streetAddress,
+    postalCode: CONTACT.postalCode,
+    addressLocality: CONTACT.city,
+    addressCountry: CONTACT.countryCode,
   },
 };
 
 export const routeSeo: Record<string, RouteSeoConfig> = {
   '/': {
-    title: '3D-WINDT | Industriequalität im 3D-Druck',
+    title: `${BRAND.publicName} | Industriequalität im 3D-Druck`,
     description:
       '3D-Druck in Industriequalität mit verlässlichen Lieferzeiten. Anfrage starten, Datei hochladen und zeitnah ein belastbares Angebot erhalten.',
     path: '/',
@@ -37,13 +41,13 @@ export const routeSeo: Record<string, RouteSeoConfig> = {
       {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
-        name: '3D-WINDT',
+        name: BRAND.publicName,
         url: SITE_URL,
       },
     ],
   },
   '/leistungen': {
-    title: 'Leistungen | 3D-Druck, CAD und 3D-Scan',
+    title: `Leistungen | 3D-Druck, CAD und 3D-Scan | ${BRAND.publicName}`,
     description:
       'FDM-3D-Druck, CAD-Modellierung und 3D-Scan mit Fokus auf Prozesssicherheit, Materialqualität und verlässliche Abwicklung.',
     path: '/leistungen',
@@ -53,62 +57,62 @@ export const routeSeo: Record<string, RouteSeoConfig> = {
       serviceType: '3D-Druck Dienstleistung',
       provider: {
         '@type': 'Organization',
-        name: '3D-WINDT',
+        name: BRAND.publicName,
       },
       areaServed: 'Deutschland',
     },
   },
   '/projekt-starten': {
-    title: 'Projekt Starten | Datei Hochladen & Angebot',
+    title: `Projekt Starten | Datei Hochladen & Angebot | ${BRAND.publicName}`,
     description:
       'Projektdatei hochladen, Anforderungen angeben und ein qualifiziertes Angebot für Ihren 3D-Druckauftrag erhalten.',
     path: '/projekt-starten',
     schema: {
       '@context': 'https://schema.org',
       '@type': 'ContactPage',
-      name: 'Projektanfrage 3D-WINDT',
+      name: `Projektanfrage ${BRAND.publicName}`,
       url: `${SITE_URL}/projekt-starten`,
     },
   },
   '/kontakt': {
-    title: 'Kontakt | 3D-WINDT',
+    title: `Kontakt | ${BRAND.publicName}`,
     description:
-      'Kontakt zu 3D-WINDT: technische Rückfragen, Projektklärung und Angebotserstellung für hochwertige 3D-Druckaufträge.',
+      `Kontakt zu ${BRAND.publicName}: technische Rückfragen, Projektklärung und Angebotserstellung für hochwertige 3D-Druckaufträge.`,
     path: '/kontakt',
     schema: {
       '@context': 'https://schema.org',
       '@type': 'ContactPage',
-      name: 'Kontakt 3D-WINDT',
+      name: `Kontakt ${BRAND.publicName}`,
       url: `${SITE_URL}/kontakt`,
     },
   },
   '/ueber-uns': {
-    title: 'Über Uns | 3D-WINDT',
+    title: `Über Uns | ${BRAND.publicName}`,
     description:
-      'Erfahren Sie mehr über den Qualitätsanspruch, die Arbeitsweise und die Projektbegleitung von 3D-WINDT.',
+      `Erfahren Sie mehr über den Qualitätsanspruch, die Arbeitsweise und die Projektbegleitung von ${BRAND.publicName}.`,
     path: '/ueber-uns',
   },
   '/nachhaltigkeit': {
-    title: 'Nachhaltigkeit | 3D-WINDT',
+    title: `Nachhaltigkeit | ${BRAND.publicName}`,
     description:
       'Nachhaltige 3D-Druckfertigung mit lokaler Produktion, effizienten Prozessen und materialbewusster Planung.',
     path: '/nachhaltigkeit',
   },
   '/galerie': {
-    title: 'Galerie | 3D-WINDT Projekte',
+    title: `Galerie | ${BRAND.publicName} Projekte`,
     description:
       'Einblicke in ausgewählte 3D-Druckprojekte aus Prototyping, Ersatzteilen und technischen Anwendungen.',
     path: '/galerie',
   },
   '/impressum': {
-    title: 'Impressum | 3D-WINDT',
-    description: 'Rechtliche Informationen und Anbieterkennzeichnung von 3D-WINDT.',
+    title: `Impressum | ${BRAND.publicName}`,
+    description: `Rechtliche Informationen und Anbieterkennzeichnung von ${BRAND.publicName}.`,
     path: '/impressum',
   },
   '/datenschutz': {
-    title: 'Datenschutz | 3D-WINDT',
+    title: `Datenschutz | ${BRAND.publicName}`,
     description:
-      'Informationen zur Verarbeitung personenbezogener Daten auf der Website von 3D-WINDT.',
+      `Informationen zur Verarbeitung personenbezogener Daten auf der Website von ${BRAND.publicName}.`,
     path: '/datenschutz',
   },
 };

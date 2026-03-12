@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { trackEvent } from '../lib/tracking';
+import { BRAND, CONTACT } from '../lib/brand';
 
 type ContactFormData = {
   name: string;
@@ -137,7 +138,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-1">E-Mail</h3>
-                  <p className="text-gray-600">support@3d-windt.de</p>
+                  <p className="text-gray-600">{CONTACT.email}</p>
                 </div>
               </div>
 
@@ -147,8 +148,8 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-1">Telefon</h3>
-                  <p className="text-gray-600">+49 (0) 1512 5534623</p>
-                  <p className="text-sm text-gray-500 mt-1">Mo-Fr: 8:00 - 17:00 Uhr</p>
+                  <p className="text-gray-600">{CONTACT.phone}</p>
+                  <p className="text-sm text-gray-500 mt-1">{CONTACT.officeHours}</p>
                 </div>
               </div>
 
@@ -158,8 +159,10 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-1">Standort</h3>
-                  <p className="text-gray-600">Doktor-Weinholz-Straße 23, 63110 Rodgau</p>
-                  <p className="text-sm text-gray-500 mt-1">Versand innerhalb Deutschlands</p>
+                  <p className="text-gray-600">
+                    {CONTACT.streetAddress}, {CONTACT.postalCode} {CONTACT.city}
+                  </p>
+                  <p className="text-sm text-gray-500 mt-1">{CONTACT.serviceArea}</p>
                 </div>
               </div>
 
@@ -169,7 +172,8 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-1">Rückmeldung</h3>
-                  <p className="text-gray-600">In der Regel innerhalb von 24 Stunden</p>
+                  <p className="text-gray-600">{CONTACT.responseTime}</p>
+                  <p className="text-sm text-gray-500 mt-1">Rechtsträger: {BRAND.legalName}</p>
                 </div>
               </div>
             </div>

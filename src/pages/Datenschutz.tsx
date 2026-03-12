@@ -1,5 +1,6 @@
 import React from 'react';
-import { Shield, Eye, Database, Lock, UserCheck, FileText } from 'lucide-react';
+import { Shield, Database, Lock, UserCheck, FileText, Eye } from 'lucide-react';
+import { BRAND, CONTACT, FULL_ADDRESS, LEGAL_REPRESENTATION } from '../lib/brand';
 
 const Datenschutz = () => {
   return (
@@ -9,200 +10,106 @@ const Datenschutz = () => {
           <Shield className="h-10 w-10 text-primary-600" />
           <span>Datenschutzerklärung</span>
         </h1>
-        
+
         <div className="bg-white border border-gray-200 rounded-xl p-8 space-y-8">
-          {/* Introduction */}
           <section>
-            <div className="bg-primary-50 p-6 rounded-lg mb-6">
+            <div className="bg-primary-50 p-6 rounded-lg">
               <p className="text-gray-700">
-                Der Schutz Ihrer persönlichen Daten ist uns ein besonderes Anliegen. Wir verarbeiten 
-                Ihre Daten daher ausschließlich auf Grundlage der gesetzlichen Bestimmungen (DSGVO, BDSG, TTDSG). 
-                In diesen Datenschutzinformationen informieren wir Sie über die wichtigsten Aspekte der 
-                Datenverarbeitung im Rahmen unserer Website.
+                Der Schutz Ihrer personenbezogenen Daten ist uns wichtig. Wir verarbeiten Daten
+                ausschließlich im Rahmen der gesetzlichen Vorgaben, insbesondere DSGVO und BDSG.
               </p>
             </div>
           </section>
 
-          {/* Responsible Party */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center space-x-2">
               <UserCheck className="h-6 w-6 text-primary-600" />
               <span>Verantwortlicher</span>
             </h2>
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <div className="space-y-2">
-                <p className="font-semibold">3D-WINDT</p>
-                <p>Sebastian Windt</p>
-                <p>Doktor-Weinholz-Straße 23</p>
-                <p>63110 Rodgau</p>
-                <p>Deutschland</p>
-                <p className="mt-4">
-                  <strong>E-Mail:</strong> support@3d-windt.de<br />
-                  <strong>Telefon:</strong> +49 (0) 1512 5534623
-                </p>
-              </div>
+            <div className="bg-gray-50 p-6 rounded-lg space-y-2 text-gray-700">
+              <p className="font-semibold">{BRAND.legalName}</p>
+              <p>{LEGAL_REPRESENTATION}</p>
+              <p>{FULL_ADDRESS}</p>
+              <p>{CONTACT.country}</p>
+              <p className="pt-2">
+                <strong>E-Mail:</strong> {CONTACT.email}
+                <br />
+                <strong>Telefon:</strong> {CONTACT.phone}
+              </p>
+              <p className="text-sm text-gray-600">Marke: {BRAND.publicName}</p>
             </div>
           </section>
 
-          {/* Data Collection */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center space-x-2">
               <Database className="h-6 w-6 text-primary-600" />
-              <span>Datenerfassung auf unserer Website</span>
+              <span>Art und Zweck der Verarbeitung</span>
             </h2>
-            
-            <div className="space-y-6">
+            <div className="space-y-6 text-gray-700">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Wer ist verantwortlich für die Datenerfassung auf dieser Website?</h3>
-                <p className="text-gray-700">
-                  Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. 
-                  Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen.
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Kontakt- und Projektanfragen</h3>
+                <p>
+                  Wenn Sie uns über Formulare kontaktieren oder eine Projektanfrage senden,
+                  verarbeiten wir Ihre Angaben zur Bearbeitung Ihrer Anfrage und zur
+                  Angebotserstellung.
+                </p>
+                <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mt-3 text-sm text-blue-800">
+                  <p>
+                    <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO
+                    <br />
+                    <strong>Zweck:</strong> Anfragebearbeitung, technische Klärung, Angebot
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Datei-Uploads</h3>
+                <p>
+                  Hochgeladene Dateien (z. B. STL, OBJ, 3MF, SVG) werden ausschließlich zur
+                  technischen Prüfung und zur Bearbeitung Ihres Projekts genutzt.
                 </p>
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Wie erfassen wir Ihre Daten?</h3>
-                <p className="text-gray-700 mb-3">
-                  Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen. 
-                  Hierbei kann es sich z.B. um Daten handeln, die Sie in ein Kontaktformular eingeben.
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Server-Log-Dateien</h3>
+                <p>
+                  Beim Besuch der Website werden technisch notwendige Zugriffsdaten durch den
+                  Hosting-Anbieter verarbeitet (z. B. IP-Adresse, Zeitstempel, aufgerufene Seite,
+                  Browserinformationen), um Betrieb und Sicherheit der Website zu gewährleisten.
                 </p>
-                <p className="text-gray-700">
-                  Andere Daten werden automatisch beim Besuch der Website durch unsere IT-Systeme erfasst. 
-                  Das sind vor allem technische Daten (z.B. Internetbrowser, Betriebssystem oder Uhrzeit des Seitenaufrufs).
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Wofür nutzen wir Ihre Daten?</h3>
-                <ul className="list-disc list-inside text-gray-700 space-y-2">
-                  <li>Zur Bearbeitung Ihrer Anfragen und Aufträge</li>
-                  <li>Zur Bereitstellung unserer Dienstleistungen</li>
-                  <li>Zur Kommunikation mit Ihnen</li>
-                  <li>Zur Verbesserung unserer Website und Services</li>
-                </ul>
               </div>
             </div>
           </section>
 
-          {/* Legal Basis */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center space-x-2">
               <FileText className="h-6 w-6 text-primary-600" />
-              <span>Rechtsgrundlage</span>
+              <span>Speicherdauer</span>
             </h2>
-            <div className="space-y-4 text-gray-700">
-              <p>
-                Die Verarbeitung Ihrer personenbezogenen Daten erfolgt auf Grundlage folgender Rechtsgrundlagen:
-              </p>
-              <ul className="list-disc list-inside space-y-2">
-                <li><strong>Art. 6 Abs. 1 lit. a DSGVO:</strong> Einwilligung</li>
-                <li><strong>Art. 6 Abs. 1 lit. b DSGVO:</strong> Vertragserfüllung</li>
-                <li><strong>Art. 6 Abs. 1 lit. f DSGVO:</strong> Berechtigte Interessen</li>
-              </ul>
+            <div className="space-y-3 text-gray-700">
+              <p>Wir speichern personenbezogene Daten nur so lange, wie es für den jeweiligen Zweck erforderlich ist oder gesetzliche Aufbewahrungspflichten bestehen.</p>
+              <p>Anfrage- und Projektdaten werden nach Abschluss der Bearbeitung regelmäßig überprüft und nicht mehr benötigte Daten gelöscht.</p>
             </div>
           </section>
 
-          {/* Contact Forms */}
-          <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Kontaktformular</h2>
-            <div className="space-y-4 text-gray-700">
-              <p>
-                Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem 
-                Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung 
-                der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert.
-              </p>
-              <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
-                <p className="text-sm text-blue-800">
-                  <strong>Zweck:</strong> Bearbeitung Ihrer Anfrage<br />
-                  <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO<br />
-                  <strong>Speicherdauer:</strong> Bis zur vollständigen Bearbeitung Ihrer Anfrage
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* File Upload */}
-          <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Datei-Upload</h2>
-            <div className="space-y-4 text-gray-700">
-              <p>
-                Wenn Sie Dateien über unseren Projekt-Konfigurator hochladen, werden diese ausschließlich 
-                zur Bearbeitung Ihres 3D-Druck-Auftrags verwendet. Die Dateien werden sicher gespeichert 
-                und nach Abschluss des Projekts gelöscht.
-              </p>
-              <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
-                <p className="text-sm text-green-800">
-                  <strong>Zweck:</strong> Bearbeitung Ihres 3D-Druck-Auftrags<br />
-                  <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO<br />
-                  <strong>Speicherdauer:</strong> Bis 30 Tage nach Projektabschluss
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* Server Log Files */}
-          <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Server-Log-Dateien</h2>
-            <div className="space-y-4 text-gray-700">
-              <p>
-                Der Provider der Seiten erhebt und speichert automatisch Informationen in so genannten 
-                Server-Log-Dateien, die Ihr Browser automatisch an uns übermittelt:
-              </p>
-              <ul className="list-disc list-inside space-y-1">
-                <li>Browsertyp und Browserversion</li>
-                <li>Verwendetes Betriebssystem</li>
-                <li>Referrer URL</li>
-                <li>Hostname des zugreifenden Rechners</li>
-                <li>Uhrzeit der Serveranfrage</li>
-                <li>IP-Adresse</li>
-              </ul>
-              <p>
-                Diese Daten werden nicht mit anderen Datenquellen zusammengeführt und dienen ausschließlich 
-                der Sicherstellung eines störungsfreien Betriebs der Website.
-              </p>
-            </div>
-          </section>
-
-          {/* Your Rights */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center space-x-2">
               <Eye className="h-6 w-6 text-primary-600" />
               <span>Ihre Rechte</span>
             </h2>
-            <div className="space-y-4">
-              <p className="text-gray-700">
-                Sie haben folgende Rechte bezüglich Ihrer personenbezogenen Daten:
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-gray-900 mb-2">Auskunftsrecht</h4>
-                  <p className="text-sm text-gray-600">
-                    Sie können Auskunft über Ihre gespeicherten personenbezogenen Daten verlangen.
-                  </p>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-gray-900 mb-2">Berichtigungsrecht</h4>
-                  <p className="text-sm text-gray-600">
-                    Sie können die Berichtigung unrichtiger Daten verlangen.
-                  </p>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-gray-900 mb-2">Löschungsrecht</h4>
-                  <p className="text-sm text-gray-600">
-                    Sie können die Löschung Ihrer Daten verlangen, soweit keine gesetzlichen Aufbewahrungsfristen bestehen.
-                  </p>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-gray-900 mb-2">Widerspruchsrecht</h4>
-                  <p className="text-sm text-gray-600">
-                    Sie können der Verarbeitung Ihrer Daten widersprechen.
-                  </p>
-                </div>
-              </div>
+            <div className="space-y-4 text-gray-700">
+              <p>Sie haben im Rahmen der gesetzlichen Voraussetzungen insbesondere folgende Rechte:</p>
+              <ul className="list-disc list-inside space-y-1">
+                <li>Auskunft über gespeicherte personenbezogene Daten</li>
+                <li>Berichtigung unrichtiger Daten</li>
+                <li>Löschung oder Einschränkung der Verarbeitung</li>
+                <li>Widerspruch gegen die Verarbeitung</li>
+                <li>Datenübertragbarkeit</li>
+                <li>Beschwerde bei einer Datenschutz-Aufsichtsbehörde</li>
+              </ul>
             </div>
           </section>
 
-          {/* Data Security */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center space-x-2">
               <Lock className="h-6 w-6 text-primary-600" />
@@ -210,49 +117,36 @@ const Datenschutz = () => {
             </h2>
             <div className="space-y-4 text-gray-700">
               <p>
-                Wir verwenden innerhalb des Website-Besuchs das verbreitete SSL-Verfahren (Secure Socket Layer) 
-                in Verbindung mit der jeweils höchsten Verschlüsselungsstufe, die von Ihrem Browser unterstützt wird.
+                Wir setzen geeignete technische und organisatorische Maßnahmen ein, um Ihre Daten
+                gegen unbefugten Zugriff, Verlust oder Manipulation zu schützen.
               </p>
-              <p>
-                Außerdem sichern wir unsere Website und sonstigen Systeme durch technische und organisatorische 
-                Maßnahmen gegen Verlust, Zerstörung, Zugriff, Veränderung oder Verbreitung Ihrer Daten durch 
-                unbefugte Personen.
-              </p>
-              <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
-                <p className="text-sm text-green-800">
-                  <strong>Verschlüsselung:</strong> Alle Datenübertragungen erfolgen verschlüsselt über HTTPS<br />
-                  <strong>Speicherung:</strong> Sichere Server in Deutschland<br />
-                  <strong>Zugriff:</strong> Nur autorisierte Mitarbeiter haben Zugang zu Ihren Daten
+              <div className="bg-green-50 border border-green-200 p-4 rounded-lg text-sm text-green-800">
+                <p>
+                  <strong>Übertragung:</strong> verschlüsselt via HTTPS
+                  <br />
+                  <strong>Zugriff:</strong> nur für autorisierte Personen
                 </p>
               </div>
             </div>
           </section>
 
-          {/* Contact for Privacy */}
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Fragen zum Datenschutz</h2>
-            <div className="bg-primary-50 p-6 rounded-lg">
-              <p className="text-gray-700 mb-4">
-                Wenn Sie Fragen zu dieser Datenschutzerklärung haben oder Ihre Rechte geltend machen möchten, 
-                kontaktieren Sie uns gerne:
-              </p>
-              <div className="space-y-2">
-                <p><strong>E-Mail:</strong> support@3d-windt.de</p>
-                <p><strong>Telefon:</strong> +49 (0) 1512 5534623</p>
-                <p><strong>Post:</strong> 3D-WINDT, Doktor-Weinholz-Straße 23, 63110 Rodgau</p>
-              </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Kontakt zum Datenschutz</h2>
+            <div className="bg-primary-50 p-6 rounded-lg space-y-2 text-gray-700">
+              <p>Für Fragen zum Datenschutz oder zur Ausübung Ihrer Rechte kontaktieren Sie uns:</p>
+              <p><strong>E-Mail:</strong> {CONTACT.email}</p>
+              <p><strong>Telefon:</strong> {CONTACT.phone}</p>
+              <p><strong>Post:</strong> {BRAND.legalName}, {FULL_ADDRESS}</p>
             </div>
           </section>
 
-          {/* Last Updated */}
-          <section className="border-t border-gray-200 pt-6">
+          <section className="border-t border-gray-200 pt-6 space-y-2">
             <p className="text-sm text-gray-500">
               <strong>Stand dieser Datenschutzerklärung:</strong> März 2026
             </p>
-            <p className="text-sm text-gray-500 mt-2">
-              Wir behalten uns vor, diese Datenschutzerklärung anzupassen, damit sie stets den aktuellen 
-              rechtlichen Anforderungen entspricht oder um Änderungen unserer Leistungen in der 
-              Datenschutzerklärung umzusetzen.
+            <p className="text-sm text-gray-500">
+              Wir passen diese Datenschutzerklärung an, sobald sich rechtliche Anforderungen oder
+              unsere Datenverarbeitungsprozesse ändern.
             </p>
           </section>
         </div>

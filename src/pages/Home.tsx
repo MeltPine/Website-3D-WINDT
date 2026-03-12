@@ -8,6 +8,7 @@ import {
   Leaf,
   CheckCircle,
 } from 'lucide-react';
+import { BRAND } from '../lib/brand';
 
 const Home = () => {
   const features = [
@@ -192,7 +193,7 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Warum 3D-WINDT?
+                Warum {BRAND.publicName}?
               </h2>
               <p className="text-lg text-gray-600 mb-8">
                 Unser Fokus liegt auf reproduzierbarer Qualität und
