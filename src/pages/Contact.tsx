@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { trackEvent } from '../lib/tracking';
 import { BRAND, CONTACT } from '../lib/brand';
 import { triggerLeadFollowup } from '../lib/leadFollowup';
+import { reportLeadError } from '../lib/leadAlert';
 
 type ContactFormData = {
   name: string;
@@ -99,8 +100,21 @@ const Contact = () => {
       setStatus('idle');
       navigate('/danke-kontakt', { replace: true });
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unbekannter Fehler';
       trackEvent('lead_form_error', {
         form: 'contact',
+      });
+      void reportLeadError({
+        form_name: 'contact-request',
+        source_path: '/kontakt',
+        error_message: errorMessage,
+        lead_email: formData.email || undefined,
+        form_data: {
+          use_case: formData.use_case,
+          quantity: formData.quantity,
+          deadline: formData.deadline,
+          material_pref: formData.material_pref,
+        },
       });
       setStatus('error');
       setErrorMessage(

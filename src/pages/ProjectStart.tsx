@@ -3,6 +3,7 @@ import { Upload, FileText, AlertCircle, Send } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { trackEvent } from '../lib/tracking';
 import { triggerLeadFollowup } from '../lib/leadFollowup';
+import { reportLeadError } from '../lib/leadAlert';
 
 type FinishingOption = 'none' | 'basic' | 'premium';
 
@@ -154,8 +155,23 @@ const ProjectStart = () => {
       setStatus('idle');
       navigate('/danke-projekt', { replace: true });
     } catch (error) {
+      const submitFailureReason = error instanceof Error ? error.message : 'Unbekannter Fehler';
       trackEvent('lead_form_error', {
         form: 'project',
+      });
+      void reportLeadError({
+        form_name: 'project-request',
+        source_path: '/projekt-starten',
+        error_message: submitFailureReason,
+        lead_email: email || undefined,
+        form_data: {
+          use_case: useCase,
+          quantity,
+          deadline,
+          material_pref: materialPref,
+          budget_band: budgetBand,
+          file_count: files.length,
+        },
       });
       setStatus('error');
       setSubmitError(

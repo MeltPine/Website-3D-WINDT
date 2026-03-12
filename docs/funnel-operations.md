@@ -10,6 +10,7 @@
 - `RESEND_API_KEY`
 - `LEAD_REPLY_FROM` (z. B. `3D-WINDT <noreply@3d-windt.de>`)
 - `LEAD_SALES_EMAIL` (z. B. `support@3d-windt.de`)
+- `LEAD_ALERT_FROM` (optional, z. B. `3D-WINDT Alert <alerts@3d-windt.de>`)
 
 Hinweis: `VITE_*` Variablen sind Build-Variablen und erfordern ein neues Deploy.
 
@@ -22,6 +23,8 @@ Hinweis: `VITE_*` Variablen sind Build-Variablen und erfordern ein neues Deploy.
 6. Funktion versendet:
    - Auto-Eingangsbestätigung an den Lead
    - Interne Lead-Mail an Vertrieb
+7. Bei Submit-Fehlern triggert Frontend `/.netlify/functions/lead-alert`:
+   - Alert-Mail an Vertrieb mit Fehlerdetails und Formular-Kontext
 
 ## Vertriebsprozess (SLA)
 1. Status `Neu eingegangen` nach Submission.
@@ -44,3 +47,6 @@ Hinweis: `VITE_*` Variablen sind Build-Variablen und erfordern ein neues Deploy.
 6. In GA4 Realtime prüfen:
    - `page_view` auf Danke-Seite
    - `lead_form_submitted`
+7. Fehler-Monitoring prüfen:
+   - Testweise Netlify-Form-Erkennung deaktivieren (nur kurz in Staging) oder absichtlich 500 simulieren
+   - Prüfen, dass Alert-Mail `"[ALERT] Formularfehler ..."` ankommt
