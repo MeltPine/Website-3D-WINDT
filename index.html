@@ -11,62 +11,6 @@
     <title>3D-WINDT | Industriequalität im 3D-Druck</title>
   </head>
   <body>
-    <!-- Netlify form detection -->
-    <form
-      name="contact-request"
-      method="POST"
-      netlify
-      data-netlify="true"
-      data-netlify-honeypot="bot-field"
-      hidden
-    >
-      <input type="hidden" name="form-name" value="contact-request" />
-      <input type="text" name="name" />
-      <input type="email" name="email" />
-      <input type="text" name="phone" />
-      <input type="text" name="company" />
-      <input type="text" name="use_case" />
-      <input type="number" name="quantity" />
-      <input type="date" name="deadline" />
-      <input type="text" name="material_pref" />
-      <input type="text" name="budget_band" />
-      <input type="text" name="source_path" />
-      <textarea name="message"></textarea>
-      <input type="checkbox" name="privacy_consent" />
-      <input type="text" name="bot-field" />
-    </form>
-    <form
-      name="project-request"
-      method="POST"
-      netlify
-      data-netlify="true"
-      data-netlify-honeypot="bot-field"
-      enctype="multipart/form-data"
-      hidden
-    >
-      <input type="hidden" name="form-name" value="project-request" />
-      <input type="text" name="name" />
-      <input type="email" name="email" />
-      <input type="text" name="phone" />
-      <input type="text" name="company" />
-      <input type="text" name="use_case" />
-      <input type="number" name="quantity" />
-      <input type="date" name="deadline" />
-      <input type="text" name="material_pref" />
-      <input type="text" name="budget_band" />
-      <input type="number" step="0.1" name="weight" />
-      <input type="checkbox" name="needs_cad" />
-      <input type="number" step="0.5" name="cad_hours" />
-      <input type="checkbox" name="needs_scan" />
-      <input type="checkbox" name="express_delivery" />
-      <input type="text" name="finishing" />
-      <input type="text" name="estimated_price" />
-      <input type="text" name="source_path" />
-      <textarea name="message"></textarea>
-      <input type="checkbox" name="privacy_consent" />
-      <input type="file" name="project_files" multiple />
-      <input type="text" name="bot-field" />
-    </form>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
