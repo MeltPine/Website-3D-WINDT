@@ -89,9 +89,6 @@ const Impressum = () => {
             <p className="text-sm text-gray-500">
               <strong>Stand:</strong> März 2026
             </p>
-            <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3">
-              Hinweis: Bitte den Namen des zweiten Gesellschafters vor dem finalen Go-Live ergänzen.
-            </p>
           </section>
         </div>
       </div>

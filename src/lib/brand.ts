@@ -20,7 +20,7 @@ export const CONTACT = {
 export const LEGAL = {
   legalRepresentatives: [
     'Sebastian Windt',
-    'Name des zweiten Gesellschafters (bitte ergänzen)',
+    'Alyssa Windt',
   ],
 } as const;
 
