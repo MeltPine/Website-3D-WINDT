@@ -130,6 +130,13 @@ const Home = () => {
     <div className="animate-fade-in">
       <section className="bg-gradient-to-br from-primary-50 to-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <img
+            src="/logo/3dw-logo-full.webp"
+            alt="3DW Additive Manufacturing Logo"
+            className="h-24 md:h-32 w-auto mx-auto mb-6"
+            loading="eager"
+            decoding="async"
+          />
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
             3D-Druck fuer Industrie, Ersatzteile & Prototypen
           </h1>

@@ -20,25 +20,26 @@ const BrandLogo = ({
   const isDark = theme === 'dark';
 
   const markSize = size === 'sm' ? 'h-10 w-10' : 'h-12 w-12';
-  const markText = size === 'sm' ? 'text-[10px]' : 'text-[11px]';
+  const markPadding = size === 'sm' ? 'p-1' : 'p-1.5';
   const nameText = size === 'sm' ? 'text-lg' : 'text-xl';
 
   const nameColor = isDark ? 'text-white' : 'text-gray-900';
   const metaColor = isDark ? 'text-gray-300' : 'text-gray-600';
   const ringColor = isDark ? 'ring-white/25' : 'ring-primary-200';
+  const markBackground = isDark ? 'bg-white/95' : 'bg-white';
 
   return (
     <div className={`flex items-center gap-3 ${className}`.trim()}>
       <div
-        className={`relative ${markSize} rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 shadow-sm ring-1 ${ringColor}`}
+        className={`relative ${markSize} ${markPadding} rounded-xl ${markBackground} shadow-sm ring-1 ${ringColor}`}
         aria-hidden="true"
       >
-        <div className="absolute inset-[3px] rounded-[10px] border border-white/30" />
-        <span
-          className={`absolute inset-0 flex items-center justify-center ${markText} font-extrabold uppercase tracking-[0.22em] text-white`}
-        >
-          {BRAND.shortName}
-        </span>
+        <img
+          src="/logo/3dw-logo-mark.webp"
+          alt={`${BRAND.publicName} Logo`}
+          className="h-full w-full object-contain"
+          decoding="async"
+        />
       </div>
 
       <div className="leading-tight">
