@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Printer, PenTool, Scan as Scan3D, Package, Clock, Shield } from 'lucide-react';
 
 const Services = () => {
@@ -7,14 +8,14 @@ const Services = () => {
       icon: <Printer className="h-8 w-8" />,
       title: '3D-Druck',
       price: '0,35€/g',
-      description: 'Professioneller 3D-Druck mit modernster FDM-Technologie',
+      description: '3D-Druck mit Fokus auf reproduzierbare Qualität und technische Einsatzfähigkeit',
       features: [
         'Hochwertige Materialien: PLA, PETG, ABS, ASA',
-        'Alle Industrie-Materialien verfügbar',
+        'Weitere technische Materialien auf Anfrage',
         'Präzise Schichtauflösung bis 0,1mm',
         'Große Druckvolumen bis 300x300x400mm',
         'Nachbearbeitung und Finishing',
-        'Qualitätskontrolle jedes Drucks'
+        'Qualitätskontrolle und Plausibilitätscheck vor Auslieferung'
       ],
       materials: [
         { name: 'PLA', properties: 'Umweltfreundlich, einfach zu drucken' },
@@ -27,7 +28,7 @@ const Services = () => {
       icon: <PenTool className="h-8 w-8" />,
       title: 'CAD-Modellierung',
       price: '60€/h',
-      description: 'Professionelle 3D-Modellierung und Konstruktion',
+      description: 'CAD-Unterstützung für belastbare Druckergebnisse und saubere Fertigungsdaten',
       features: [
         'Erstellung neuer 3D-Modelle',
         'Anpassung bestehender Designs',
@@ -47,7 +48,7 @@ const Services = () => {
       icon: <Scan3D className="h-8 w-8" />,
       title: '3D-Scan Service',
       price: '30€ pauschal',
-      description: 'Digitalisierung physischer Objekte für weitere Bearbeitung',
+      description: 'Digitalisierung physischer Bauteile für Reproduktion, Anpassung und Weiterentwicklung',
       features: [
         'Hochauflösende 3D-Scans',
         'Nachbearbeitung der Scan-Daten',
@@ -95,8 +96,8 @@ const Services = () => {
             Unsere Leistungen
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Comprehensive 3D-Druckdienstleistungen für alle Ihre Anforderungen - 
-            von der ersten Idee bis zum fertigen Produkt.
+            Durchgängige Leistungen von Anfrage, technischer Klärung und
+            Fertigung bis zur termingerechten Auslieferung.
           </p>
         </div>
 
@@ -236,6 +237,14 @@ const Services = () => {
             <p>
               Individuelle Preise für Großprojekte und Serienfertigungen auf Anfrage.
             </p>
+          </div>
+          <div className="mt-8">
+            <Link
+              to="/projekt-starten"
+              className="bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors inline-block"
+            >
+              Projekt starten
+            </Link>
           </div>
         </div>
       </div>

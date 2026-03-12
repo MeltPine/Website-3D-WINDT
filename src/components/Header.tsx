@@ -47,6 +47,15 @@ const Header = () => {
             ))}
           </nav>
 
+          <div className="hidden md:block">
+            <Link
+              to="/projekt-starten"
+              className="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors"
+            >
+              Anfrage starten
+            </Link>
+          </div>
+
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -76,6 +85,13 @@ const Header = () => {
                   {item.name}
                 </Link>
               ))}
+              <Link
+                to="/projekt-starten"
+                onClick={() => setIsMenuOpen(false)}
+                className="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium text-center hover:bg-primary-700 transition-colors"
+              >
+                Anfrage starten
+              </Link>
             </nav>
           </div>
         )}

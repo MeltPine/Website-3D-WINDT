@@ -1,5 +1,5 @@
 import React from 'react';
-import { Building, Mail, Phone, Globe } from 'lucide-react';
+import { Building, Mail, Phone } from 'lucide-react';
 
 const Impressum = () => {
   return (
@@ -16,7 +16,7 @@ const Impressum = () => {
             </h2>
             <div className="bg-gray-50 p-6 rounded-lg">
               <div className="space-y-2">
-                <p className="font-semibold text-lg">3D Print Pro</p>
+                <p className="font-semibold text-lg">3D-WINDT</p>
                 <p>Sebastian Windt</p>
                 <p>Doktor-Weinholz-Straße 23</p>
                 <p>63110 Rodgau</p>
@@ -50,9 +50,9 @@ const Impressum = () => {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Registereintrag</h2>
             <div className="bg-gray-50 p-6 rounded-lg space-y-2">
-              <p><span className="font-medium">Handelsregister:</span> Wird Nachgetragen</p>
-              <p><span className="font-medium">Registergericht:</span> Amtsgericht Offenbach am Main</p>
-              <p><span className="font-medium">Geschäftsführer:</span> Sebastian Windt</p>
+              <p><span className="font-medium">Rechtsform:</span> Einzelunternehmen</p>
+              <p><span className="font-medium">Inhaber:</span> Sebastian Windt</p>
+              <p><span className="font-medium">Sitz:</span> Rodgau, Deutschland</p>
             </div>
           </section>
 
@@ -71,8 +71,10 @@ const Impressum = () => {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Berufsbezeichnung und berufsrechtliche Regelungen</h2>
             <div className="bg-gray-50 p-6 rounded-lg space-y-2">
-              <p><span className="font-medium">Berufsbezeichnung:</span>   Spezialist für Additive Fertigung (FDM) und Maschinenentwicklung
-Zusätzliche Qualifikationen:Lackierer, erfahrener Programmierer, Konstrukteur und Anlagenmechaniker für 3D-Drucksysteme</p>
+              <p>
+                <span className="font-medium">Tätigkeitsfeld:</span> Additive Fertigung,
+                3D-Druck, CAD-Modellierung und technische Projektbegleitung
+              </p>
               <p><span className="font-medium">Zuständige Kammer:</span> IHK Frankfurt am Main </p>
               <p><span className="font-medium">Verliehen durch:</span> Deutschland</p>
             </div>
@@ -161,7 +163,7 @@ Zusätzliche Qualifikationen:Lackierer, erfahrener Programmierer, Konstrukteur u
           {/* Last Updated */}
           <section className="border-t border-gray-200 pt-6">
             <p className="text-sm text-gray-500">
-              <strong>Stand:</strong> Januar 2025
+              <strong>Stand:</strong> März 2026
             </p>
           </section>
         </div>

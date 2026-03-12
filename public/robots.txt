@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://3d-windt.de/sitemap.xml

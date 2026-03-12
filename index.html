@@ -4,11 +4,56 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Professioneller 3D-Druck Service in Deutschland. CAD-Modellierung, 3D-Scanning und nachhaltige Fertigung für Privat- und Geschäftskunden." />
-    <meta name="keywords" content="3D-Druck, CAD-Modellierung, 3D-Scan, nachhaltige Fertigung, Deutschland, PLA, PETG, ABS" />
-    <title>3D-WINDT - Professioneller 3D-Druck Service Deutschland</title>
+    <meta
+      name="description"
+      content="3D-Druck in Industriequalität mit verlässlichen Lieferzeiten. Anfrage starten und ein belastbares Angebot erhalten."
+    />
+    <title>3D-WINDT | Industriequalität im 3D-Druck</title>
   </head>
   <body>
+    <!-- Netlify form detection -->
+    <form name="contact-request" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="text" name="phone" />
+      <input type="text" name="company" />
+      <input type="text" name="use_case" />
+      <input type="number" name="quantity" />
+      <input type="date" name="deadline" />
+      <input type="text" name="material_pref" />
+      <input type="text" name="budget_band" />
+      <textarea name="message"></textarea>
+      <input type="checkbox" name="privacy_consent" />
+      <input type="text" name="bot-field" />
+    </form>
+    <form
+      name="project-request"
+      netlify
+      netlify-honeypot="bot-field"
+      enctype="multipart/form-data"
+      hidden
+    >
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="text" name="phone" />
+      <input type="text" name="company" />
+      <input type="text" name="use_case" />
+      <input type="number" name="quantity" />
+      <input type="date" name="deadline" />
+      <input type="text" name="material_pref" />
+      <input type="text" name="budget_band" />
+      <input type="number" step="0.1" name="weight" />
+      <input type="checkbox" name="needs_cad" />
+      <input type="number" step="0.5" name="cad_hours" />
+      <input type="checkbox" name="needs_scan" />
+      <input type="checkbox" name="express_delivery" />
+      <input type="text" name="finishing" />
+      <input type="text" name="estimated_price" />
+      <textarea name="message"></textarea>
+      <input type="checkbox" name="privacy_consent" />
+      <input type="file" name="project_files" multiple />
+      <input type="text" name="bot-field" />
+    </form>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

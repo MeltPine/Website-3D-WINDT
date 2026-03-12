@@ -37,10 +37,11 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-4">Schnellzugriff</h3>
             <ul className="space-y-2">
-              <li><Link to="/leistungen" className="text-gray-300 hover:text-primary-400 transition-colors">Leistungen</Link></li>
               <li><Link to="/projekt-starten" className="text-gray-300 hover:text-primary-400 transition-colors">Projekt starten</Link></li>
+              <li><Link to="/leistungen" className="text-gray-300 hover:text-primary-400 transition-colors">Leistungen</Link></li>
+              <li><Link to="/kontakt" className="text-gray-300 hover:text-primary-400 transition-colors">Kontakt</Link></li>
               <li><Link to="/galerie" className="text-gray-300 hover:text-primary-400 transition-colors">Galerie</Link></li>
               <li><Link to="/ueber-uns" className="text-gray-300 hover:text-primary-400 transition-colors">Über uns</Link></li>
             </ul>

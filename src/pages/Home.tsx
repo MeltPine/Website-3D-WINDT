@@ -7,7 +7,6 @@ import {
   PenTool,
   Leaf,
   CheckCircle,
-  Star,
 } from 'lucide-react';
 
 const Home = () => {
@@ -38,12 +37,12 @@ const Home = () => {
   ];
 
   const benefits = [
-    'Schnelle Bearbeitung und Lieferung',
-    'Faire und transparente Preisgestaltung',
-    'Höchste Qualitätsstandards',
-    'Persönliche Beratung und Support',
-    'Nachhaltige Produktion made in Germany',
-    'Flexibilität für Einzel- und Serienfertigung',
+    'Industrieorientierte Material- und Prozessauswahl',
+    'Verlässliche Rückmeldung innerhalb von 24 Stunden',
+    'Saubere Angebotsklärung zu Toleranz, Einsatz und Stückzahl',
+    'Transparente Kommunikation über Fertigungs- und Lieferstatus',
+    'Persönliche technische Abstimmung statt Standardabfertigung',
+    'Flexibilität von Einzelteil bis Kleinserie',
   ];
 
   return (
@@ -53,15 +52,13 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              Professioneller{' '}
-              <span className="text-primary-600">
-                3D-Druck Service
-              </span>
+              Industriequalität im{' '}
+              <span className="text-primary-600">3D-Druck</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Von der Idee zum fertigen Produkt. Wir bieten professionelle
-              3D-Druckdienstleistungen, CAD-Modellierung und 3D-Scanning für
-              Privat- und Geschäftskunden in ganz Deutschland.
+              Für Bauteile, Prototypen und technische Anwendungen mit
+              Qualitätsanspruch. Fokus auf Prozesssicherheit, verlässliche
+              Lieferzeiten und klare technische Kommunikation.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -87,10 +84,11 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Unsere Kernleistungen
+              Leistungen für anspruchsvolle Projekte
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Umfassende 3D-Druckdienstleistungen für alle Ihre Projekte
+              3D-Druck, CAD und 3D-Scan als durchgängiger Workflow von Anfrage
+              bis Auslieferung
             </p>
           </div>
 
@@ -118,10 +116,10 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Transparente Preisgestaltung
+              Klare Preislogik
             </h2>
             <p className="text-lg text-gray-600">
-              Faire Preise ohne versteckte Kosten
+              Richtwerte für eine schnelle Ersteinschätzung
             </p>
           </div>
 
@@ -137,7 +135,7 @@ const Home = () => {
                 </div>
                 <div className="text-gray-600 mb-4">pro Gramm</div>
                 <p className="text-sm text-gray-500">
-                  Alle gängigen Materialien inklusive
+                  Preis je nach Material und Geometrie
                 </p>
               </div>
             </div>
@@ -153,7 +151,7 @@ const Home = () => {
                 </div>
                 <div className="text-gray-600 mb-4">pro Stunde</div>
                 <p className="text-sm text-gray-500">
-                  Professionelle 3D-Modellierung
+                  Für Anpassung, Neuteil oder DFM-Optimierung
                 </p>
               </div>
             </div>
@@ -175,7 +173,7 @@ const Home = () => {
 
           <div className="text-center mt-8">
             <p className="text-sm text-gray-600 mb-4">
-              Mindestbestellwert: 10€ | Kostenlose Beratung inklusive
+              Mindestbestellwert: 10€ | Finale Preise nach technischer Prüfung
             </p>
             <Link
               to="/projekt-starten"
@@ -197,8 +195,8 @@ const Home = () => {
                 Warum 3D-WINDT?
               </h2>
               <p className="text-lg text-gray-600 mb-8">
-                Wir kombinieren modernste Technologie mit handwerklicher
-                Präzision und nachhaltigen Produktionsmethoden.
+                Unser Fokus liegt auf reproduzierbarer Qualität und
+                belastbaren Zusagen statt auf Billigpreis-Versprechen.
               </p>
               <ul className="space-y-4">
                 {benefits.map((benefit, index) => (
@@ -210,23 +208,34 @@ const Home = () => {
               </ul>
             </div>
             <div className="bg-gradient-to-br from-primary-50 to-primary-100 p-8 rounded-2xl">
-              <div className="text-center">
-                <div className="flex justify-center space-x-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="h-6 w-6 text-yellow-400 fill-current"
-                    />
-                  ))}
+              <div className="space-y-6">
+                <div className="bg-white p-4 rounded-lg border border-primary-100">
+                  <div className="font-semibold text-gray-900 mb-1">
+                    Angebotsklärung
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    Rückmeldung mit technischer Einordnung in der Regel innerhalb
+                    von 24 Stunden.
+                  </p>
                 </div>
-                <blockquote className="text-lg text-gray-700 mb-4">
-                  "Hervorragende Qualität und schnelle Lieferung. Die Beratung
-                  war sehr professionell und das Ergebnis übertraf unsere
-                  Erwartungen."
-                </blockquote>
-                <cite className="text-primary-600 font-medium">
-                  — Zufriedener Kunde
-                </cite>
+                <div className="bg-white p-4 rounded-lg border border-primary-100">
+                  <div className="font-semibold text-gray-900 mb-1">
+                    Prozesskontrolle
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    Material, Oberflächenanforderung und Einsatzbedingungen
+                    werden vor Produktionsstart abgestimmt.
+                  </p>
+                </div>
+                <div className="bg-white p-4 rounded-lg border border-primary-100">
+                  <div className="font-semibold text-gray-900 mb-1">
+                    Verlässliche Abwicklung
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    Klare Kommunikation zu Liefertermin und eventuellen Risiken,
+                    ohne Überraschungen im letzten Schritt.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -240,8 +249,8 @@ const Home = () => {
             Bereit für Ihr nächstes Projekt?
           </h2>
           <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
-            Starten Sie noch heute mit unserem einfachen Konfigurator und
-            erhalten Sie ein kostenloses Angebot.
+            Laden Sie Ihre Daten hoch und erhalten Sie ein strukturiertes
+            Angebot für Ihr Projekt.
           </p>
           <Link
             to="/projekt-starten"

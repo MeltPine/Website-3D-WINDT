@@ -16,7 +16,7 @@ const Datenschutz = () => {
             <div className="bg-primary-50 p-6 rounded-lg mb-6">
               <p className="text-gray-700">
                 Der Schutz Ihrer persönlichen Daten ist uns ein besonderes Anliegen. Wir verarbeiten 
-                Ihre Daten daher ausschließlich auf Grundlage der gesetzlichen Bestimmungen (DSGVO, TKG 2003). 
+                Ihre Daten daher ausschließlich auf Grundlage der gesetzlichen Bestimmungen (DSGVO, BDSG, TTDSG). 
                 In diesen Datenschutzinformationen informieren wir Sie über die wichtigsten Aspekte der 
                 Datenverarbeitung im Rahmen unserer Website.
               </p>
@@ -31,9 +31,9 @@ const Datenschutz = () => {
             </h2>
             <div className="bg-gray-50 p-6 rounded-lg">
               <div className="space-y-2">
-                <p className="font-semibold">3D Print Pro</p>
+                <p className="font-semibold">3D-WINDT</p>
                 <p>Sebastian Windt</p>
-                <p>Doktor-Weinholz_Straße</p>
+                <p>Doktor-Weinholz-Straße 23</p>
                 <p>63110 Rodgau</p>
                 <p>Deutschland</p>
                 <p className="mt-4">
@@ -237,7 +237,7 @@ const Datenschutz = () => {
                 kontaktieren Sie uns gerne:
               </p>
               <div className="space-y-2">
-                <p><strong>E-Mail:</strong> datenschutz@3d-windt.de</p>
+                <p><strong>E-Mail:</strong> support@3d-windt.de</p>
                 <p><strong>Telefon:</strong> +49 (0) 1512 5534623</p>
                 <p><strong>Post:</strong> 3D-WINDT, Doktor-Weinholz-Straße 23, 63110 Rodgau</p>
               </div>
@@ -247,7 +247,7 @@ const Datenschutz = () => {
           {/* Last Updated */}
           <section className="border-t border-gray-200 pt-6">
             <p className="text-sm text-gray-500">
-              <strong>Stand dieser Datenschutzerklärung:</strong> Januar 2025
+              <strong>Stand dieser Datenschutzerklärung:</strong> März 2026
             </p>
             <p className="text-sm text-gray-500 mt-2">
               Wir behalten uns vor, diese Datenschutzerklärung anzupassen, damit sie stets den aktuellen 
