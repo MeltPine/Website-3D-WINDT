@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { CloseIcon, MenuIcon } from './icons';
 import BrandLogo from './BrandLogo';
 
 const Header = () => {
@@ -57,7 +57,7 @@ const Header = () => {
             className="md:hidden p-2 rounded-md text-gray-700 hover:text-primary-600 hover:bg-gray-100 transition-colors"
             aria-label={isMenuOpen ? 'Menü schließen' : 'Menü öffnen'}
           >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isMenuOpen ? <CloseIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
           </button>
         </div>
 

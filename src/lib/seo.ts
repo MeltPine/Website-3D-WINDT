@@ -34,7 +34,7 @@ export const routeSeo: Record<string, RouteSeoConfig> = {
   '/': {
     title: `${BRAND.publicName} | Industrieller 3D-Druck Service für B2B`,
     description:
-      'Industrieller 3D-Druck Service für Ersatzteile, Prototypenfertigung und Vorrichtungen. Technisch geprüfte Rückmeldung in der Regel innerhalb von 24 Stunden.',
+      'Industrieller 3D-Druck Service für Maschinenbau, Produktion und Werkstätten: Ersatzteile, Prototypenfertigung und Vorrichtungen mit technischer Prüfung, klaren Lieferfenstern und Rückmeldung in der Regel innerhalb von 24 Stunden.',
     path: '/',
     schema: [
       organizationSchema,

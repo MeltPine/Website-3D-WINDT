@@ -1,16 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  ArrowRight,
-  Boxes,
-  CheckCircle,
-  Clock3,
-  Factory,
-  Phone,
-  Ruler,
-  UserCheck,
-  Wrench,
-} from 'lucide-react';
+  ArrowRightIcon,
+  BoxesIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  FactoryIcon,
+  PhoneIcon,
+  RulerIcon,
+  UserCheckIcon,
+  WrenchIcon,
+} from '../components/icons';
 import { BRAND, CONTACT } from '../lib/brand';
 
 const phoneHref = `tel:${CONTACT.phone.replace(/[^\d+]/g, '')}`;
@@ -20,25 +20,25 @@ const Home = () => {
     {
       title: 'Antwortzeit',
       description: `${CONTACT.responseTime} (werktags).`,
-      icon: <Clock3 className="h-5 w-5" />,
+      icon: <ClockIcon className="h-5 w-5" />,
     },
     {
       title: 'Typische Lieferfenster',
       description:
         'Lieferfenster werden je Bauteil und Stückzahl im Angebot transparent benannt. Express nur nach technischer Abstimmung.',
-      icon: <CheckCircle className="h-5 w-5" />,
+      icon: <CheckCircleIcon className="h-5 w-5" />,
     },
     {
       title: 'Technische Rückfragen',
       description:
         'Vor Fertigungsstart klären wir Geometrie, Material, Toleranz und Einsatzbedingungen mit Ihrem Team.',
-      icon: <Ruler className="h-5 w-5" />,
+      icon: <RulerIcon className="h-5 w-5" />,
     },
     {
       title: 'Direkter Ansprechpartner',
       description:
         'Sie erhalten eine feste Kontaktperson für Rückfragen bis zur Auslieferung.',
-      icon: <UserCheck className="h-5 w-5" />,
+      icon: <UserCheckIcon className="h-5 w-5" />,
     },
   ];
 
@@ -71,28 +71,28 @@ const Home = () => {
       description:
         'Wenn Teile ausfallen, zählen kurze Wege. Wir fertigen Ersatzteile schnell und belastbar nach.',
       href: '/ersatzteile-3d-drucken',
-      icon: <Wrench className="h-6 w-6" />,
+      icon: <WrenchIcon className="h-6 w-6" />,
     },
     {
       title: 'Prototypen 3D-Druck',
       description:
         'Für Entwicklungsteams, die Iterationen beschleunigen und Entscheidungen früher absichern wollen.',
       href: '/prototypen-3d-druck',
-      icon: <Ruler className="h-6 w-6" />,
+      icon: <RulerIcon className="h-6 w-6" />,
     },
     {
       title: 'Montagehilfen & Vorrichtungen',
       description:
         'Passgenaue Produktionshilfen für stabile Abläufe, weniger Fehler und höhere Effizienz.',
       href: '/montagehilfen-vorrichtungen',
-      icon: <Factory className="h-6 w-6" />,
+      icon: <FactoryIcon className="h-6 w-6" />,
     },
     {
       title: 'Kunststoffteile nachfertigen',
       description:
         'Nachfertigung abgekündigter oder schwer verfügbarer Bauteile für Maschinen und Anlagen.',
       href: '/kunststoffteile-nachfertigen',
-      icon: <Boxes className="h-6 w-6" />,
+      icon: <BoxesIcon className="h-6 w-6" />,
     },
   ];
 
@@ -156,6 +156,11 @@ const Home = () => {
             professionellen 3D-Druck-Dienstleistungen. Sie erhalten technisch geprüfte Aussagen
             statt Preisversprechen ohne Kontext.
           </p>
+          <p className="text-base text-gray-600 mb-10 max-w-4xl mx-auto leading-relaxed">
+            Von funktionskritischen Ersatzteilen über belastbare Prototypen bis zu Montagehilfen
+            erhalten Sie bei uns einen strukturierten Industrieprozess mit technischer Rückmeldung,
+            klarer Machbarkeitsprüfung und transparentem Lieferfenster.
+          </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
             <Link
@@ -163,7 +168,7 @@ const Home = () => {
               className="bg-primary-600 text-white px-6 py-4 rounded-lg font-medium hover:bg-primary-700 transition-colors inline-flex items-center justify-center gap-2"
             >
               Datei hochladen
-              <ArrowRight className="h-5 w-5" />
+              <ArrowRightIcon className="h-5 w-5" />
             </Link>
             <Link
               to="/kontakt"
@@ -175,14 +180,14 @@ const Home = () => {
               href={phoneHref}
               className="border border-gray-300 text-gray-700 px-6 py-4 rounded-lg font-medium hover:bg-white transition-colors inline-flex items-center justify-center gap-2"
             >
-              <Phone className="h-4 w-4" />
+              <PhoneIcon className="h-4 w-4" />
               Telefonisch klären
             </a>
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white cv-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-10">
             Belegbare Zusammenarbeit statt Werbeversprechen
@@ -204,7 +209,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50 cv-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-10">
             So läuft ein Industrieauftrag ab
@@ -223,7 +228,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white cv-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-10">
             Lösungen für typische Industrie-Anwendungen
@@ -241,7 +246,7 @@ const Home = () => {
                   className="text-primary-600 font-medium hover:text-primary-700 inline-flex items-center gap-2"
                 >
                   Zur Landingpage
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRightIcon className="h-4 w-4" />
                 </Link>
               </article>
             ))}
@@ -249,7 +254,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50 cv-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-4">
             Typische Fallmuster (anonymisiert)
@@ -276,7 +281,7 @@ const Home = () => {
                   className="mt-auto text-primary-600 font-medium hover:text-primary-700 inline-flex items-center gap-2"
                 >
                   Datei hochladen & technische Prüfung starten
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRightIcon className="h-4 w-4" />
                 </Link>
               </article>
             ))}
@@ -284,7 +289,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white cv-auto">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-10">
             Häufige Fragen aus dem Industrieumfeld
@@ -300,7 +305,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-primary-600">
+      <section className="py-16 bg-primary-600 cv-auto">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Technische Prüfung starten und Rückmeldung innerhalb von 24 Stunden erhalten
@@ -315,7 +320,7 @@ const Home = () => {
               className="bg-white text-primary-600 px-8 py-4 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
             >
               Datei hochladen & technische Prüfung starten
-              <ArrowRight className="h-5 w-5" />
+              <ArrowRightIcon className="h-5 w-5" />
             </Link>
             <Link
               to="/kontakt"

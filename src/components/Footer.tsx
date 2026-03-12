@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { MailIcon, MapPinIcon, PhoneIcon } from './icons';
 import { BRAND, BRAND_SIGNATURE, CONTACT } from '../lib/brand';
 import BrandLogo from './BrandLogo';
 
@@ -19,15 +19,15 @@ const Footer = () => {
             </p>
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <Mail className="h-4 w-4 text-primary-400" />
+                <MailIcon className="h-4 w-4 text-primary-400" />
                 <span className="text-gray-300">{CONTACT.email}</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Phone className="h-4 w-4 text-primary-400" />
+                <PhoneIcon className="h-4 w-4 text-primary-400" />
                 <span className="text-gray-300">{CONTACT.phone}</span>
               </div>
               <div className="flex items-center space-x-2">
-                <MapPin className="h-4 w-4 text-primary-400" />
+                <MapPinIcon className="h-4 w-4 text-primary-400" />
                 <span className="text-gray-300">{CONTACT.country}</span>
               </div>
             </div>
