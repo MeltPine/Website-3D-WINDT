@@ -12,6 +12,10 @@ const SITE_URL = 'https://3d-windt.de';
 const routes = [
   '/',
   '/leistungen',
+  '/ersatzteile-3d-drucken',
+  '/prototypen-3d-druck',
+  '/montagehilfen-vorrichtungen',
+  '/kunststoffteile-nachfertigen',
   '/projekt-starten',
   '/kontakt',
   '/ueber-uns',

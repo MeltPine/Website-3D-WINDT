@@ -9,6 +9,10 @@ import About from '../pages/About';
 import Contact from '../pages/Contact';
 import Impressum from '../pages/Impressum';
 import Datenschutz from '../pages/Datenschutz';
+import Ersatzteile3DDrucken from '../pages/Ersatzteile3DDrucken';
+import Prototypen3DDruck from '../pages/Prototypen3DDruck';
+import MontagehilfenVorrichtungen from '../pages/MontagehilfenVorrichtungen';
+import KunststoffteileNachfertigen from '../pages/KunststoffteileNachfertigen';
 
 const AppRoutes = () => {
   return (
@@ -20,6 +24,10 @@ const AppRoutes = () => {
       <Route path="/galerie" element={<Gallery />} />
       <Route path="/ueber-uns" element={<About />} />
       <Route path="/kontakt" element={<Contact />} />
+      <Route path="/ersatzteile-3d-drucken" element={<Ersatzteile3DDrucken />} />
+      <Route path="/prototypen-3d-druck" element={<Prototypen3DDruck />} />
+      <Route path="/montagehilfen-vorrichtungen" element={<MontagehilfenVorrichtungen />} />
+      <Route path="/kunststoffteile-nachfertigen" element={<KunststoffteileNachfertigen />} />
       <Route path="/impressum" element={<Impressum />} />
       <Route path="/datenschutz" element={<Datenschutz />} />
     </Routes>

@@ -56,9 +56,9 @@ const About = () => {
             Positionierung: Qualität + Verlässlichkeit
           </h2>
           <p className="text-lg text-gray-700 max-w-4xl">
-            Wir arbeiten bewusst nicht als Preisführer. Der Schwerpunkt liegt auf
+            Wir arbeiten mit klarem Qualitätsanspruch. Der Schwerpunkt liegt auf
             nachvollziehbarer Materialwahl, prozesssicherer Umsetzung und klarer
-            Kommunikation bei Termin und Ergebnis.
+            Kommunikation bei Termin, Funktion und Ergebnis.
           </p>
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
             {principles.map((item, index) => (
@@ -111,8 +111,8 @@ const About = () => {
         <section className="bg-primary-600 text-white rounded-2xl p-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Anfrage mit technischem Fokus</h2>
           <p className="text-primary-100 max-w-2xl mx-auto mb-6">
-            Wenn Sie ein belastbares Ergebnis statt reiner Preisoptimierung
-            suchen, starten Sie Ihre Projektanfrage direkt über den Konfigurator.
+            Wenn Sie ein belastbares Ergebnis und verlässliche Abwicklung suchen,
+            starten Sie Ihre Projektanfrage direkt über den Konfigurator.
           </p>
           <Link
             to="/projekt-starten"

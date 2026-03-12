@@ -32,9 +32,9 @@ const organizationSchema = {
 
 export const routeSeo: Record<string, RouteSeoConfig> = {
   '/': {
-    title: `${BRAND.publicName} | Industriequalität im 3D-Druck`,
+    title: `${BRAND.publicName} | Industrieller 3D-Druck Service für B2B`,
     description:
-      '3D-Druck in Industriequalität mit verlässlichen Lieferzeiten. Anfrage starten, Datei hochladen und zeitnah ein belastbares Angebot erhalten.',
+      'Industrieller 3D-Druck Service für Ersatzteile 3D-Druck, Prototypenfertigung und Vorrichtungen. Datei hochladen und Angebot innerhalb von 24 Stunden erhalten.',
     path: '/',
     schema: [
       organizationSchema,
@@ -47,9 +47,9 @@ export const routeSeo: Record<string, RouteSeoConfig> = {
     ],
   },
   '/leistungen': {
-    title: `Leistungen | 3D-Druck, CAD und 3D-Scan | ${BRAND.publicName}`,
+    title: `Leistungen | Industrieller 3D-Druck Service | ${BRAND.publicName}`,
     description:
-      'FDM-3D-Druck, CAD-Modellierung und 3D-Scan mit Fokus auf Prozesssicherheit, Materialqualität und verlässliche Abwicklung.',
+      '3D-Druck Service für Industriekunden: Ersatzteile 3D-Druck, Prototypenfertigung, CAD-Unterstützung und 3D-Scan für Maschinenbau und Produktion.',
     path: '/leistungen',
     schema: {
       '@context': 'https://schema.org',
@@ -61,6 +61,30 @@ export const routeSeo: Record<string, RouteSeoConfig> = {
       },
       areaServed: 'Deutschland',
     },
+  },
+  '/ersatzteile-3d-drucken': {
+    title: `Ersatzteile 3D-Druck | Industrieller 3D-Druck Service | ${BRAND.publicName}`,
+    description:
+      'Ersatzteile 3D-Druck für Maschinenbau, Produktion und Werkstätten. Industrieller 3D-Druck Service mit Angebot innerhalb von 24 Stunden.',
+    path: '/ersatzteile-3d-drucken',
+  },
+  '/prototypen-3d-druck': {
+    title: `Prototypenfertigung per 3D-Druck | ${BRAND.publicName}`,
+    description:
+      'Prototypenfertigung und schnelle Iterationen im industriellen 3D-Druck. 3D-Druck Service für Produktentwicklung mit technischer Rückmeldung.',
+    path: '/prototypen-3d-druck',
+  },
+  '/montagehilfen-vorrichtungen': {
+    title: `Montagehilfen und Vorrichtungen | Industrieller 3D-Druck`,
+    description:
+      'Montagehilfen und Vorrichtungen per 3D-Druck Service für stabile Produktionsprozesse, weniger Fehler und schnellere Umsetzung.',
+    path: '/montagehilfen-vorrichtungen',
+  },
+  '/kunststoffteile-nachfertigen': {
+    title: `Kunststoffteile nachfertigen | 3D-Druck Service ${BRAND.publicName}`,
+    description:
+      'Kunststoffteile nachfertigen für Maschinen und Anlagen. Industrieller 3D-Druck bei abgekündigten Bauteilen mit Angebot innerhalb von 24 Stunden.',
+    path: '/kunststoffteile-nachfertigen',
   },
   '/projekt-starten': {
     title: `Projekt Starten | Datei Hochladen & Angebot | ${BRAND.publicName}`,

@@ -1,18 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { Upload, FileText, Calculator, CheckCircle, AlertCircle, Send } from 'lucide-react';
+import { Upload, FileText, CheckCircle, AlertCircle, Send } from 'lucide-react';
 import { trackEvent } from '../lib/tracking';
-
-const PRICING_CONFIG = {
-  pricePerGram: 0.45,
-  cadHourlyRate: 60,
-  scanFlatRate: 30,
-  minimumOrder: 10,
-  expressMultiplier: 1.5,
-  finishingRates: {
-    basic: 5,
-    premium: 15,
-  },
-};
 
 type FinishingOption = 'none' | 'basic' | 'premium';
 
@@ -52,30 +40,6 @@ const ProjectStart = () => {
     }
     setHasTrackedStart(true);
     trackEvent('lead_form_started', { form: 'project' });
-  };
-
-  const calculatePrice = () => {
-    let total = 0;
-    const weightNum = parseFloat(weight);
-    if (weightNum > 0) {
-      total += weightNum * PRICING_CONFIG.pricePerGram;
-    }
-    if (needsCad) {
-      const hours = parseFloat(cadHours);
-      total += hours * PRICING_CONFIG.cadHourlyRate;
-    }
-    if (needsScan) {
-      total += PRICING_CONFIG.scanFlatRate;
-    }
-    if (finishing === 'basic') {
-      total += PRICING_CONFIG.finishingRates.basic;
-    } else if (finishing === 'premium') {
-      total += PRICING_CONFIG.finishingRates.premium;
-    }
-    if (expressDelivery) {
-      total *= PRICING_CONFIG.expressMultiplier;
-    }
-    return Math.max(total, PRICING_CONFIG.minimumOrder);
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -149,7 +113,7 @@ const ProjectStart = () => {
     const payload = new FormData(form);
     payload.delete('project_files');
     files.forEach((file) => payload.append('project_files', file));
-    payload.set('estimated_price', calculatePrice().toFixed(2));
+    payload.set('estimated_price', 'individuelles_angebot');
 
     try {
       const response = await fetch('/', {
@@ -229,7 +193,7 @@ const ProjectStart = () => {
           className="space-y-8"
         >
           <input type="hidden" name="form-name" value="project-request" />
-          <input type="hidden" name="estimated_price" value={calculatePrice().toFixed(2)} />
+          <input type="hidden" name="estimated_price" value="individuelles_angebot" />
           <p className="hidden">
             <label>
               Nicht ausfüllen: <input name="bot-field" />
@@ -250,6 +214,10 @@ const ProjectStart = () => {
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Dateien hochladen</h2>
             <p className="text-gray-600 mb-4">
               Unterstützte Formate: STL, OBJ, 3MF, SVG (max. {maxFileSizeMb}MB pro Datei)
+            </p>
+            <p className="text-sm text-gray-500 mb-4">
+              Laden Sie Ihre CAD-/STL-Datei hoch. Alternativ können Sie uns auch ein Musterteil
+              nach Absprache zusenden.
             </p>
             <button
               type="button"
@@ -332,6 +300,7 @@ const ProjectStart = () => {
                 <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-2">
                   Stückzahl *
                 </label>
+                <p className="text-xs text-gray-500 mb-2">Geplante Menge pro Abruf oder Auftrag.</p>
                 <input
                   type="number"
                   id="quantity"
@@ -367,6 +336,9 @@ const ProjectStart = () => {
                 >
                   Material / Anforderung *
                 </label>
+                <p className="text-xs text-gray-500 mb-2">
+                  Nennen Sie Materialwunsch und Einsatzbedingungen (z. B. Temperatur, UV, Last).
+                </p>
                 <input
                   type="text"
                   id="material_pref"
@@ -384,7 +356,7 @@ const ProjectStart = () => {
                   htmlFor="budget_band"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Budget (optional)
+                  Projektumfang (optional)
                 </label>
                 <select
                   id="budget_band"
@@ -395,10 +367,10 @@ const ProjectStart = () => {
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 >
                   <option value="">Keine Angabe</option>
-                  <option value="bis_200">Bis 200€</option>
-                  <option value="200_500">200€ - 500€</option>
-                  <option value="500_1500">500€ - 1.500€</option>
-                  <option value="1500_plus">Über 1.500€</option>
+                  <option value="klein">Kleiner Umfang</option>
+                  <option value="mittel">Mittlerer Umfang</option>
+                  <option value="gross">Größerer Umfang</option>
+                  <option value="serie">Serien-/Rahmenbedarf</option>
                 </select>
               </div>
               <div>
@@ -436,7 +408,7 @@ const ProjectStart = () => {
                     className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                   />
                   <label htmlFor="needs_cad" className="ml-3 text-sm font-medium text-gray-700">
-                    CAD-Unterstützung benötigt ({PRICING_CONFIG.cadHourlyRate}€/h)
+                    CAD-Unterstützung benötigt
                   </label>
                 </div>
 
@@ -470,7 +442,7 @@ const ProjectStart = () => {
                     className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                   />
                   <label htmlFor="needs_scan" className="ml-3 text-sm font-medium text-gray-700">
-                    3D-Scan benötigt ({PRICING_CONFIG.scanFlatRate}€ pauschal)
+                    3D-Scan benötigt
                   </label>
                 </div>
 
@@ -488,7 +460,7 @@ const ProjectStart = () => {
                     htmlFor="express_delivery"
                     className="ml-3 text-sm font-medium text-gray-700"
                   >
-                    Express-Lieferung (+50%)
+                    Express-Lieferung gewünscht
                   </label>
                 </div>
               </div>
@@ -524,9 +496,7 @@ const ProjectStart = () => {
                     className="h-4 w-4 text-primary-600"
                   />
                   <div>
-                    <div className="font-medium">
-                      Basic (+{PRICING_CONFIG.finishingRates.basic}€)
-                    </div>
+                    <div className="font-medium">Basic</div>
                     <div className="text-sm text-gray-500">Schleifen & Glätten</div>
                   </div>
                 </label>
@@ -542,9 +512,7 @@ const ProjectStart = () => {
                     className="h-4 w-4 text-primary-600"
                   />
                   <div>
-                    <div className="font-medium">
-                      Premium (+{PRICING_CONFIG.finishingRates.premium}€)
-                    </div>
+                    <div className="font-medium">Premium</div>
                     <div className="text-sm text-gray-500">Lackierung & Finish</div>
                   </div>
                 </label>
@@ -553,24 +521,11 @@ const ProjectStart = () => {
           </div>
 
           <div className="bg-primary-50 p-6 rounded-xl">
-            <div className="flex items-center space-x-3 mb-4">
-              <Calculator className="h-6 w-6 text-primary-600" />
-              <h2 className="text-lg font-semibold text-gray-900">Preisschätzung</h2>
-            </div>
-            <div className="text-3xl font-bold text-primary-600 mb-2">
-              {calculatePrice().toFixed(2)}€
-            </div>
-            <p className="text-sm text-gray-600">
-              Unverbindlicher Richtwert. Das finale Angebot erhalten Sie nach technischer Prüfung.
+            <h2 className="text-lg font-semibold text-gray-900 mb-2">Projektbewertung</h2>
+            <p className="text-gray-700">
+              Nach Eingang Ihrer Daten erhalten Sie innerhalb von 24 Stunden eine technische
+              Rückmeldung und ein individuelles Angebot.
             </p>
-            <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-              <div className="flex items-start space-x-2">
-                <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5" />
-                <div className="text-sm text-yellow-800">
-                  <strong>Mindestbestellwert:</strong> {PRICING_CONFIG.minimumOrder}€
-                </div>
-              </div>
-            </div>
           </div>
 
           <div className="bg-white p-6 rounded-xl border border-gray-200">
@@ -595,6 +550,9 @@ const ProjectStart = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email">
                   E-Mail *
                 </label>
+                <p className="text-xs text-gray-500 mb-1">
+                  An diese Adresse senden wir Ihre technische Rückmeldung und das Angebot.
+                </p>
                 <input
                   type="email"
                   id="email"
@@ -624,6 +582,9 @@ const ProjectStart = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="company">
                   Unternehmen
                 </label>
+                <p className="text-xs text-gray-500 mb-1">
+                  Optional: Für schnellere Zuordnung Ihrer Anfrage.
+                </p>
                 <input
                   type="text"
                   id="company"
@@ -682,7 +643,7 @@ const ProjectStart = () => {
               </span>
             </button>
             <p className="text-sm text-gray-500 mt-2">
-              Wir melden uns in der Regel innerhalb von 24 Stunden.
+              Sie erhalten in der Regel innerhalb von 24 Stunden eine Rückmeldung.
             </p>
           </div>
         </form>

@@ -1,252 +1,128 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Printer, PenTool, Scan as Scan3D, Package, Clock, Shield } from 'lucide-react';
+import { Printer, PenTool, Scan as Scan3D, Package, Clock, Shield, ArrowRight } from 'lucide-react';
 
 const Services = () => {
   const services = [
     {
       icon: <Printer className="h-8 w-8" />,
-      title: '3D-Druck',
-      price: '0,35€/g',
-      description: '3D-Druck mit Fokus auf reproduzierbare Qualität und technische Einsatzfähigkeit',
+      title: 'Industrieller 3D-Druck',
+      description:
+        'Fertigung von Funktionsbauteilen, Ersatzteilen und Kleinserien mit Fokus auf Einsatzfähigkeit, Wiederholbarkeit und technische Sauberkeit.',
       features: [
-        'Hochwertige Materialien: PLA, PETG, ABS, ASA',
-        'Weitere technische Materialien auf Anfrage',
-        'Präzise Schichtauflösung bis 0,1mm',
-        'Große Druckvolumen bis 300x300x400mm',
-        'Nachbearbeitung und Finishing',
-        'Qualitätskontrolle und Plausibilitätscheck vor Auslieferung'
+        'Material- und Einsatzprüfung vor Produktionsstart',
+        'Belastbare Bauteile für Werkstatt und Produktion',
+        'Einzelteil bis Kleinserie mit reproduzierbarer Qualität',
       ],
-      materials: [
-        { name: 'PLA', properties: 'Umweltfreundlich, einfach zu drucken' },
-        { name: 'PETG', properties: 'Stark, chemikalienbeständig' },
-        { name: 'ABS', properties: 'Hitzebeständig, schlagfest' },
-        { name: 'ASA', properties: 'UV-beständig, für Außenanwendungen' },
-      ]
     },
     {
       icon: <PenTool className="h-8 w-8" />,
-      title: 'CAD-Modellierung',
-      price: '60€/h',
-      description: 'CAD-Unterstützung für belastbare Druckergebnisse und saubere Fertigungsdaten',
+      title: 'CAD-Unterstützung',
+      description:
+        'Konstruktive Anpassung und Aufbereitung Ihrer Daten für stabile, druckgerechte Ergebnisse im industriellen Einsatz.',
       features: [
-        'Erstellung neuer 3D-Modelle',
-        'Anpassung bestehender Designs',
-        'Technische Zeichnungen',
-        'Reverse Engineering',
-        'Optimierung für 3D-Druck',
-        'Verschiedene Dateiformate'
+        'Anpassung bestehender CAD-Daten',
+        'Rekonstruktion von Bauteilen nach Muster',
+        'Optimierung für Funktion, Montage und Fertigung',
       ],
-      software: [
-        'Fusion 360',
-        'SolidWorks',
-        'Blender',
-        'KeyShot Rendering'
-      ]
     },
     {
       icon: <Scan3D className="h-8 w-8" />,
-      title: '3D-Scan Service',
-      price: '30€ pauschal',
-      description: 'Digitalisierung physischer Bauteile für Reproduktion, Anpassung und Weiterentwicklung',
+      title: '3D-Scan & Nachfertigung',
+      description:
+        'Digitalisierung physischer Teile als Basis für Nachfertigung, Ersatzteilversorgung und technische Weiterentwicklung.',
       features: [
-        'Hochauflösende 3D-Scans',
-        'Nachbearbeitung der Scan-Daten',
-        'Mesh-Optimierung',
-        'STL/OBJ Export',
-        'Reverse Engineering',
-        'Qualitätssicherung'
+        'Scan-basierte Datenerstellung für Bestandsbauteile',
+        'Nachfertigung abgekündigter Kunststoffteile',
+        'Schnelle technische Rückmeldung zum Machbarkeitsstatus',
       ],
-      specs: [
-        'Genauigkeit: ±0,1mm',
-        'Objektgröße: 5cm - 50cm',
-        'Verschiedene Oberflächentypen',
-        'Farberfassung möglich'
-      ]
-    }
+    },
   ];
 
   const additionalServices = [
     {
       icon: <Package className="h-6 w-6" />,
-      title: 'Express-Fertigung',
-      description: 'Schnellere Bearbeitung in 1-2 Werktagen',
-      note: 'Aufpreis nach Vereinbarung'
+      title: 'Express-Bearbeitung',
+      description: 'Priorisierte Projektbearbeitung bei kritischen Terminlagen.',
     },
     {
       icon: <Clock className="h-6 w-6" />,
       title: 'Nachbearbeitung',
-      description: 'Schleifen, Lackieren, Montage',
-      note: 'Individuelle Preisgestaltung'
+      description: 'Bauteilfinish, Anpassungen und montagegerechte Vorbereitung.',
     },
     {
       icon: <Shield className="h-6 w-6" />,
       title: 'Qualitätsprüfung',
-      description: 'Dimensionale Kontrolle und Dokumentation',
-      note: 'Bei kritischen Anwendungen'
-    }
+      description: 'Kontrolle relevanter Maße und technischer Anforderungen vor Auslieferung.',
+    },
   ];
 
   return (
     <div className="py-16 animate-fade-in">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Unsere Leistungen
-          </h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">3D-Druck Dienstleistungen für Industriekunden</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Durchgängige Leistungen von Anfrage, technischer Klärung und
-            Fertigung bis zur termingerechten Auslieferung.
+            Von der technischen Klärung bis zur Auslieferung: Wir unterstützen Produktion,
+            Instandhaltung und Entwicklung mit professionellem 3D-Druck Service.
           </p>
         </div>
 
-        {/* Main Services */}
-        <div className="space-y-16">
-          {services.map((service, index) => (
-            <div
-              key={index}
-              className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
-                index % 2 === 1 ? 'lg:grid-flow-col-dense' : ''
-              }`}
-            >
-              <div className={index % 2 === 1 ? 'lg:col-start-2' : ''}>
-                <div className="bg-primary-500 text-white p-4 rounded-xl w-fit mb-6">
-                  {service.icon}
-                </div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                  {service.title}
-                </h2>
-                <div className="text-2xl font-bold text-primary-600 mb-4">
-                  {service.price}
-                </div>
-                <p className="text-lg text-gray-600 mb-6">
-                  {service.description}
-                </p>
-                <ul className="space-y-3">
-                  {service.features.map((feature, fIndex) => (
-                    <li key={fIndex} className="flex items-start space-x-3">
-                      <div className="bg-primary-100 p-1 rounded-full mt-1">
-                        <div className="w-2 h-2 bg-primary-500 rounded-full"></div>
-                      </div>
-                      <span className="text-gray-700">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+          {services.map((service) => (
+            <article key={service.title} className="bg-white border border-gray-200 rounded-2xl p-8">
+              <div className="bg-primary-100 text-primary-700 p-3 rounded-lg w-fit mb-5">
+                {service.icon}
               </div>
-              
-              <div className={index % 2 === 1 ? 'lg:col-start-1' : ''}>
-                <div className="bg-gray-50 p-8 rounded-2xl">
-                  {service.materials && (
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                        Verfügbare Materialien
-                      </h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {service.materials.map((material, mIndex) => (
-                          <div key={mIndex} className="bg-white p-4 rounded-lg">
-                            <div className="font-semibold text-primary-600 mb-1">
-                              {material.name}
-                            </div>
-                            <div className="text-sm text-gray-600">
-                              {material.properties}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {service.software && (
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                        Verwendete Software
-                      </h3>
-                      <div className="grid grid-cols-2 gap-3">
-                        {service.software.map((software, sIndex) => (
-                          <div key={sIndex} className="bg-white p-3 rounded-lg text-center">
-                            <div className="font-medium text-gray-900">{software}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {service.specs && (
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                        Technische Spezifikationen
-                      </h3>
-                      <ul className="space-y-2">
-                        {service.specs.map((spec, sIndex) => (
-                          <li key={sIndex} className="flex items-center space-x-2">
-                            <div className="w-2 h-2 bg-primary-500 rounded-full"></div>
-                            <span className="text-gray-700">{spec}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-3">{service.title}</h2>
+              <p className="text-gray-700 mb-5">{service.description}</p>
+              <ul className="space-y-3">
+                {service.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-3 text-gray-700">
+                    <div className="w-2 h-2 bg-primary-500 rounded-full mt-2"></div>
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
           ))}
         </div>
 
-        {/* Additional Services */}
-        <div className="mt-20">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-            Zusätzliche Services
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {additionalServices.map((service, index) => (
-              <div
-                key={index}
-                className="bg-white border border-gray-200 p-6 rounded-xl hover:shadow-lg transition-shadow"
-              >
-                <div className="bg-primary-100 text-primary-600 p-3 rounded-lg w-fit mb-4">
-                  {service.icon}
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {service.title}
-                </h3>
-                <p className="text-gray-600 mb-3">
-                  {service.description}
-                </p>
-                <p className="text-sm text-primary-600 font-medium">
-                  {service.note}
-                </p>
-              </div>
+        <section className="bg-gray-50 border border-gray-200 rounded-2xl p-8 mb-16">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Ergänzende Leistungen</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {additionalServices.map((service) => (
+              <article key={service.title} className="bg-white rounded-xl p-5 border border-gray-200">
+                <div className="bg-primary-100 text-primary-700 p-2 rounded-lg w-fit mb-3">{service.icon}</div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{service.title}</h3>
+                <p className="text-gray-700">{service.description}</p>
+              </article>
             ))}
           </div>
-        </div>
+        </section>
 
-        {/* Pricing Note */}
-        <div className="mt-16 bg-primary-50 p-8 rounded-2xl text-center">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
-            Preishinweise
-          </h3>
-          <div className="text-gray-700 space-y-2 max-w-3xl mx-auto">
-            <p className="mb-4">
-              <strong>Mindestbestellwert:</strong> 10€
-            </p>
-            <p className="mb-4">
-              Alle Preise verstehen sich zzgl. Versandkosten. 
-              Kostenlose Lieferung ab 50€ Bestellwert innerhalb Deutschlands.
-            </p>
-            <p>
-              Individuelle Preise für Großprojekte und Serienfertigungen auf Anfrage.
-            </p>
-          </div>
-          <div className="mt-8">
+        <section className="bg-primary-600 rounded-2xl p-8 text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">Individuelles Angebot statt Pauschallösungen</h2>
+          <p className="text-primary-100 mb-6 max-w-3xl mx-auto">
+            Senden Sie uns Datei, Einsatzfall und Stückzahl. Sie erhalten innerhalb von 24 Stunden
+            eine qualifizierte Rückmeldung mit individuellem Angebot.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/projekt-starten"
-              className="bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors inline-block"
+              className="bg-white text-primary-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
             >
-              Projekt starten
+              Datei hochladen & Angebot erhalten
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+            <Link
+              to="/ersatzteile-3d-drucken"
+              className="border border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors"
+            >
+              Branchenlösungen ansehen
             </Link>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );

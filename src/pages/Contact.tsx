@@ -374,7 +374,7 @@ const Contact = () => {
                       htmlFor="budget_band"
                       className="block text-sm font-medium text-gray-700 mb-2"
                     >
-                      Budget (optional)
+                      Projektumfang (optional)
                     </label>
                     <select
                       id="budget_band"
@@ -385,10 +385,10 @@ const Contact = () => {
                       className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
                     >
                       <option value="">Keine Angabe</option>
-                      <option value="bis_200">Bis 200€</option>
-                      <option value="200_500">200€ - 500€</option>
-                      <option value="500_1500">500€ - 1.500€</option>
-                      <option value="1500_plus">Über 1.500€</option>
+                      <option value="klein">Kleiner Umfang</option>
+                      <option value="mittel">Mittlerer Umfang</option>
+                      <option value="gross">Größerer Umfang</option>
+                      <option value="serie">Serien-/Rahmenbedarf</option>
                     </select>
                   </div>
                 </div>
