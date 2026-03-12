@@ -38,6 +38,11 @@ Hinweis: `VITE_*` Variablen sind Build-Variablen und erfordern ein neues Deploy.
    - `Verhandlung`
    - `Gewonnen/Verloren`
 
+## KPI-Steuerung (woechentlich)
+- KPI-Definitionen und Wochenroutine: `docs/kpi-scorecard.md`
+- Direkt nutzbare Vorlage: `docs/kpi-weekly-scorecard.csv`
+- Ziel: Jede Woche die gleichen 6 Zahlen erfassen und datenbasiert entscheiden.
+
 ## Referenz-Pipeline (6 Wochen)
 - Nach jedem abgeschlossenen Auftrag einen anonymisierten Referenzdatensatz anlegen.
 - Pflichtinhalt je Datensatz:

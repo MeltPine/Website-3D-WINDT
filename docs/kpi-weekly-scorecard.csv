@@ -1,0 +1,2 @@
+week_start,week_end,lead_total,lead_qualified,lead_b2b,ga_form_started,ga_form_submitted,ga_form_error,submit_rate_pct,b2b_share_pct,avg_response_hours,offers_sent,deals_won,offer_rate_pct,close_rate_pct,notes
+2026-03-09,2026-03-15,0,0,0,0,0,0,=IF(F2=0,0,G2/F2),=IF(C2=0,0,E2/C2),0,0,0,=IF(D2=0,0,L2/D2),=IF(L2=0,0,M2/L2),
