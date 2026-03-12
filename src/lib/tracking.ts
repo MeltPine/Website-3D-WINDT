@@ -2,7 +2,7 @@ type TrackingPayload = Record<string, string | number | boolean | null | undefin
 
 declare global {
   interface Window {
-    dataLayer?: Array<Record<string, unknown>>;
+    dataLayer?: Array<unknown>;
     gtag?: (...args: unknown[]) => void;
   }
 }

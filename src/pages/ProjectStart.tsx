@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { Upload, FileText, CheckCircle, AlertCircle, Send } from 'lucide-react';
+import { Upload, FileText, AlertCircle, Send } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { trackEvent } from '../lib/tracking';
+import { triggerLeadFollowup } from '../lib/leadFollowup';
 
 type FinishingOption = 'none' | 'basic' | 'premium';
 
@@ -8,9 +10,10 @@ const acceptedFileTypes = ['.stl', '.obj', '.3mf', '.svg'];
 const maxFileSizeMb = 50;
 
 const ProjectStart = () => {
+  const navigate = useNavigate();
   const [files, setFiles] = useState<File[]>([]);
   const [uploadError, setUploadError] = useState('');
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
   const [submitError, setSubmitError] = useState('');
   const [hasTrackedStart, setHasTrackedStart] = useState(false);
 
@@ -129,10 +132,27 @@ const ProjectStart = () => {
         form: 'project',
         use_case: useCase,
       });
-      setStatus('success');
+
+      void triggerLeadFollowup({
+        form_name: 'project-request',
+        name,
+        email,
+        phone,
+        company,
+        use_case: useCase,
+        quantity,
+        deadline,
+        material_pref: materialPref,
+        budget_band: budgetBand,
+        message,
+        source_path: '/projekt-starten',
+        file_names: files.map((file) => file.name),
+      });
+
       form.reset();
       resetForm();
-      setStatus('success');
+      setStatus('idle');
+      navigate('/danke-projekt', { replace: true });
     } catch (error) {
       trackEvent('lead_form_error', {
         form: 'project',
@@ -144,34 +164,6 @@ const ProjectStart = () => {
       console.error(error);
     }
   };
-
-  if (status === 'success') {
-    return (
-      <div className="py-16 animate-fade-in">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="bg-green-50 p-8 rounded-2xl border border-green-200">
-            <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              Projektanfrage erfolgreich gesendet
-            </h1>
-            <p className="text-lg text-gray-600 mb-6">
-              Danke für Ihre Angaben. Wir melden uns mit einer qualifizierten
-              Rückmeldung in der Regel innerhalb von 24 Stunden.
-            </p>
-            <button
-              onClick={() => {
-                resetForm();
-                setStatus('idle');
-              }}
-              className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
-            >
-              Neue Anfrage starten
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="py-16 animate-fade-in">
@@ -194,6 +186,7 @@ const ProjectStart = () => {
         >
           <input type="hidden" name="form-name" value="project-request" />
           <input type="hidden" name="estimated_price" value="individuelles_angebot" />
+          <input type="hidden" name="source_path" value="/projekt-starten" />
           <p className="hidden">
             <label>
               Nicht ausfüllen: <input name="bot-field" />

@@ -110,6 +110,30 @@ export const routeSeo: Record<string, RouteSeoConfig> = {
       url: `${SITE_URL}/kontakt`,
     },
   },
+  '/danke-projekt': {
+    title: `Danke für Ihre Projektanfrage | ${BRAND.publicName}`,
+    description:
+      'Ihre Projektanfrage wurde erfolgreich übermittelt. Wir melden uns innerhalb von 24 Stunden mit technischer Rückmeldung und Angebot.',
+    path: '/danke-projekt',
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: `Danke Projektanfrage ${BRAND.publicName}`,
+      url: `${SITE_URL}/danke-projekt`,
+    },
+  },
+  '/danke-kontakt': {
+    title: `Danke für Ihre Kontaktanfrage | ${BRAND.publicName}`,
+    description:
+      'Ihre Kontaktanfrage wurde erfolgreich übermittelt. Wir melden uns innerhalb von 24 Stunden mit einer qualifizierten Rückmeldung.',
+    path: '/danke-kontakt',
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: `Danke Kontaktanfrage ${BRAND.publicName}`,
+      url: `${SITE_URL}/danke-kontakt`,
+    },
+  },
   '/ueber-uns': {
     title: `Über Uns | ${BRAND.publicName}`,
     description:

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import Header from './components/Header';
@@ -5,10 +6,19 @@ import Footer from './components/Footer';
 import Seo from './components/Seo';
 import AppRoutes from './components/AppRoutes';
 import { routeSeo } from './lib/seo';
+import { initAnalytics, trackPageView } from './lib/analytics';
 
 const AppContent = () => {
   const location = useLocation();
   const seoConfig = routeSeo[location.pathname] ?? routeSeo['/'];
+
+  useEffect(() => {
+    initAnalytics();
+  }, []);
+
+  useEffect(() => {
+    trackPageView(`${location.pathname}${location.search}`);
+  }, [location.pathname, location.search]);
 
   return (
     <div className="min-h-screen bg-white flex flex-col">

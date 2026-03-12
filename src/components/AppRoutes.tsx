@@ -13,6 +13,8 @@ import Ersatzteile3DDrucken from '../pages/Ersatzteile3DDrucken';
 import Prototypen3DDruck from '../pages/Prototypen3DDruck';
 import MontagehilfenVorrichtungen from '../pages/MontagehilfenVorrichtungen';
 import KunststoffteileNachfertigen from '../pages/KunststoffteileNachfertigen';
+import ThankYouProject from '../pages/ThankYouProject';
+import ThankYouContact from '../pages/ThankYouContact';
 
 const AppRoutes = () => {
   return (
@@ -30,6 +32,8 @@ const AppRoutes = () => {
       <Route path="/kunststoffteile-nachfertigen" element={<KunststoffteileNachfertigen />} />
       <Route path="/impressum" element={<Impressum />} />
       <Route path="/datenschutz" element={<Datenschutz />} />
+      <Route path="/danke-projekt" element={<ThankYouProject />} />
+      <Route path="/danke-kontakt" element={<ThankYouContact />} />
     </Routes>
   );
 };

@@ -1,7 +1,9 @@
 import React, { useRef, useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, AlertCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { trackEvent } from '../lib/tracking';
 import { BRAND, CONTACT } from '../lib/brand';
+import { triggerLeadFollowup } from '../lib/leadFollowup';
 
 type ContactFormData = {
   name: string;
@@ -30,8 +32,9 @@ const initialFormData: ContactFormData = {
 };
 
 const Contact = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<ContactFormData>(initialFormData);
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const hasTrackedStartRef = useRef(false);
 
@@ -75,10 +78,26 @@ const Contact = () => {
         use_case: formData.use_case,
       });
 
-      setStatus('success');
+      void triggerLeadFollowup({
+        form_name: 'contact-request',
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        company: formData.company,
+        use_case: formData.use_case,
+        quantity: formData.quantity,
+        deadline: formData.deadline,
+        material_pref: formData.material_pref,
+        budget_band: formData.budget_band,
+        message: formData.message,
+        source_path: '/kontakt',
+      });
+
       setFormData(initialFormData);
       hasTrackedStartRef.current = false;
       form.reset();
+      setStatus('idle');
+      navigate('/danke-kontakt', { replace: true });
     } catch (error) {
       trackEvent('lead_form_error', {
         form: 'contact',
@@ -90,31 +109,6 @@ const Contact = () => {
       console.error(error);
     }
   };
-
-  if (status === 'success') {
-    return (
-      <div className="py-16 animate-fade-in">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="bg-green-50 p-8 rounded-2xl border border-green-200">
-            <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              Anfrage erfolgreich gesendet
-            </h1>
-            <p className="text-lg text-gray-600 mb-6">
-              Vielen Dank. Wir melden uns mit einer qualifizierten Rückmeldung in der Regel
-              innerhalb von 24 Stunden.
-            </p>
-            <button
-              onClick={() => setStatus('idle')}
-              className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
-            >
-              Neue Anfrage senden
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="py-16 animate-fade-in">
@@ -201,6 +195,7 @@ const Contact = () => {
                 className="space-y-6"
               >
                 <input type="hidden" name="form-name" value="contact-request" />
+                <input type="hidden" name="source_path" value="/kontakt" />
                 <p className="hidden">
                   <label>
                     Nicht ausfüllen: <input name="bot-field" />
