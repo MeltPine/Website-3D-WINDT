@@ -12,7 +12,14 @@
   </head>
   <body>
     <!-- Netlify form detection -->
-    <form name="contact-request" netlify netlify-honeypot="bot-field" hidden>
+    <form
+      name="contact-request"
+      method="POST"
+      data-netlify="true"
+      data-netlify-honeypot="bot-field"
+      hidden
+    >
+      <input type="hidden" name="form-name" value="contact-request" />
       <input type="text" name="name" />
       <input type="email" name="email" />
       <input type="text" name="phone" />
@@ -29,11 +36,13 @@
     </form>
     <form
       name="project-request"
-      netlify
-      netlify-honeypot="bot-field"
+      method="POST"
+      data-netlify="true"
+      data-netlify-honeypot="bot-field"
       enctype="multipart/form-data"
       hidden
     >
+      <input type="hidden" name="form-name" value="project-request" />
       <input type="text" name="name" />
       <input type="email" name="email" />
       <input type="text" name="phone" />
