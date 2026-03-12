@@ -34,7 +34,7 @@ export const routeSeo: Record<string, RouteSeoConfig> = {
   '/': {
     title: `${BRAND.publicName} | Industrieller 3D-Druck Service für B2B`,
     description:
-      'Industrieller 3D-Druck Service für Ersatzteile 3D-Druck, Prototypenfertigung und Vorrichtungen. Datei hochladen und Angebot innerhalb von 24 Stunden erhalten.',
+      'Industrieller 3D-Druck Service für Ersatzteile, Prototypenfertigung und Vorrichtungen. Technisch geprüfte Rückmeldung in der Regel innerhalb von 24 Stunden.',
     path: '/',
     schema: [
       organizationSchema,
@@ -137,7 +137,7 @@ export const routeSeo: Record<string, RouteSeoConfig> = {
   '/ueber-uns': {
     title: `Über Uns | ${BRAND.publicName}`,
     description:
-      `Erfahren Sie mehr über den Qualitätsanspruch, die Arbeitsweise und die Projektbegleitung von ${BRAND.publicName}.`,
+      `Erfahren Sie mehr über Prozesssicherheit, industrielle Projektabwicklung und den Qualitätsanspruch von ${BRAND.publicName}.`,
     path: '/ueber-uns',
   },
   '/nachhaltigkeit': {
@@ -147,9 +147,9 @@ export const routeSeo: Record<string, RouteSeoConfig> = {
     path: '/nachhaltigkeit',
   },
   '/galerie': {
-    title: `Galerie | ${BRAND.publicName} Projekte`,
+    title: `Industrie-Anwendungen (anonymisiert) | ${BRAND.publicName}`,
     description:
-      'Einblicke in ausgewählte 3D-Druckprojekte aus Prototyping, Ersatzteilen und technischen Anwendungen.',
+      'Anonymisierte B2B-Anwendungsfälle aus Ersatzteilfertigung, Prototyping und Vorrichtungsbau mit technischem Fokus.',
     path: '/galerie',
   },
   '/impressum': {

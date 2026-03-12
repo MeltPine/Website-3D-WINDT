@@ -38,6 +38,17 @@ Hinweis: `VITE_*` Variablen sind Build-Variablen und erfordern ein neues Deploy.
    - `Verhandlung`
    - `Gewonnen/Verloren`
 
+## Referenz-Pipeline (6 Wochen)
+- Nach jedem abgeschlossenen Auftrag einen anonymisierten Referenzdatensatz anlegen.
+- Pflichtinhalt je Datensatz:
+  - 3 Bilder oder CAD-Screens
+  - 1 Problemsatz
+  - 1 Lösungssatz
+  - 1 Ergebnissatz mit messbarem Nutzen
+  - Freigabestatus: `anonymisiert` oder `public`
+- Ziel: 6 veröffentlichbare Industrie-Cases in 6 Wochen.
+- Detaillierte Vorlage: `docs/reference-pipeline.md`
+
 ## Test-Checkliste nach Deploy
 1. Formular auf `/projekt-starten` mit Testdaten absenden.
 2. Redirect auf `/danke-projekt` prüfen.
