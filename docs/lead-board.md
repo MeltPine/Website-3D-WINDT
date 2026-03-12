@@ -29,6 +29,5 @@ Datei: `docs/lead-board.csv`
 - `outcome`: `offen`, `gewonnen`, `verloren`
 - `owner`: wer den Lead aktiv bearbeitet
 
-## Start jetzt
-1. Demozeile in `docs/lead-board.csv` loeschen.
-2. Ab dem naechsten echten Lead jede Anfrage dort pflegen.
+## Sofortregel
+- Jeder neue Lead bekommt innerhalb von 24h eine erste Rueckmeldung.
