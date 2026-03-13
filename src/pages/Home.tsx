@@ -37,6 +37,13 @@ const Home = () => {
     },
   ];
 
+  const heroDifferentiators = [
+    'Technische Prüfung vor Produktionsstart',
+    'Lieferfenster je Auftrag transparent benannt',
+    'Material- und Toleranzabstimmung mit Ihrem Team',
+    'Vertraulicher Umgang mit CAD- und Projektdaten',
+  ];
+
   const proofFacts = [
     {
       title: 'Antwortzeit',
@@ -148,81 +155,123 @@ const Home = () => {
 
   return (
     <div className="animate-fade-in">
-      <section className="relative overflow-hidden py-20">
+      <section className="relative overflow-hidden py-14 md:py-20">
         <div className="absolute -top-44 left-0 h-96 w-96 rounded-full bg-primary-100/70 blur-3xl" />
-        <div className="absolute -right-12 top-8 h-72 w-72 rounded-full bg-primary-50 blur-3xl" />
+        <div className="absolute -right-16 top-10 h-80 w-80 rounded-full bg-primary-50 blur-3xl" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
-          <img
-            src="/logo/3dw-logo-full.webp"
-            alt="3DW Additive Manufacturing Logo"
-            width={700}
-            height={654}
-            className="h-36 md:h-44 w-auto mx-auto mb-6 reveal-up"
-            loading="eager"
-            decoding="async"
-          />
-          <h1 className="font-display text-4xl md:text-6xl font-bold text-gray-900 mb-6 reveal-up stagger-1">
-            3D-Druck für Industrie, Ersatzteile & Prototypen
-          </h1>
-          <p className="text-xl text-gray-700 mb-8 max-w-4xl mx-auto leading-relaxed reveal-up stagger-2">
-            {BRAND.publicName} unterstützt Maschinenbau, Produktion, Anlagenbau und Werkstätten mit
-            professionellen 3D-Druck-Dienstleistungen. Sie erhalten technisch geprüfte Aussagen
-            statt Preisversprechen ohne Kontext.
-          </p>
-          <p className="text-base text-gray-600 mb-10 max-w-4xl mx-auto leading-relaxed reveal-up stagger-3">
-            Von funktionskritischen Ersatzteilen über belastbare Prototypen bis zu Montagehilfen
-            erhalten Sie bei uns einen strukturierten Industrieprozess mit technischer Rückmeldung,
-            klarer Machbarkeitsprüfung und transparentem Lieferfenster.
-          </p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="grid gap-8 xl:gap-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:items-start">
+            <div className="text-left reveal-up">
+              <p className="inline-flex items-center rounded-full bg-primary-50 text-primary-800 ring-1 ring-primary-200 px-3 py-1 text-xs font-semibold tracking-wide uppercase">
+                Industrieller FDM-Service
+              </p>
+              <h1 className="mt-5 font-display text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                3D-Druck für Industrie, Ersatzteile und Prototypen
+              </h1>
+              <p className="mt-5 text-lg md:text-xl text-gray-700 max-w-3xl leading-relaxed">
+                {BRAND.publicName} unterstützt Maschinenbau, Produktion, Anlagenbau und Werkstätten
+                mit professionellen 3D-Druck-Dienstleistungen. Sie erhalten technisch geprüfte
+                Aussagen statt Preisversprechen ohne Kontext.
+              </p>
+              <p className="mt-4 text-base text-gray-600 max-w-3xl leading-relaxed">
+                Von funktionskritischen Ersatzteilen bis zu belastbaren Prototypen erhalten Sie
+                einen strukturierten Industrieprozess mit klarer Machbarkeitsprüfung und
+                transparentem Lieferfenster.
+              </p>
 
-          <div className="max-w-3xl mx-auto reveal-up stagger-4">
-            <Link
-              to="/projekt-starten/"
-              className="bg-primary-700 text-white px-6 py-4 rounded-lg font-medium hover:bg-primary-800 transition-colors inline-flex items-center justify-center gap-2 shadow-sm w-full sm:w-auto"
-            >
-              Datei hochladen & technische Prüfung starten
-              <ArrowRightIcon className="h-5 w-5" />
-            </Link>
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-sm">
-              <Link
-                to="/kontakt/"
-                className="text-primary-700 font-medium hover:text-primary-800 hover:underline underline-offset-4"
-              >
-                Rückruf anfragen
-              </Link>
-              <span className="text-gray-400" aria-hidden>
-                •
-              </span>
-              <a
-                href={phoneHref}
-                className="text-gray-700 hover:text-primary-700 inline-flex items-center justify-center gap-2"
-              >
-                <PhoneIcon className="h-4 w-4" />
-                Telefonisch klären
-              </a>
+              <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-3">
+                <Link
+                  to="/projekt-starten/"
+                  className="bg-primary-700 text-white px-6 py-4 rounded-lg font-semibold hover:bg-primary-800 transition-colors inline-flex items-center justify-center gap-2 shadow-sm w-full sm:w-auto whitespace-nowrap"
+                >
+                  Datei hochladen und technische Prüfung starten
+                  <ArrowRightIcon className="h-5 w-5" />
+                </Link>
+                <Link
+                  to="/kontakt/"
+                  className="border border-primary-300 text-primary-800 px-6 py-4 rounded-lg font-semibold hover:bg-primary-50 transition-colors inline-flex items-center justify-center w-full sm:w-auto whitespace-nowrap"
+                >
+                  Rückruf anfragen
+                </Link>
+              </div>
+
+              <div className="mt-4">
+                <a
+                  href={phoneHref}
+                  className="inline-flex items-center gap-2 text-sm text-gray-700 hover:text-primary-700"
+                >
+                  <PhoneIcon className="h-4 w-4" />
+                  Direkt telefonisch klären: {CONTACT.phone}
+                </a>
+              </div>
+
+              <ul className="mt-8 grid gap-3 sm:grid-cols-2">
+                {heroDifferentiators.map((item) => (
+                  <li
+                    key={item}
+                    className="glass-lite px-4 py-3 text-sm text-gray-700 inline-flex items-start gap-2"
+                  >
+                    <CheckCircleIcon className="h-4 w-4 text-primary-700 mt-0.5 shrink-0" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="space-y-4 reveal-up stagger-2">
+              <GlassSurface variant="hero" density="normal" className="p-5 md:p-6 text-left">
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="h-12 w-12 rounded-lg bg-white ring-1 ring-primary-200 p-1 shadow-sm">
+                    <img
+                      src="/logo/3dw-logo-mark.webp"
+                      alt="3DW Logo Mark"
+                      width={448}
+                      height={473}
+                      className="h-full w-full object-contain"
+                      loading="eager"
+                      decoding="async"
+                      fetchpriority="high"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-wide text-primary-700 font-semibold">
+                      Technischer Projektstart
+                    </p>
+                    <p className="text-sm text-gray-700">
+                      Belastbare Aussage statt Sofortpreis ohne Kontext.
+                    </p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 gap-3">
+                  {heroControlPanel.map((item) => (
+                    <article
+                      key={item.label}
+                      className="rounded-lg border border-primary-100/80 bg-white/70 p-4"
+                    >
+                      <p className="text-xs uppercase tracking-wide text-primary-700 font-semibold mb-1.5">
+                        {item.label}
+                      </p>
+                      <p className="text-sm text-gray-700 leading-relaxed">{item.value}</p>
+                    </article>
+                  ))}
+                </div>
+              </GlassSurface>
+
+              <GlassSurface variant="card" density="light" className="p-5 md:p-6 text-left">
+                <h2 className="font-display text-xl font-semibold text-gray-900 mb-3">
+                  Wann wir am besten passen
+                </h2>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li>Maschinenbau, Produktion, Anlagenbau und Werkstattumfeld</li>
+                  <li>Funktionsbauteile, Vorrichtungen und Prototypen mit klarer Anforderung</li>
+                  <li>Kunden mit Bedarf an technischer Prüfung statt Sofortpreis-Klick</li>
+                </ul>
+                <p className="text-xs text-gray-600 mt-4">
+                  Nicht passend: reine Hobbydrucke oder Preisvergleich ohne technische Angaben.
+                </p>
+              </GlassSurface>
             </div>
           </div>
-
-          <GlassSurface
-            variant="hero"
-            density="normal"
-            className="mt-10 p-5 md:p-6 max-w-5xl mx-auto text-left reveal-up"
-          >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {heroControlPanel.map((item) => (
-                <article
-                  key={item.label}
-                  className="rounded-lg border border-primary-100/80 bg-white/65 p-4"
-                >
-                  <p className="text-xs uppercase tracking-wide text-primary-700 font-semibold mb-2">
-                    {item.label}
-                  </p>
-                  <p className="text-sm text-gray-700 leading-relaxed">{item.value}</p>
-                </article>
-              ))}
-            </div>
-          </GlassSurface>
         </div>
       </section>
 
