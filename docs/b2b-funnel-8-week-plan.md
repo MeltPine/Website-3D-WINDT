@@ -35,6 +35,8 @@
 - Mini-Discovery fuer spaeteres Produkt in separatem Track fahren.
 - 10 wiederkehrende Kundenfragen sammeln und clustern.
 - Ein kleines MVP-Thema definieren (Problem + Zahlungsbereitschaft).
+- Sidecar-Umsetzung als separates Projekt unter `academy/` betreiben.
+- Launch-Checkliste fuer den separaten Track nutzen: `docs/academy-launch-checklist.md`.
 - Done-Kriterium: priorisierter MVP-Problemraum ohne Eingriff in Service-Funnel.
 
 ## Erfolgsmessung nach 8 Wochen

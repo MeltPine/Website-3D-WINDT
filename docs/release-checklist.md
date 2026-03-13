@@ -4,6 +4,7 @@
 - Keine spontanen UI-Brueche mehr.
 - Jeder Push laeuft durch denselben Qualitaetsprozess.
 - B2B-Conversion-Funnel bleibt technisch stabil.
+- Academy-Experimente laufen getrennt im Sidecar-Track `academy/`.
 
 ## Regeln pro Commit
 1. Nur ein Thema pro Commit (z. B. nur CTA-Text, nur Header-Fix, nur Formular-Hinweis).
