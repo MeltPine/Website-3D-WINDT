@@ -15,25 +15,31 @@ import MontagehilfenVorrichtungen from '../pages/MontagehilfenVorrichtungen';
 import KunststoffteileNachfertigen from '../pages/KunststoffteileNachfertigen';
 import ThankYouProject from '../pages/ThankYouProject';
 import ThankYouContact from '../pages/ThankYouContact';
+import Wissen from '../pages/Wissen';
+import WissenDetail from '../pages/WissenDetail';
+import NotFound from '../pages/NotFound';
 
 const AppRoutesServer = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/leistungen" element={<Services />} />
-      <Route path="/projekt-starten" element={<ProjectStart />} />
-      <Route path="/nachhaltigkeit" element={<Sustainability />} />
-      <Route path="/galerie" element={<Gallery />} />
-      <Route path="/ueber-uns" element={<About />} />
-      <Route path="/kontakt" element={<Contact />} />
-      <Route path="/ersatzteile-3d-drucken" element={<Ersatzteile3DDrucken />} />
-      <Route path="/prototypen-3d-druck" element={<Prototypen3DDruck />} />
-      <Route path="/montagehilfen-vorrichtungen" element={<MontagehilfenVorrichtungen />} />
-      <Route path="/kunststoffteile-nachfertigen" element={<KunststoffteileNachfertigen />} />
-      <Route path="/impressum" element={<Impressum />} />
-      <Route path="/datenschutz" element={<Datenschutz />} />
-      <Route path="/danke-projekt" element={<ThankYouProject />} />
-      <Route path="/danke-kontakt" element={<ThankYouContact />} />
+      <Route path="/leistungen/" element={<Services />} />
+      <Route path="/projekt-starten/" element={<ProjectStart />} />
+      <Route path="/nachhaltigkeit/" element={<Sustainability />} />
+      <Route path="/galerie/" element={<Gallery />} />
+      <Route path="/ueber-uns/" element={<About />} />
+      <Route path="/kontakt/" element={<Contact />} />
+      <Route path="/ersatzteile-3d-drucken/" element={<Ersatzteile3DDrucken />} />
+      <Route path="/prototypen-3d-druck/" element={<Prototypen3DDruck />} />
+      <Route path="/montagehilfen-vorrichtungen/" element={<MontagehilfenVorrichtungen />} />
+      <Route path="/kunststoffteile-nachfertigen/" element={<KunststoffteileNachfertigen />} />
+      <Route path="/impressum/" element={<Impressum />} />
+      <Route path="/datenschutz/" element={<Datenschutz />} />
+      <Route path="/danke-projekt/" element={<ThankYouProject />} />
+      <Route path="/danke-kontakt/" element={<ThankYouContact />} />
+      <Route path="/wissen/" element={<Wissen />} />
+      <Route path="/wissen/:slug/" element={<WissenDetail />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

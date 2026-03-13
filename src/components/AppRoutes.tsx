@@ -16,6 +16,9 @@ const MontagehilfenVorrichtungen = lazy(() => import('../pages/MontagehilfenVorr
 const KunststoffteileNachfertigen = lazy(() => import('../pages/KunststoffteileNachfertigen'));
 const ThankYouProject = lazy(() => import('../pages/ThankYouProject'));
 const ThankYouContact = lazy(() => import('../pages/ThankYouContact'));
+const Wissen = lazy(() => import('../pages/Wissen'));
+const WissenDetail = lazy(() => import('../pages/WissenDetail'));
+const NotFound = lazy(() => import('../pages/NotFound'));
 
 const routeFallback = (
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -29,20 +32,23 @@ const AppRoutes = () => {
     <Suspense fallback={routeFallback}>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/leistungen" element={<Services />} />
-        <Route path="/projekt-starten" element={<ProjectStart />} />
-        <Route path="/nachhaltigkeit" element={<Sustainability />} />
-        <Route path="/galerie" element={<Gallery />} />
-        <Route path="/ueber-uns" element={<About />} />
-        <Route path="/kontakt" element={<Contact />} />
-        <Route path="/ersatzteile-3d-drucken" element={<Ersatzteile3DDrucken />} />
-        <Route path="/prototypen-3d-druck" element={<Prototypen3DDruck />} />
-        <Route path="/montagehilfen-vorrichtungen" element={<MontagehilfenVorrichtungen />} />
-        <Route path="/kunststoffteile-nachfertigen" element={<KunststoffteileNachfertigen />} />
-        <Route path="/impressum" element={<Impressum />} />
-        <Route path="/datenschutz" element={<Datenschutz />} />
-        <Route path="/danke-projekt" element={<ThankYouProject />} />
-        <Route path="/danke-kontakt" element={<ThankYouContact />} />
+        <Route path="/leistungen/" element={<Services />} />
+        <Route path="/projekt-starten/" element={<ProjectStart />} />
+        <Route path="/nachhaltigkeit/" element={<Sustainability />} />
+        <Route path="/galerie/" element={<Gallery />} />
+        <Route path="/ueber-uns/" element={<About />} />
+        <Route path="/kontakt/" element={<Contact />} />
+        <Route path="/ersatzteile-3d-drucken/" element={<Ersatzteile3DDrucken />} />
+        <Route path="/prototypen-3d-druck/" element={<Prototypen3DDruck />} />
+        <Route path="/montagehilfen-vorrichtungen/" element={<MontagehilfenVorrichtungen />} />
+        <Route path="/kunststoffteile-nachfertigen/" element={<KunststoffteileNachfertigen />} />
+        <Route path="/impressum/" element={<Impressum />} />
+        <Route path="/datenschutz/" element={<Datenschutz />} />
+        <Route path="/danke-projekt/" element={<ThankYouProject />} />
+        <Route path="/danke-kontakt/" element={<ThankYouContact />} />
+        <Route path="/wissen/" element={<Wissen />} />
+        <Route path="/wissen/:slug/" element={<WissenDetail />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
   );

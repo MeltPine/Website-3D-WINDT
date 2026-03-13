@@ -5,10 +5,11 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import AppRoutesServer from './components/AppRoutesServer';
 import { routeSeo, type RouteSeoConfig } from './lib/seo';
+import { normalizePathname } from './lib/routes';
 
 function getSeoForPath(path: string): RouteSeoConfig {
-  const normalizedPath = path.endsWith('/') && path !== '/' ? path.slice(0, -1) : path;
-  return routeSeo[normalizedPath] ?? routeSeo['/'];
+  const normalizedPath = normalizePathname(path);
+  return routeSeo[normalizedPath] ?? routeSeo['/404'] ?? routeSeo['/'];
 }
 
 export function render(path: string): { appHtml: string; seo: RouteSeoConfig } {

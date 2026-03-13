@@ -7,18 +7,22 @@ import Seo from './components/Seo';
 import AppRoutes from './components/AppRoutes';
 import { routeSeo } from './lib/seo';
 import { initAnalytics, trackPageView } from './lib/analytics';
+import ConsentBanner from './components/ConsentBanner';
+import { normalizePathname, toTrailingSlashPath } from './lib/routes';
 
 const AppContent = () => {
   const location = useLocation();
-  const seoConfig = routeSeo[location.pathname] ?? routeSeo['/'];
+  const normalizedPath = normalizePathname(location.pathname);
+  const seoConfig = routeSeo[normalizedPath] ?? routeSeo['/404'] ?? routeSeo['/'];
 
   useEffect(() => {
     initAnalytics();
   }, []);
 
   useEffect(() => {
-    trackPageView(`${location.pathname}${location.search}`);
-  }, [location.pathname, location.search]);
+    const analyticsPath = `${toTrailingSlashPath(normalizedPath)}${location.search}`;
+    trackPageView(analyticsPath);
+  }, [normalizedPath, location.search]);
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -28,12 +32,14 @@ const AppContent = () => {
         path={seoConfig.path}
         schema={seoConfig.schema}
         ogType={seoConfig.ogType}
+        robots={seoConfig.robots}
       />
       <Header />
       <main className="flex-1">
         <AppRoutes />
       </main>
       <Footer />
+      <ConsentBanner />
     </div>
   );
 };

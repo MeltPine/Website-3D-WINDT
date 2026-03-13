@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Printer, PenTool, Scan as Scan3D, Package, Clock, Shield, ArrowRight } from 'lucide-react';
+import GlassSurface from '../components/GlassSurface';
 
 const Services = () => {
   const services = [
@@ -60,21 +61,31 @@ const Services = () => {
   return (
     <div className="py-16 animate-fade-in">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">3D-Druck Dienstleistungen für Industriekunden</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Von der technischen Klärung bis zur Auslieferung: Wir unterstützen Produktion,
-            Instandhaltung und Entwicklung mit professionellem 3D-Druck Service.
-          </p>
-        </div>
+        <section className="mb-14 reveal-up">
+          <GlassSurface variant="hero" density="normal" className="p-8 md:p-12 text-center">
+            <h1 className="font-display text-4xl font-bold text-gray-900 mb-4">
+              3D-Druck Dienstleistungen für Industriekunden
+            </h1>
+            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+              Von der technischen Klärung bis zur Auslieferung: Wir unterstützen Produktion,
+              Instandhaltung und Entwicklung mit professionellem 3D-Druck Service.
+            </p>
+          </GlassSurface>
+        </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
           {services.map((service) => (
-            <article key={service.title} className="bg-white border border-gray-200 rounded-2xl p-8">
-              <div className="bg-primary-100 text-primary-700 p-3 rounded-lg w-fit mb-5">
+            <GlassSurface
+              key={service.title}
+              as="article"
+              variant="card"
+              density="light"
+              className="p-8 reveal-up"
+            >
+              <div className="bg-primary-100 text-primary-700 p-3 rounded-lg w-fit mb-5 ring-1 ring-primary-200/80">
                 {service.icon}
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-3">{service.title}</h2>
+              <h2 className="font-display text-2xl font-semibold text-gray-900 mb-3">{service.title}</h2>
               <p className="text-gray-700 mb-5">{service.description}</p>
               <ul className="space-y-3">
                 {service.features.map((feature) => (
@@ -84,44 +95,62 @@ const Services = () => {
                   </li>
                 ))}
               </ul>
-            </article>
+            </GlassSurface>
           ))}
-        </div>
-
-        <section className="bg-gray-50 border border-gray-200 rounded-2xl p-8 mb-16">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Ergänzende Leistungen</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {additionalServices.map((service) => (
-              <article key={service.title} className="bg-white rounded-xl p-5 border border-gray-200">
-                <div className="bg-primary-100 text-primary-700 p-2 rounded-lg w-fit mb-3">{service.icon}</div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{service.title}</h3>
-                <p className="text-gray-700">{service.description}</p>
-              </article>
-            ))}
-          </div>
         </section>
 
-        <section className="bg-primary-600 rounded-2xl p-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">Individuelles Angebot statt Pauschallösungen</h2>
-          <p className="text-primary-100 mb-6 max-w-3xl mx-auto">
-            Senden Sie uns Datei, Einsatzfall und Stückzahl. Sie erhalten innerhalb von 24 Stunden
-            eine qualifizierte Rückmeldung mit individuellem Angebot.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/projekt-starten"
-              className="bg-white text-primary-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
-            >
-              Datei hochladen & Angebot erhalten
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-            <Link
-              to="/ersatzteile-3d-drucken"
-              className="border border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors"
-            >
-              Branchenlösungen ansehen
-            </Link>
-          </div>
+        <section className="mb-16 reveal-up">
+          <GlassSurface as="section" variant="card" density="light" className="p-8">
+            <h2 className="font-display text-2xl font-semibold text-gray-900 mb-6 text-center">
+              Ergänzende Leistungen
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {additionalServices.map((service) => (
+                <GlassSurface
+                  key={service.title}
+                  as="article"
+                  variant="card"
+                  density="light"
+                  className="p-5"
+                >
+                  <div className="bg-primary-100 text-primary-700 p-2 rounded-lg w-fit mb-3 ring-1 ring-primary-200/80">
+                    {service.icon}
+                  </div>
+                  <h3 className="font-display text-lg font-semibold text-gray-900 mb-2">
+                    {service.title}
+                  </h3>
+                  <p className="text-gray-700">{service.description}</p>
+                </GlassSurface>
+              ))}
+            </div>
+          </GlassSurface>
+        </section>
+
+        <section className="reveal-up">
+          <GlassSurface variant="cta" density="normal" className="p-8 text-center">
+            <h2 className="font-display text-3xl font-bold text-white mb-4">
+              Individuelles Angebot statt Pauschallösungen
+            </h2>
+            <p className="text-primary-50 mb-6 max-w-3xl mx-auto">
+              Senden Sie uns Datei, Einsatzfall und Stückzahl. Sie erhalten innerhalb von 24 Stunden
+              eine qualifizierte Rückmeldung mit individuellem Angebot.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/projekt-starten/"
+                className="bg-white text-primary-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
+              >
+                Datei hochladen & Angebot erhalten
+                <ArrowRight className="h-5 w-5" />
+              </Link>
+              <Link
+                to="/ersatzteile-3d-drucken/"
+                className="border border-white/80 text-white px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors"
+              >
+                Branchenlösungen ansehen
+              </Link>
+            </div>
+          </GlassSurface>
         </section>
       </div>
     </div>
