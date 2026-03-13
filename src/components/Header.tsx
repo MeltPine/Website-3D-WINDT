@@ -45,7 +45,7 @@ const Header = () => {
     <header className="sticky top-0 z-50 px-3 pt-3 sm:px-4">
       <div className="max-w-7xl mx-auto">
         <GlassSurface variant="nav" density="light" className="px-4 sm:px-6 lg:px-7">
-          <div className="hidden xl:flex items-center justify-between border-b border-primary-100/70 py-2 text-xs text-gray-600">
+          <div className="hidden 2xl:flex items-center justify-between border-b border-primary-100/70 py-2 text-xs text-gray-600">
             <p className="font-medium text-gray-700">
               Technische Rückmeldung in der Regel innerhalb von 24h (werktags)
             </p>
@@ -63,12 +63,12 @@ const Header = () => {
               <BrandLogo theme={resolvedTheme === 'dark' ? 'dark' : 'light'} size="sm" />
             </Link>
 
-            <nav className="hidden lg:flex min-w-0 flex-1 items-center justify-center gap-1 xl:gap-2">
+            <nav className="hidden xl:flex min-w-0 flex-1 items-center justify-center gap-1">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`whitespace-nowrap px-2.5 xl:px-3 py-2 rounded-md text-sm font-semibold transition-all duration-200 ${
+                  className={`shrink-0 whitespace-nowrap px-2.5 py-2 rounded-md text-sm font-semibold transition-all duration-200 ${
                     isActive(item.href)
                       ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-100 shadow-sm'
                       : 'text-gray-700 hover:bg-white/70 hover:text-primary-700'
@@ -80,11 +80,11 @@ const Header = () => {
               ))}
             </nav>
 
-            <div className="hidden lg:flex shrink-0">
+            <div className="hidden 2xl:flex shrink-0">
               <ThemeToggle compact />
             </div>
 
-            <div className="hidden xl:block shrink-0">
+            <div className="hidden 2xl:block shrink-0">
               <Link
                 to="/projekt-starten/"
                 className="inline-flex items-center justify-center whitespace-nowrap bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary-800 transition-colors shadow-sm ring-1 ring-primary-500/50"
@@ -95,7 +95,7 @@ const Header = () => {
 
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-2 rounded-md text-gray-700 hover:text-primary-600 hover:bg-white/80 transition-colors"
+              className="xl:hidden p-2 rounded-md text-gray-700 hover:text-primary-600 hover:bg-white/80 transition-colors"
               aria-label={isMenuOpen ? 'Menü schließen' : 'Menü öffnen'}
             >
               {isMenuOpen ? <CloseIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
@@ -103,7 +103,7 @@ const Header = () => {
           </div>
 
           {isMenuOpen && (
-            <div className="lg:hidden border-t border-primary-100/70 py-4 animate-fade-in">
+            <div className="xl:hidden border-t border-primary-100/70 py-4 animate-fade-in">
               <div className="mb-3">
                 <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-wide text-gray-500">
                   Darstellung

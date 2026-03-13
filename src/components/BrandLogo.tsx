@@ -24,7 +24,7 @@ const BrandLogo = ({
   const nameText = size === 'sm' ? 'text-lg' : 'text-xl';
 
   const nameColor = isDark ? 'text-white' : 'text-gray-900';
-  const metaColor = isDark ? 'text-gray-200' : 'text-gray-700';
+  const metaColor = isDark ? 'text-gray-100' : 'text-gray-700';
   const ringColor = isDark ? 'ring-white/25' : 'ring-primary-200';
   const markBackground = isDark ? 'bg-white/95' : 'bg-white';
 
