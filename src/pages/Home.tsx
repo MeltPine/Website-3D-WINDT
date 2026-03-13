@@ -160,6 +160,19 @@ const Home = () => {
         <div className="absolute -right-16 top-10 h-80 w-80 rounded-full bg-primary-50 blur-3xl" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="mb-8 md:mb-10 flex justify-center reveal-up">
+            <img
+              src="/logo/3dw-logo-full.webp"
+              alt="3DW Additive Manufacturing Logo"
+              width={700}
+              height={654}
+              className="h-36 md:h-44 w-auto"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+            />
+          </div>
+
           <div className="grid gap-8 xl:gap-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:items-start">
             <div className="text-left reveal-up">
               <p className="inline-flex items-center rounded-full bg-primary-50 text-primary-800 ring-1 ring-primary-200 px-3 py-1 text-xs font-semibold tracking-wide uppercase">
