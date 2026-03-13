@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Anonymisierte CAD-Detailansicht Montagehilfe</title>
+  <desc id="desc">Detailansicht einer Montagehilfe mit Positionier- und Anschlagflaechen.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc" />
+      <stop offset="1" stop-color="#e2e8f0" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#bg)" />
+  <g fill="none" stroke="#0f172a" stroke-width="2">
+    <rect x="180" y="160" width="840" height="380" rx="16" />
+    <path d="M260 450h680" />
+    <rect x="300" y="250" width="220" height="170" rx="10" />
+    <rect x="620" y="220" width="240" height="200" rx="10" />
+    <circle cx="410" cy="336" r="34" />
+    <circle cx="740" cy="320" r="40" />
+    <path d="M520 310h100" />
+    <path d="M860 280h90v120h-90" />
+    <path d="M300 220v-42h140" />
+  </g>
+  <text x="70" y="80" fill="#0f172a" font-size="34" font-family="Arial, sans-serif" font-weight="700">3D-WINDT | CAD-Detail (anonymisiert)</text>
+  <text x="70" y="124" fill="#334155" font-size="24" font-family="Arial, sans-serif">Montagehilfe - Positionierbereiche</text>
+</svg>

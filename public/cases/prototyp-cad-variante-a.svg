@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Anonymisierte CAD-Variante A Prototyp</title>
+  <desc id="desc">Variante A eines funktionsnahen Prototyps fuer fruehe Tests.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc" />
+      <stop offset="1" stop-color="#e2e8f0" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#bg)" />
+  <g fill="none" stroke="#0f172a" stroke-width="2">
+    <rect x="170" y="150" width="860" height="400" rx="18" />
+    <path d="M260 500h680" />
+    <path d="M260 240h260l80 120-80 120H260z" />
+    <path d="M620 240h220l100 120-100 120H620z" />
+    <circle cx="390" cy="360" r="44" />
+    <circle cx="760" cy="360" r="44" />
+    <path d="M520 360h100" stroke-dasharray="8 8" />
+    <path d="M390 240v-46h180" />
+    <path d="M760 240v-46h180" />
+  </g>
+  <text x="70" y="80" fill="#0f172a" font-size="34" font-family="Arial, sans-serif" font-weight="700">3D-WINDT | Prototyp-Variante A (anonymisiert)</text>
+  <text x="70" y="124" fill="#334155" font-size="24" font-family="Arial, sans-serif">Funktionspruefung - Geometrie A</text>
+</svg>

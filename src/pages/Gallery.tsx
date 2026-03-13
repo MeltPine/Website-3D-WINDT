@@ -21,8 +21,8 @@ const Gallery = () => {
             Industrie-Fallbeispiele (anonymisiert + freigegeben)
           </h1>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto">
-            Diese Galerie zeigt anonymisierte B2B-Anwendungsfaelle als Uebergangsloesung.
-            Freigegebene Kundenbilder werden schrittweise ergaenzt.
+            Diese Galerie zeigt anonymisierte B2B-Anwendungsfälle als Übergangslösung.
+            Freigegebene Kundenbilder werden schrittweise ergänzt.
           </p>
         </section>
 
@@ -37,17 +37,37 @@ const Gallery = () => {
           {industryCaseStudies.map((item) => {
             const Icon = iconByCategory[item.category];
             const isPublic = item.proofStatus === 'freigegeben';
+            const primaryAsset = item.assets[0];
+            const additionalAssets = item.assets.slice(1);
 
             return (
               <article key={item.id} className="bg-white border border-gray-200 rounded-xl p-6">
                 <div className="mb-5 overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
                   <img
-                    src={item.visualSrc}
-                    alt={item.visualAlt}
+                    src={primaryAsset.src}
+                    alt={primaryAsset.alt}
                     loading="lazy"
                     className="w-full h-48 object-cover"
                   />
                 </div>
+
+                {additionalAssets.length > 0 && (
+                  <div className="grid grid-cols-2 gap-3 mb-5">
+                    {additionalAssets.map((asset) => (
+                      <div
+                        key={asset.src}
+                        className="overflow-hidden rounded-lg border border-gray-200 bg-gray-100"
+                      >
+                        <img
+                          src={asset.src}
+                          alt={asset.alt}
+                          loading="lazy"
+                          className="w-full h-24 object-cover"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
 
                 <div className="flex items-start justify-between gap-4 mb-5">
                   <div className="flex items-center gap-3">
@@ -63,6 +83,10 @@ const Gallery = () => {
                   </div>
                 </div>
 
+                <p className="text-xs text-gray-500 mb-5">
+                  {item.assets.length} CAD-Sichten pro Case hinterlegt, bis freigegebene Kundenbilder vorliegen.
+                </p>
+
                 <dl className="space-y-3 mb-6">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                     <dt className="text-sm font-semibold text-gray-700">Anwendungsfall</dt>
@@ -77,7 +101,7 @@ const Gallery = () => {
                     <dd className="md:col-span-2 text-sm text-gray-700">{item.materialClass}</dd>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                    <dt className="text-sm font-semibold text-gray-700">Stueckzahlbereich</dt>
+                    <dt className="text-sm font-semibold text-gray-700">Stückzahlbereich</dt>
                     <dd className="md:col-span-2 text-sm text-gray-700">{item.quantityRange}</dd>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
@@ -94,7 +118,7 @@ const Gallery = () => {
                   to="/projekt-starten"
                   className="text-primary-600 font-medium hover:text-primary-700 inline-flex items-center gap-2"
                 >
-                  Datei hochladen & technische Pruefung starten
+                  Datei hochladen & technische Prüfung starten
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </article>
@@ -105,15 +129,15 @@ const Gallery = () => {
         <section className="mt-16 bg-primary-600 text-white rounded-xl p-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Ihr Anwendungsfall ist nicht dabei?</h2>
           <p className="text-primary-100 mb-6 max-w-3xl mx-auto">
-            Senden Sie Datei, Stueckzahl und Einsatzbedingungen. Sie erhalten eine technische
-            Einschaetzung und ein individuelles Angebot.
+            Senden Sie Datei, Stückzahl und Einsatzbedingungen. Sie erhalten eine technische
+            Einschätzung und ein individuelles Angebot.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/projekt-starten"
               className="bg-white text-primary-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
             >
-              Datei hochladen & technische Pruefung starten
+              Datei hochladen & technische Prüfung starten
               <ArrowRight className="h-4 w-4" />
             </Link>
             <a
@@ -121,7 +145,7 @@ const Gallery = () => {
               className="border border-white/70 text-white px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors inline-flex items-center justify-center gap-2"
             >
               <Phone className="h-4 w-4" />
-              Telefonische Rueckfrage
+              Telefonische Rückfrage
             </a>
           </div>
         </section>

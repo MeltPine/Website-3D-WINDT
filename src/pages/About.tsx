@@ -69,7 +69,7 @@ const About = () => {
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">{step.title}</h3>
                 <p className="text-gray-700 mb-3">{step.detail}</p>
                 <p className="text-xs font-semibold text-primary-700 bg-primary-50 inline-block px-2 py-1 rounded">
-                  SLA: {step.sla}
+                  Serviceziel: {step.sla}
                 </p>
               </article>
             ))}

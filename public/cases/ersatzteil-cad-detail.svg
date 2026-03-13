@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Anonymisierte CAD-Detailansicht Ersatzteil</title>
+  <desc id="desc">Detailzeichnung mit Fokus auf Passflaechen fuer ein Ersatzteil.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc" />
+      <stop offset="1" stop-color="#e2e8f0" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#bg)" />
+  <g fill="none" stroke="#0f172a" stroke-width="2">
+    <rect x="180" y="150" width="840" height="400" rx="18" />
+    <rect x="260" y="220" width="240" height="260" rx="16" />
+    <rect x="560" y="220" width="360" height="260" rx="16" />
+    <circle cx="380" cy="350" r="52" />
+    <circle cx="740" cy="350" r="72" />
+    <path d="M500 350h60" />
+    <path d="M560 350h108" stroke-dasharray="8 8" />
+    <path d="M668 350h72" />
+    <path d="M320 220v-52h180" />
+    <path d="M740 566v-44h182" />
+  </g>
+  <text x="70" y="80" fill="#0f172a" font-size="34" font-family="Arial, sans-serif" font-weight="700">3D-WINDT | CAD-Detail (anonymisiert)</text>
+  <text x="70" y="124" fill="#334155" font-size="24" font-family="Arial, sans-serif">Ersatzteil fuer Sonderanlage - Passflaechen</text>
+</svg>
