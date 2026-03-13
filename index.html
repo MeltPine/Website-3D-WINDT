@@ -12,6 +12,26 @@
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0d9488" />
+    <script>
+      (() => {
+        const root = document.documentElement;
+        root.classList.remove('dark');
+        root.dataset.themeMode = 'light';
+        root.dataset.resolvedTheme = 'light';
+        root.style.colorScheme = 'light';
+
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor instanceof HTMLMetaElement) {
+          metaThemeColor.setAttribute('content', '#0d9488');
+        }
+
+        try {
+          window.localStorage.setItem('3dw-theme-mode', 'light');
+        } catch {
+          // Ignore localStorage write errors.
+        }
+      })();
+    </script>
     <meta
       name="description"
       content="Industrieller 3D-Druck Service für Maschinenbau, Produktion und Werkstätten: Ersatzteile, Prototypen und Vorrichtungen mit technischer Prüfung, klaren Lieferfenstern und qualifizierter Rückmeldung in der Regel innerhalb von 24 Stunden."

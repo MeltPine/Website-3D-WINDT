@@ -24,14 +24,14 @@ const BrandLogo = ({
   const nameText = size === 'sm' ? 'text-lg' : 'text-xl';
 
   const nameColor = isDark ? 'text-white' : 'text-gray-900';
-  const metaColor = isDark ? 'text-gray-300' : 'text-gray-600';
+  const metaColor = isDark ? 'text-gray-200' : 'text-gray-700';
   const ringColor = isDark ? 'ring-white/25' : 'ring-primary-200';
   const markBackground = isDark ? 'bg-white/95' : 'bg-white';
 
   return (
     <div className={`flex items-center gap-3 ${className}`.trim()}>
       <div
-        className={`relative ${markSize} ${markPadding} rounded-xl ${markBackground} shadow-sm ring-1 ${ringColor}`}
+        className={`theme-preserve-white relative ${markSize} ${markPadding} rounded-xl ${markBackground} shadow-sm ring-1 ${ringColor}`}
         aria-hidden="true"
       >
         <img

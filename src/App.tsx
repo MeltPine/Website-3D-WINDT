@@ -20,12 +20,23 @@ const AppContent = () => {
   }, []);
 
   useEffect(() => {
+    if (typeof document === 'undefined') {
+      return;
+    }
+    const root = document.documentElement;
+    root.classList.remove('dark');
+    root.dataset.themeMode = 'light';
+    root.dataset.resolvedTheme = 'light';
+    root.style.colorScheme = 'light';
+  }, []);
+
+  useEffect(() => {
     const analyticsPath = `${toTrailingSlashPath(normalizedPath)}${location.search}`;
     trackPageView(analyticsPath);
   }, [normalizedPath, location.search]);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="app-shell min-h-screen flex flex-col">
       <Seo
         title={seoConfig.title}
         description={seoConfig.description}
