@@ -491,7 +491,7 @@ const Home = () => {
               <Link
                 to="/projekt-starten/"
                 onClick={() => trackHomeCta('final_cta', 'project_start')}
-                className="bg-primary-700/90 border border-primary-300/40 text-white px-8 py-4 rounded-lg font-medium hover:bg-primary-700 transition-colors inline-flex items-center justify-center gap-2 shadow-sm"
+                className="bg-primary-800/65 border border-primary-200/45 text-primary-50 px-8 py-4 rounded-lg font-medium hover:bg-primary-800/80 transition-colors inline-flex items-center justify-center gap-2 shadow-sm"
               >
                 Datei hochladen & technische Prüfung starten
                 <ArrowRightIcon className="h-5 w-5" />
@@ -499,7 +499,7 @@ const Home = () => {
               <Link
                 to="/kontakt/"
                 onClick={() => trackHomeCta('final_cta', 'callback')}
-                className="border border-white/75 text-white px-8 py-4 rounded-lg font-medium hover:bg-white/10 transition-colors inline-flex items-center justify-center"
+                className="bg-primary-900/25 border border-primary-200/40 text-primary-50 px-8 py-4 rounded-lg font-medium hover:bg-primary-900/40 transition-colors inline-flex items-center justify-center"
               >
                 Rückruf anfragen
               </Link>
