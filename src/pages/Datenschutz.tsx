@@ -78,6 +78,40 @@ const Datenschutz = () => {
                   Browserinformationen), um Betrieb und Sicherheit der Website zu gewährleisten.
                 </p>
               </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Analyse und Reichweitenmessung (GA4)
+                </h3>
+                <p>
+                  Sofern Sie zustimmen, nutzen wir Google Analytics 4 (GA4), um Seitenaufrufe und
+                  Formularprozesse auszuwerten. Ohne Einwilligung bleibt Analytics deaktiviert.
+                </p>
+                <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mt-3 text-sm text-blue-800">
+                  <p>
+                    <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. a DSGVO (Einwilligung)
+                    <br />
+                    <strong>Widerruf:</strong> jederzeit ueber Cookie-Einstellungen im Footer
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center space-x-2">
+              <Database className="h-6 w-6 text-primary-600" />
+              <span>Empfaenger und Auftragsverarbeiter</span>
+            </h2>
+            <div className="space-y-4 text-gray-700">
+              <p>
+                Wir arbeiten mit technisch erforderlichen Dienstleistern zusammen, insbesondere:
+              </p>
+              <ul className="list-disc list-inside space-y-1">
+                <li>Netlify (Hosting, Form-Verarbeitung, technische Logs)</li>
+                <li>Resend (Versand von Eingangs- und Alert-E-Mails)</li>
+                <li>Google (GA4, nur nach Einwilligung)</li>
+              </ul>
             </div>
           </section>
 
@@ -87,8 +121,19 @@ const Datenschutz = () => {
               <span>Speicherdauer</span>
             </h2>
             <div className="space-y-3 text-gray-700">
-              <p>Wir speichern personenbezogene Daten nur so lange, wie es für den jeweiligen Zweck erforderlich ist oder gesetzliche Aufbewahrungspflichten bestehen.</p>
-              <p>Anfrage- und Projektdaten werden nach Abschluss der Bearbeitung regelmäßig überprüft und nicht mehr benötigte Daten gelöscht.</p>
+              <p>
+                Wir speichern personenbezogene Daten nur so lange, wie es fuer den jeweiligen Zweck
+                erforderlich ist oder gesetzliche Aufbewahrungspflichten bestehen.
+              </p>
+              <ul className="list-disc list-inside space-y-1">
+                <li>Projekt- und Kontaktdaten: in der Regel bis zu 24 Monate nach Abschluss</li>
+                <li>Technische Server-Logs: in der Regel bis zu 30 Tage</li>
+                <li>Analytics-Daten (GA4): gemaess Google-Konfiguration, nur nach Einwilligung</li>
+              </ul>
+              <p>
+                Anfrage- und Projektdaten werden regelmaessig ueberprueft und bei Wegfall des
+                Verarbeitungszwecks geloescht.
+              </p>
             </div>
           </section>
 

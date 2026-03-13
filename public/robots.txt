@@ -4,4 +4,3 @@ Allow: /
 Host: 3d-windt.de
 Sitemap: https://3d-windt.de/sitemap.xml
 Sitemap: https://3d-windt.de/sitemap_index.xml
-Sitemap: https://www.3d-windt.de/sitemap.xml

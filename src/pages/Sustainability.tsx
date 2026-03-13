@@ -279,13 +279,13 @@ const Sustainability = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="/projekt-starten"
+              href="/projekt-starten/"
               className="bg-white text-primary-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors"
             >
               Nachhaltiges Projekt starten
             </a>
             <a
-              href="/kontakt"
+              href="/kontakt/"
               className="border border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors"
             >
               Mehr erfahren

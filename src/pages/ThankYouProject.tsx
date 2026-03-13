@@ -25,7 +25,7 @@ const ThankYouProject = () => {
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
-              to="/projekt-starten"
+              to="/projekt-starten/"
               className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors inline-flex items-center justify-center gap-2"
             >
               Weitere Anfrage starten <ArrowRight className="h-4 w-4" />

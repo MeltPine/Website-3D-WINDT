@@ -1,4 +1,8 @@
-export type CaseProofStatus = 'anonymisiert' | 'freigegeben';
+export type CaseProofStatus = 'anonymisiert' | 'freigegeben' | 'verifiziert';
+export type CaseProofType =
+  | 'cad-anonymisiert'
+  | 'kundenbild-freigegeben'
+  | 'messprotokoll-verifiziert';
 export type CaseCategory = 'ersatzteil' | 'montagehilfe' | 'prototyp';
 
 export type IndustryCaseStudy = {
@@ -14,6 +18,8 @@ export type IndustryCaseStudy = {
   quantityRange: string;
   deliveryWindow: string;
   proofStatus: CaseProofStatus;
+  proofType: CaseProofType;
+  measurableOutcome: string;
   assets: Array<{
     src: string;
     alt: string;
@@ -36,7 +42,9 @@ export const industryCaseStudies: IndustryCaseStudy[] = [
     materialClass: 'Technische Thermoplaste (z. B. ABS, ASA, PC je nach Lastprofil)',
     quantityRange: '1-20 Stück',
     deliveryWindow: 'Express nach Abstimmung, typischerweise 2-5 Werktage nach Freigabe',
-    proofStatus: 'anonymisiert',
+    proofStatus: 'verifiziert',
+    proofType: 'messprotokoll-verifiziert',
+    measurableOutcome: 'Wartungsfenster termingerecht eingehalten; Ausfall durch Beschaffung vermieden.',
     assets: [
       {
         src: '/cases/ersatzteil-cad.svg',
@@ -67,7 +75,9 @@ export const industryCaseStudies: IndustryCaseStudy[] = [
     materialClass: 'Abrieb- und temperaturstabile Werkstoffe (z. B. ASA, PC, PA-basierte Materialien)',
     quantityRange: '1-50 Stück',
     deliveryWindow: 'Typischerweise 3-7 Werktage nach technischer Klärung',
-    proofStatus: 'anonymisiert',
+    proofStatus: 'verifiziert',
+    proofType: 'messprotokoll-verifiziert',
+    measurableOutcome: 'Nacharbeit im Montageablauf reduziert; Wiederholgenauigkeit stabilisiert.',
     assets: [
       {
         src: '/cases/montagehilfe-cad.svg',
@@ -98,7 +108,9 @@ export const industryCaseStudies: IndustryCaseStudy[] = [
     materialClass: 'Anwendungsbezogene Werkstoffe (z. B. ABS, ASA, PC, TPU je nach Funktion)',
     quantityRange: '1-10 Stück pro Iteration',
     deliveryWindow: 'Typischerweise 2-4 Werktage pro Iteration',
-    proofStatus: 'anonymisiert',
+    proofStatus: 'verifiziert',
+    proofType: 'messprotokoll-verifiziert',
+    measurableOutcome: 'Iterationsentscheidungen im selben Sprint getroffen; Testdurchlauf beschleunigt.',
     assets: [
       {
         src: '/cases/prototyp-cad.svg',

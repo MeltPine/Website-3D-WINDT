@@ -1,8 +1,11 @@
+import { hasAnalyticsConsent, subscribeAnalyticsConsent } from './consent';
+
 const GA_MEASUREMENT_ID = (import.meta.env.VITE_GA_MEASUREMENT_ID ?? '').trim();
 
 const ANALYTICS_DELAY_MS = 2500;
 let initialized = false;
 let pendingPagePath: string | null = null;
+let hasAttachedConsentListener = false;
 
 declare global {
   interface Window {
@@ -46,7 +49,7 @@ function flushPendingPageView(): void {
 }
 
 function bootstrapAnalytics(): void {
-  if (initialized || typeof window === 'undefined' || !GA_MEASUREMENT_ID) {
+  if (initialized || typeof window === 'undefined' || !GA_MEASUREMENT_ID || !hasAnalyticsConsent()) {
     return;
   }
 
@@ -65,6 +68,19 @@ function bootstrapAnalytics(): void {
   });
 
   flushPendingPageView();
+}
+
+function ensureConsentListener(): void {
+  if (hasAttachedConsentListener || typeof window === 'undefined') {
+    return;
+  }
+
+  hasAttachedConsentListener = true;
+  subscribeAnalyticsConsent((state) => {
+    if (state === 'granted') {
+      bootstrapAnalytics();
+    }
+  });
 }
 
 function scheduleBootstrap(): void {
@@ -87,6 +103,11 @@ export function initAnalytics(): void {
     return;
   }
 
+  ensureConsentListener();
+  if (!hasAnalyticsConsent()) {
+    return;
+  }
+
   // If GA is already present in static HTML snippet, use it directly.
   if (typeof window.gtag === 'function') {
     initialized = true;
@@ -106,6 +127,11 @@ export function initAnalytics(): void {
 
 export function trackPageView(path: string): void {
   if (typeof window === 'undefined' || !GA_MEASUREMENT_ID) {
+    return;
+  }
+
+  if (!hasAnalyticsConsent()) {
+    pendingPagePath = path;
     return;
   }
 

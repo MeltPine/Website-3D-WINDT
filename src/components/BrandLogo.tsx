@@ -37,6 +37,8 @@ const BrandLogo = ({
         <img
           src="/logo/3dw-logo-mark.webp"
           alt={`${BRAND.publicName} Logo`}
+          width={448}
+          height={473}
           className="h-full w-full object-contain"
           decoding="async"
         />

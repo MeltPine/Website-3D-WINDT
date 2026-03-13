@@ -7,6 +7,7 @@ interface SeoProps {
   path: string;
   ogType?: 'website' | 'article';
   schema?: SeoSchema;
+  robots?: 'index,follow' | 'noindex,nofollow';
 }
 
 function upsertMetaByName(name: string, content: string): void {
@@ -45,6 +46,7 @@ export default function Seo({
   path,
   ogType = 'website',
   schema,
+  robots = 'index,follow',
 }: SeoProps): null {
   useEffect(() => {
     const canonicalUrl = new URL(path, SITE_URL).toString();
@@ -58,6 +60,7 @@ export default function Seo({
     upsertMetaByName('twitter:card', 'summary');
     upsertMetaByName('twitter:title', title);
     upsertMetaByName('twitter:description', description);
+    upsertMetaByName('robots', robots);
     upsertCanonical(canonicalUrl);
 
     const existingSchema = document.getElementById('seo-json-ld');
@@ -72,7 +75,7 @@ export default function Seo({
       script.textContent = JSON.stringify(schema);
       document.head.appendChild(script);
     }
-  }, [title, description, path, ogType, schema]);
+  }, [title, description, path, ogType, schema, robots]);
 
   return null;
 }
