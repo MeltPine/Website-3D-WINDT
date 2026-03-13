@@ -5,6 +5,13 @@ import { BRAND, BRAND_SIGNATURE, CONTACT } from '../lib/brand';
 import BrandLogo from './BrandLogo';
 
 const Footer = () => {
+  const openConsentSettings = () => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    window.dispatchEvent(new Event('open-consent-settings'));
+  };
+
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -37,28 +44,33 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Schnellzugriff</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/projekt-starten" className="text-gray-300 hover:text-primary-400 transition-colors">
+                <Link to="/projekt-starten/" className="text-gray-300 hover:text-primary-400 transition-colors">
                   Projekt starten
                 </Link>
               </li>
               <li>
-                <Link to="/leistungen" className="text-gray-300 hover:text-primary-400 transition-colors">
+                <Link to="/leistungen/" className="text-gray-300 hover:text-primary-400 transition-colors">
                   Leistungen
                 </Link>
               </li>
               <li>
-                <Link to="/kontakt" className="text-gray-300 hover:text-primary-400 transition-colors">
+                <Link to="/kontakt/" className="text-gray-300 hover:text-primary-400 transition-colors">
                   Kontakt
                 </Link>
               </li>
               <li>
-                <Link to="/galerie" className="text-gray-300 hover:text-primary-400 transition-colors">
+                <Link to="/galerie/" className="text-gray-300 hover:text-primary-400 transition-colors">
                   Galerie
                 </Link>
               </li>
               <li>
-                <Link to="/ueber-uns" className="text-gray-300 hover:text-primary-400 transition-colors">
+                <Link to="/ueber-uns/" className="text-gray-300 hover:text-primary-400 transition-colors">
                   Über uns
+                </Link>
+              </li>
+              <li>
+                <Link to="/wissen/" className="text-gray-300 hover:text-primary-400 transition-colors">
+                  Wissen
                 </Link>
               </li>
             </ul>
@@ -68,19 +80,28 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Rechtliches</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/impressum" className="text-gray-300 hover:text-primary-400 transition-colors">
+                <Link to="/impressum/" className="text-gray-300 hover:text-primary-400 transition-colors">
                   Impressum
                 </Link>
               </li>
               <li>
-                <Link to="/datenschutz" className="text-gray-300 hover:text-primary-400 transition-colors">
+                <Link to="/datenschutz/" className="text-gray-300 hover:text-primary-400 transition-colors">
                   Datenschutz
                 </Link>
               </li>
               <li>
-                <Link to="/kontakt" className="text-gray-300 hover:text-primary-400 transition-colors">
+                <Link to="/kontakt/" className="text-gray-300 hover:text-primary-400 transition-colors">
                   Kontakt
                 </Link>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={openConsentSettings}
+                  className="text-gray-300 hover:text-primary-400 transition-colors"
+                >
+                  Cookie-Einstellungen
+                </button>
               </li>
             </ul>
           </div>
@@ -90,7 +111,7 @@ const Footer = () => {
           <p className="text-gray-400">
             © {new Date().getFullYear()} {BRAND.publicName}. Alle Rechte vorbehalten.
           </p>
-          <p className="text-gray-500 text-sm mt-2">{BRAND_SIGNATURE}</p>
+          <p className="text-gray-400 text-sm mt-2">{BRAND_SIGNATURE}</p>
         </div>
       </div>
     </footer>

@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send, AlertCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Mail, Phone, MapPin, Clock, Send, AlertCircle, ArrowRight } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { trackEvent } from '../lib/tracking';
+import GlassSurface from '../components/GlassSurface';
 import { BRAND, CONTACT } from '../lib/brand';
 import { triggerLeadFollowup } from '../lib/leadFollowup';
 import { reportLeadError } from '../lib/leadAlert';
@@ -12,10 +13,6 @@ type ContactFormData = {
   phone: string;
   company: string;
   use_case: string;
-  quantity: string;
-  deadline: string;
-  material_pref: string;
-  budget_band: string;
   message: string;
 };
 
@@ -25,10 +22,6 @@ const initialFormData: ContactFormData = {
   phone: '',
   company: '',
   use_case: '',
-  quantity: '',
-  deadline: '',
-  material_pref: '',
-  budget_band: '',
   message: '',
 };
 
@@ -76,7 +69,7 @@ const Contact = () => {
 
       trackEvent('lead_form_submitted', {
         form: 'contact',
-        use_case: formData.use_case,
+        use_case: formData.use_case || 'schnellkontakt',
       });
 
       void triggerLeadFollowup({
@@ -85,35 +78,29 @@ const Contact = () => {
         email: formData.email,
         phone: formData.phone,
         company: formData.company,
-        use_case: formData.use_case,
-        quantity: formData.quantity,
-        deadline: formData.deadline,
-        material_pref: formData.material_pref,
-        budget_band: formData.budget_band,
+        use_case: formData.use_case || 'schnellkontakt',
         message: formData.message,
-        source_path: '/kontakt',
+        source_path: '/kontakt/',
       });
 
       setFormData(initialFormData);
       hasTrackedStartRef.current = false;
       form.reset();
       setStatus('idle');
-      navigate('/danke-kontakt', { replace: true });
+      navigate('/danke-kontakt/', { replace: true });
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unbekannter Fehler';
+      const submitError = error instanceof Error ? error.message : 'Unbekannter Fehler';
       trackEvent('lead_form_error', {
         form: 'contact',
       });
       void reportLeadError({
         form_name: 'contact-request',
-        source_path: '/kontakt',
-        error_message: errorMessage,
+        source_path: '/kontakt/',
+        error_message: submitError,
         lead_email: formData.email || undefined,
         form_data: {
-          use_case: formData.use_case,
-          quantity: formData.quantity,
-          deadline: formData.deadline,
-          material_pref: formData.material_pref,
+          use_case: formData.use_case || 'schnellkontakt',
+          company: formData.company || null,
         },
       });
       setStatus('error');
@@ -127,20 +114,20 @@ const Contact = () => {
   return (
     <div className="py-16 animate-fade-in">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Kontakt</h1>
+        <div className="text-center mb-14">
+          <h1 className="font-display text-4xl font-bold text-gray-900 mb-4">Kontakt</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Für eine schnelle und belastbare Angebotserstellung helfen uns konkrete Angaben zu
-            Einsatzfall, Stückzahl und Termin.
+            Für Rückfragen reicht eine kurze Nachricht. Für ein belastbares Angebot mit Datei-Upload
+            nutzen Sie den Projektstart.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           <aside className="lg:col-span-1">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Kontaktinformationen</h2>
+            <h2 className="font-display text-2xl font-bold text-gray-900 mb-6">Kontaktinformationen</h2>
 
             <div className="space-y-6">
-              <div className="flex items-start space-x-4">
+              <div className="glass-lite p-4 flex items-start space-x-4">
                 <div className="bg-primary-100 p-3 rounded-lg">
                   <Mail className="h-6 w-6 text-primary-600" />
                 </div>
@@ -150,7 +137,7 @@ const Contact = () => {
                 </div>
               </div>
 
-              <div className="flex items-start space-x-4">
+              <div className="glass-lite p-4 flex items-start space-x-4">
                 <div className="bg-primary-100 p-3 rounded-lg">
                   <Phone className="h-6 w-6 text-primary-600" />
                 </div>
@@ -161,7 +148,7 @@ const Contact = () => {
                 </div>
               </div>
 
-              <div className="flex items-start space-x-4">
+              <div className="glass-lite p-4 flex items-start space-x-4">
                 <div className="bg-primary-100 p-3 rounded-lg">
                   <MapPin className="h-6 w-6 text-primary-600" />
                 </div>
@@ -174,7 +161,7 @@ const Contact = () => {
                 </div>
               </div>
 
-              <div className="flex items-start space-x-4">
+              <div className="glass-lite p-4 flex items-start space-x-4">
                 <div className="bg-primary-100 p-3 rounded-lg">
                   <Clock className="h-6 w-6 text-primary-600" />
                 </div>
@@ -188,8 +175,26 @@ const Contact = () => {
           </aside>
 
           <div className="lg:col-span-2">
-            <div className="bg-white border border-gray-200 rounded-xl p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Projektanfrage senden</h2>
+            <GlassSurface variant="card" density="light" className="p-8">
+              <h2 className="font-display text-2xl font-bold text-gray-900 mb-3">
+                Schnellkontakt senden
+              </h2>
+              <p className="text-gray-700 mb-6">
+                Pflichtfelder: Name, E-Mail, Nachricht. Weitere Angaben können Sie optional ergänzen.
+              </p>
+
+              <div className="glass-lite p-4 mb-6">
+                <p className="text-sm text-gray-700">
+                  Bereits Datei und technische Details vorhanden?{' '}
+                  <Link
+                    to="/projekt-starten/"
+                    className="text-primary-700 font-medium hover:text-primary-800 inline-flex items-center gap-1"
+                  >
+                    Direkt zur Projektanfrage
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </p>
+              </div>
 
               {status === 'error' && (
                 <div className="bg-red-50 border border-red-200 p-4 rounded-lg mb-6">
@@ -209,7 +214,7 @@ const Contact = () => {
                 className="space-y-6"
               >
                 <input type="hidden" name="form-name" value="contact-request" />
-                <input type="hidden" name="source_path" value="/kontakt" />
+                <input type="hidden" name="source_path" value="/kontakt/" />
                 <p className="hidden">
                   <label>
                     Nicht ausfüllen: <input name="bot-field" />
@@ -229,8 +234,8 @@ const Contact = () => {
                       value={formData.name}
                       onFocus={handleFormStart}
                       onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                      placeholder="Ihr vollständiger Name"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-colors"
+                      placeholder="Ihr Name"
                     />
                   </div>
                   <div>
@@ -248,7 +253,7 @@ const Contact = () => {
                       value={formData.email}
                       onFocus={handleFormStart}
                       onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-colors"
                       placeholder="ihre.email@example.com"
                     />
                   </div>
@@ -260,7 +265,7 @@ const Contact = () => {
                       htmlFor="phone"
                       className="block text-sm font-medium text-gray-700 mb-2"
                     >
-                      Telefon
+                      Telefon (optional)
                     </label>
                     <input
                       type="tel"
@@ -269,7 +274,7 @@ const Contact = () => {
                       value={formData.phone}
                       onFocus={handleFormStart}
                       onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-colors"
                       placeholder="+49 ..."
                     />
                   </div>
@@ -278,7 +283,7 @@ const Contact = () => {
                       htmlFor="company"
                       className="block text-sm font-medium text-gray-700 mb-2"
                     >
-                      Unternehmen
+                      Unternehmen (optional)
                     </label>
                     <input
                       type="text"
@@ -287,119 +292,34 @@ const Contact = () => {
                       value={formData.company}
                       onFocus={handleFormStart}
                       onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                      placeholder="Unternehmen (optional)"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-colors"
+                      placeholder="Unternehmen"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label
-                      htmlFor="use_case"
-                      className="block text-sm font-medium text-gray-700 mb-2"
-                    >
-                      Anwendungsfall *
-                    </label>
-                    <select
-                      id="use_case"
-                      name="use_case"
-                      required
-                      value={formData.use_case}
-                      onFocus={handleFormStart}
-                      onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                    >
-                      <option value="">Bitte auswählen</option>
-                      <option value="prototyp">Prototyp</option>
-                      <option value="ersatzteil">Ersatzteil</option>
-                      <option value="kleinserie">Kleinserie</option>
-                      <option value="vorrichtung">Vorrichtung / Jig</option>
-                      <option value="sonstiges">Sonstiges</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="quantity"
-                      className="block text-sm font-medium text-gray-700 mb-2"
-                    >
-                      Stückzahl *
-                    </label>
-                    <input
-                      type="number"
-                      id="quantity"
-                      name="quantity"
-                      min="1"
-                      required
-                      value={formData.quantity}
-                      onFocus={handleFormStart}
-                      onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                      placeholder="z. B. 10"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div>
-                    <label
-                      htmlFor="deadline"
-                      className="block text-sm font-medium text-gray-700 mb-2"
-                    >
-                      Gewünschter Termin *
-                    </label>
-                    <input
-                      type="date"
-                      id="deadline"
-                      name="deadline"
-                      required
-                      value={formData.deadline}
-                      onFocus={handleFormStart}
-                      onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="material_pref"
-                      className="block text-sm font-medium text-gray-700 mb-2"
-                    >
-                      Material / Anforderung *
-                    </label>
-                    <input
-                      type="text"
-                      id="material_pref"
-                      name="material_pref"
-                      required
-                      value={formData.material_pref}
-                      onFocus={handleFormStart}
-                      onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                      placeholder="z. B. PETG, temperaturbeständig"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="budget_band"
-                      className="block text-sm font-medium text-gray-700 mb-2"
-                    >
-                      Projektumfang (optional)
-                    </label>
-                    <select
-                      id="budget_band"
-                      name="budget_band"
-                      value={formData.budget_band}
-                      onFocus={handleFormStart}
-                      onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                    >
-                      <option value="">Keine Angabe</option>
-                      <option value="klein">Kleiner Umfang</option>
-                      <option value="mittel">Mittlerer Umfang</option>
-                      <option value="gross">Größerer Umfang</option>
-                      <option value="serie">Serien-/Rahmenbedarf</option>
-                    </select>
-                  </div>
+                <div>
+                  <label
+                    htmlFor="use_case"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    Thema (optional)
+                  </label>
+                  <select
+                    id="use_case"
+                    name="use_case"
+                    value={formData.use_case}
+                    onFocus={handleFormStart}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-colors"
+                  >
+                    <option value="">Bitte auswählen</option>
+                    <option value="rueckruf">Rückrufwunsch</option>
+                    <option value="projektabstimmung">Projektabstimmung</option>
+                    <option value="materialfrage">Materialfrage</option>
+                    <option value="bestehender_auftrag">Bestehender Auftrag</option>
+                    <option value="sonstiges">Sonstiges</option>
+                  </select>
                 </div>
 
                 <div>
@@ -414,8 +334,8 @@ const Contact = () => {
                     value={formData.message}
                     onFocus={handleFormStart}
                     onChange={handleChange}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                    placeholder="Beschreiben Sie Ihr Projekt und wichtige technische Hinweise."
+                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-colors"
+                    placeholder="Kurzbeschreibung Ihres Anliegens"
                   />
                 </div>
 
@@ -426,13 +346,13 @@ const Contact = () => {
                       id="privacy"
                       name="privacy_consent"
                       required
-                      className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+                      className="h-4 w-4 text-primary-700 focus:ring-primary-600 border-gray-300 rounded mt-1"
                     />
                     <label htmlFor="privacy" className="text-sm text-gray-600">
                       Ich habe die{' '}
                       <a
-                        href="/datenschutz"
-                        className="text-primary-600 hover:text-primary-700 underline"
+                        href="/datenschutz/"
+                        className="text-primary-700 hover:text-primary-800 underline"
                       >
                         Datenschutzerklärung
                       </a>{' '}
@@ -444,15 +364,13 @@ const Contact = () => {
                 <button
                   type="submit"
                   disabled={status === 'submitting'}
-                  className="w-full bg-primary-600 text-white px-6 py-4 rounded-lg font-medium hover:bg-primary-700 disabled:opacity-70 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2 group"
+                  className="w-full bg-primary-700 text-white px-6 py-4 rounded-lg font-medium hover:bg-primary-800 disabled:opacity-70 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
                 >
-                  <Send className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  <span>
-                    {status === 'submitting' ? 'Wird gesendet...' : 'Projektanfrage senden'}
-                  </span>
+                  <Send className="h-5 w-5" />
+                  <span>{status === 'submitting' ? 'Wird gesendet...' : 'Nachricht senden'}</span>
                 </button>
               </form>
-            </div>
+            </GlassSurface>
           </div>
         </div>
       </div>

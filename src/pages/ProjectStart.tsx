@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { Upload, FileText, AlertCircle, Send } from 'lucide-react';
+import { Upload, FileText, AlertCircle, Send, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { trackEvent } from '../lib/tracking';
+import GlassSurface from '../components/GlassSurface';
 import { triggerLeadFollowup } from '../lib/leadFollowup';
 import { reportLeadError } from '../lib/leadAlert';
 
@@ -9,6 +10,11 @@ type FinishingOption = 'none' | 'basic' | 'premium';
 
 const acceptedFileTypes = ['.stl', '.obj', '.3mf', '.svg'];
 const maxFileSizeMb = 50;
+const maxFileCount = 8;
+const maxTotalUploadSizeMb = 200;
+
+const toMb = (bytes: number) => bytes / 1024 / 1024;
+const formatMb = (bytes: number) => `${toMb(bytes).toFixed(2)} MB`;
 
 const ProjectStart = () => {
   const navigate = useNavigate();
@@ -51,8 +57,28 @@ const ProjectStart = () => {
     const selectedFiles = Array.from(event.target.files || []);
     const validFiles: File[] = [];
     const errors: string[] = [];
+    const existingSizeBytes = files.reduce((sum, file) => sum + file.size, 0);
+    const maxTotalUploadSizeBytes = maxTotalUploadSizeMb * 1024 * 1024;
+    const remainingSlots = maxFileCount - files.length;
+    let projectedSizeBytes = existingSizeBytes;
 
-    selectedFiles.forEach((file) => {
+    if (remainingSlots <= 0) {
+      setUploadError(`Maximal ${maxFileCount} Dateien möglich. Bitte entfernen Sie zuerst eine Datei.`);
+      event.target.value = '';
+      return;
+    }
+
+    if (selectedFiles.length > remainingSlots) {
+      errors.push(
+        `Maximal ${maxFileCount} Dateien insgesamt möglich (noch ${remainingSlots} verfügbar).`,
+      );
+    }
+
+    selectedFiles.forEach((file, index) => {
+      if (index >= remainingSlots) {
+        return;
+      }
+
       const extension = `.${file.name.split('.').pop()?.toLowerCase()}`;
       if (!acceptedFileTypes.includes(extension)) {
         errors.push(`${file.name}: Dateityp nicht unterstützt`);
@@ -62,6 +88,13 @@ const ProjectStart = () => {
         errors.push(`${file.name}: größer als ${maxFileSizeMb} MB`);
         return;
       }
+      if (projectedSizeBytes + file.size > maxTotalUploadSizeBytes) {
+        errors.push(
+          `${file.name}: Gesamtlimit von ${maxTotalUploadSizeMb} MB würde überschritten`,
+        );
+        return;
+      }
+      projectedSizeBytes += file.size;
       validFiles.push(file);
     });
 
@@ -80,6 +113,7 @@ const ProjectStart = () => {
 
   const removeFile = (index: number) => {
     setFiles((prev) => prev.filter((_, i) => i !== index));
+    setUploadError('');
   };
 
   const resetForm = () => {
@@ -146,14 +180,14 @@ const ProjectStart = () => {
         material_pref: materialPref,
         budget_band: budgetBand,
         message,
-        source_path: '/projekt-starten',
+        source_path: '/projekt-starten/',
         file_names: files.map((file) => file.name),
       });
 
       form.reset();
       resetForm();
       setStatus('idle');
-      navigate('/danke-projekt', { replace: true });
+      navigate('/danke-projekt/', { replace: true });
     } catch (error) {
       const submitFailureReason = error instanceof Error ? error.message : 'Unbekannter Fehler';
       trackEvent('lead_form_error', {
@@ -161,7 +195,7 @@ const ProjectStart = () => {
       });
       void reportLeadError({
         form_name: 'project-request',
-        source_path: '/projekt-starten',
+        source_path: '/projekt-starten/',
         error_message: submitFailureReason,
         lead_email: email || undefined,
         form_data: {
@@ -181,28 +215,31 @@ const ProjectStart = () => {
     }
   };
 
+  const totalUploadedBytes = files.reduce((sum, file) => sum + file.size, 0);
+
   return (
     <div className="py-16 animate-fade-in">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Projekt starten</h1>
+          <h1 className="font-display text-4xl font-bold text-gray-900 mb-4">Projekt starten</h1>
           <p className="text-xl text-gray-600">
             Datei hochladen, Anforderungen hinterlegen und ein belastbares Angebot erhalten
           </p>
         </div>
 
-        <form
-          name="project-request"
-          method="POST"
-          data-netlify="true"
-          data-netlify-honeypot="bot-field"
-          encType="multipart/form-data"
-          onSubmit={handleSubmit}
-          className="space-y-8"
-        >
+        <GlassSurface variant="card" density="light" className="p-4 md:p-6">
+          <form
+            name="project-request"
+            method="POST"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+            encType="multipart/form-data"
+            onSubmit={handleSubmit}
+            className="space-y-8"
+          >
           <input type="hidden" name="form-name" value="project-request" />
           <input type="hidden" name="estimated_price" value="individuelles_angebot" />
-          <input type="hidden" name="source_path" value="/projekt-starten" />
+          <input type="hidden" name="source_path" value="/projekt-starten/" />
           <p className="hidden">
             <label>
               Nicht ausfüllen: <input name="bot-field" />
@@ -222,16 +259,29 @@ const ProjectStart = () => {
             <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Dateien hochladen</h2>
             <p className="text-gray-600 mb-4">
-              Unterstützte Formate: STL, OBJ, 3MF, SVG (max. {maxFileSizeMb}MB pro Datei)
+              Unterstützte Formate: STL, OBJ, 3MF, SVG (max. {maxFileSizeMb} MB pro Datei)
+            </p>
+            <p className="text-sm text-gray-500 mb-4">
+              Maximal {maxFileCount} Dateien und insgesamt {maxTotalUploadSizeMb} MB pro Anfrage.
             </p>
             <p className="text-sm text-gray-500 mb-4">
               Laden Sie Ihre CAD-/STL-Datei hoch. Alternativ können Sie uns auch ein Musterteil
               nach Absprache zusenden.
             </p>
+            <div className="mx-auto mb-4 max-w-2xl rounded-lg border border-primary-200 bg-primary-50/75 p-3 text-left">
+              <p className="text-sm text-gray-700 inline-flex items-start gap-2">
+                <ShieldCheck className="h-4 w-4 text-primary-700 mt-0.5" />
+                CAD- und Projektdaten behandeln wir vertraulich und ausschließlich zur technischen
+                Prüfung Ihres Anwendungsfalls.
+              </p>
+              <p className="text-xs text-gray-600 mt-2">
+                Auf Wunsch stellen wir vor Datenaustausch eine NDA-Vereinbarung bereit.
+              </p>
+            </div>
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors"
+              className="bg-primary-700 text-white px-6 py-2 rounded-lg hover:bg-primary-800 transition-colors"
             >
               Dateien auswählen
             </button>
@@ -255,6 +305,10 @@ const ProjectStart = () => {
           {files.length > 0 && (
             <div className="bg-gray-50 p-6 rounded-xl">
               <h3 className="font-semibold text-gray-900 mb-4">Hochgeladene Dateien</h3>
+              <p className="text-sm text-gray-600 mb-4">
+                {files.length}/{maxFileCount} Dateien | {formatMb(totalUploadedBytes)} von{' '}
+                {maxTotalUploadSizeMb} MB genutzt
+              </p>
               <div className="space-y-2">
                 {files.map((file, index) => (
                   <div
@@ -264,9 +318,7 @@ const ProjectStart = () => {
                     <div className="flex items-center space-x-3">
                       <FileText className="h-5 w-5 text-primary-500" />
                       <span className="text-gray-900">{file.name}</span>
-                      <span className="text-sm text-gray-500">
-                        ({(file.size / 1024 / 1024).toFixed(2)} MB)
-                      </span>
+                      <span className="text-sm text-gray-500">({formatMb(file.size)})</span>
                     </div>
                     <button
                       type="button"
@@ -282,7 +334,9 @@ const ProjectStart = () => {
           )}
 
           <div className="bg-white p-6 rounded-xl border border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Projektanforderungen</h2>
+            <h2 className="font-display text-lg font-semibold text-gray-900 mb-4">
+              Projektanforderungen
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label htmlFor="use_case" className="block text-sm font-medium text-gray-700 mb-2">
@@ -404,7 +458,9 @@ const ProjectStart = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white p-6 rounded-xl border border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Zusatzleistungen</h2>
+              <h2 className="font-display text-lg font-semibold text-gray-900 mb-4">
+                Zusatzleistungen
+              </h2>
               <div className="space-y-4">
                 <div className="flex items-center">
                   <input
@@ -476,7 +532,9 @@ const ProjectStart = () => {
             </div>
 
             <div className="bg-white p-6 rounded-xl border border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Nachbearbeitung</h2>
+              <h2 className="font-display text-lg font-semibold text-gray-900 mb-4">
+                Nachbearbeitung
+              </h2>
               <div className="space-y-3">
                 <label className="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
                   <input
@@ -530,7 +588,9 @@ const ProjectStart = () => {
           </div>
 
           <div className="bg-primary-50 p-6 rounded-xl">
-            <h2 className="text-lg font-semibold text-gray-900 mb-2">Projektbewertung</h2>
+            <h2 className="font-display text-lg font-semibold text-gray-900 mb-2">
+              Projektbewertung
+            </h2>
             <p className="text-gray-700">
               Nach Eingang Ihrer Daten erhalten Sie innerhalb von 24 Stunden eine technische
               Rückmeldung und ein individuelles Angebot.
@@ -538,7 +598,9 @@ const ProjectStart = () => {
           </div>
 
           <div className="bg-white p-6 rounded-xl border border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Kontaktdaten</h2>
+            <h2 className="font-display text-lg font-semibold text-gray-900 mb-4">
+              Kontaktdaten
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="name">
@@ -631,7 +693,7 @@ const ProjectStart = () => {
                 />
                 <label htmlFor="privacy_consent" className="text-sm text-gray-600">
                   Ich habe die{' '}
-                  <a href="/datenschutz" className="text-primary-600 hover:text-primary-700 underline">
+                  <a href="/datenschutz/" className="text-primary-600 hover:text-primary-700 underline">
                     Datenschutzerklärung
                   </a>{' '}
                   gelesen und stimme der Verarbeitung meiner Daten zu. *
@@ -655,7 +717,8 @@ const ProjectStart = () => {
               Sie erhalten in der Regel innerhalb von 24 Stunden eine Rückmeldung.
             </p>
           </div>
-        </form>
+          </form>
+        </GlassSurface>
       </div>
     </div>
   );

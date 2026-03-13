@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Factory, Phone, Ruler, Wrench } from 'lucide-react';
+import GlassSurface from '../components/GlassSurface';
 import { CONTACT } from '../lib/brand';
 import { industryCaseStudies } from '../lib/caseStudies';
 
@@ -16,17 +17,17 @@ const Gallery = () => {
   return (
     <div className="py-16 animate-fade-in">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <section className="text-center mb-14">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Industrie-Fallbeispiele (anonymisiert + freigegeben)
+        <section className="text-center mb-14 reveal-up">
+          <h1 className="font-display text-4xl font-bold text-gray-900 mb-4">
+            Industrie-Fallbeispiele (anonymisiert, verifiziert, freigegeben)
           </h1>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto">
             Diese Galerie zeigt anonymisierte B2B-Anwendungsfälle als Übergangslösung.
-            Freigegebene Kundenbilder werden schrittweise ergänzt.
+            Verifizierte oder freigegebene Nachweise werden schrittweise ergänzt.
           </p>
         </section>
 
-        <section className="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-12">
+        <section className="glass-lite p-6 mb-12 reveal-up stagger-1">
           <p className="text-amber-900 leading-relaxed">
             Keine Deko- oder Hobbybeispiele: Alle gezeigten Karten orientieren sich an typischen
             Anforderungen aus Maschinenbau, Produktion, Anlagenbau und Werkstattumfeld.
@@ -36,16 +37,23 @@ const Gallery = () => {
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {industryCaseStudies.map((item) => {
             const Icon = iconByCategory[item.category];
-            const isPublic = item.proofStatus === 'freigegeben';
             const primaryAsset = item.assets[0];
             const additionalAssets = item.assets.slice(1);
 
             return (
-              <article key={item.id} className="bg-white border border-gray-200 rounded-xl p-6">
+              <GlassSurface
+                key={item.id}
+                as="article"
+                variant="card"
+                density="light"
+                className="p-6 reveal-up"
+              >
                 <div className="mb-5 overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
                   <img
                     src={primaryAsset.src}
                     alt={primaryAsset.alt}
+                    width={1200}
+                    height={700}
                     loading="lazy"
                     className="w-full h-48 object-cover"
                   />
@@ -61,6 +69,8 @@ const Gallery = () => {
                         <img
                           src={asset.src}
                           alt={asset.alt}
+                          width={1200}
+                          height={700}
                           loading="lazy"
                           className="w-full h-24 object-cover"
                         />
@@ -71,20 +81,24 @@ const Gallery = () => {
 
                 <div className="flex items-start justify-between gap-4 mb-5">
                   <div className="flex items-center gap-3">
-                    <div className="bg-primary-100 text-primary-700 p-3 rounded-lg">
+                    <div className="bg-primary-100 text-primary-700 p-3 rounded-lg ring-1 ring-primary-200/80">
                       <Icon className="h-5 w-5" />
                     </div>
                     <div>
-                      <h2 className="text-xl font-semibold text-gray-900">{item.title}</h2>
+                      <h2 className="font-display text-xl font-semibold text-gray-900">{item.title}</h2>
                       <p className="text-sm text-gray-500">
-                        {isPublic ? 'Kundenfreigegebener Case' : 'Anonymisierte CAD-Ansicht'}
+                        {item.proofStatus === 'freigegeben'
+                          ? 'Kundenfreigegebener Case'
+                          : item.proofStatus === 'verifiziert'
+                            ? 'Verifizierter Industrie-Case'
+                            : 'Anonymisierte CAD-Ansicht'}
                       </p>
                     </div>
                   </div>
                 </div>
 
                 <p className="text-xs text-gray-500 mb-5">
-                  {item.assets.length} CAD-Sichten pro Case hinterlegt, bis freigegebene Kundenbilder vorliegen.
+                  {item.assets.length} Assets hinterlegt | Nachweisart: {item.proofType}
                 </p>
 
                 <dl className="space-y-3 mb-6">
@@ -112,42 +126,48 @@ const Gallery = () => {
                     <dt className="text-sm font-semibold text-gray-700">Ergebnisnutzen</dt>
                     <dd className="md:col-span-2 text-sm text-gray-700">{item.result}</dd>
                   </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                    <dt className="text-sm font-semibold text-gray-700">Messbarer Effekt</dt>
+                    <dd className="md:col-span-2 text-sm text-gray-700">{item.measurableOutcome}</dd>
+                  </div>
                 </dl>
 
                 <Link
-                  to="/projekt-starten"
-                  className="text-primary-600 font-medium hover:text-primary-700 inline-flex items-center gap-2"
+                  to="/projekt-starten/"
+                  className="text-primary-700 font-medium hover:text-primary-800 inline-flex items-center gap-2"
                 >
                   Datei hochladen & technische Prüfung starten
                   <ArrowRight className="h-4 w-4" />
                 </Link>
-              </article>
+              </GlassSurface>
             );
           })}
         </section>
 
-        <section className="mt-16 bg-primary-600 text-white rounded-xl p-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ihr Anwendungsfall ist nicht dabei?</h2>
-          <p className="text-primary-100 mb-6 max-w-3xl mx-auto">
-            Senden Sie Datei, Stückzahl und Einsatzbedingungen. Sie erhalten eine technische
-            Einschätzung und ein individuelles Angebot.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/projekt-starten"
-              className="bg-white text-primary-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
-            >
-              Datei hochladen & technische Prüfung starten
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <a
-              href={phoneHref}
-              className="border border-white/70 text-white px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors inline-flex items-center justify-center gap-2"
-            >
-              <Phone className="h-4 w-4" />
-              Telefonische Rückfrage
-            </a>
-          </div>
+        <section className="mt-16 text-center">
+          <GlassSurface variant="cta" density="normal" className="p-8">
+            <h2 className="font-display text-3xl font-bold text-white mb-4">Ihr Anwendungsfall ist nicht dabei?</h2>
+            <p className="text-primary-50 mb-6 max-w-3xl mx-auto">
+              Senden Sie Datei, Stückzahl und Einsatzbedingungen. Sie erhalten eine technische
+              Einschätzung und ein individuelles Angebot.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/projekt-starten/"
+                className="bg-white text-primary-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
+              >
+                Datei hochladen & technische Prüfung starten
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <a
+                href={phoneHref}
+                className="border border-white/70 text-white px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors inline-flex items-center justify-center gap-2"
+              >
+                <Phone className="h-4 w-4" />
+                Telefonische Rückfrage
+              </a>
+            </div>
+          </GlassSurface>
         </section>
       </div>
     </div>
