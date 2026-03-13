@@ -13,6 +13,7 @@ const Header = () => {
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'Leistungen', href: '/leistungen/' },
+    { name: 'Projektstart', href: '/projekt-starten/' },
     { name: 'Nachhaltigkeit', href: '/nachhaltigkeit/' },
     { name: 'Galerie', href: '/galerie/' },
     { name: 'Wissen', href: '/wissen/' },
@@ -76,7 +77,7 @@ const Header = () => {
               ))}
             </nav>
 
-            <div className="hidden sm:block lg:hidden xl:block shrink-0">
+            <div className="hidden xl:block shrink-0">
               <Link
                 to="/projekt-starten/"
                 className="inline-flex items-center justify-center whitespace-nowrap bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary-800 transition-colors shadow-sm ring-1 ring-primary-500/50"

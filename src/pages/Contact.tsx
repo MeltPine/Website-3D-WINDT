@@ -24,6 +24,8 @@ const initialFormData: ContactFormData = {
   use_case: '',
   message: '',
 };
+const fieldClassName =
+  'w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-colors';
 
 const Contact = () => {
   const navigate = useNavigate();
@@ -31,6 +33,12 @@ const Contact = () => {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const hasTrackedStartRef = useRef(false);
+  const phoneHref = `tel:${CONTACT.phone.replace(/[^\d+]/g, '')}`;
+  const contactHighlights = [
+    'Kurze Erstabstimmung ohne Dateiupload möglich',
+    'Technische Rückmeldung in der Regel innerhalb von 24 Stunden',
+    'Für belastbare Angebote: direkter Wechsel in den Projektstart',
+  ];
 
   const handleFormStart = () => {
     if (hasTrackedStartRef.current) {
@@ -112,17 +120,24 @@ const Contact = () => {
   };
 
   return (
-    <div className="py-16 animate-fade-in">
+    <div className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-14">
+        <div className="text-center mb-12">
           <h1 className="font-display text-4xl font-bold text-gray-900 mb-4">Kontakt</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
             Für Rückfragen reicht eine kurze Nachricht. Für ein belastbares Angebot mit Datei-Upload
             nutzen Sie den Projektstart.
           </p>
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3 text-left max-w-5xl mx-auto">
+            {contactHighlights.map((item) => (
+              <div key={item} className="glass-lite rounded-lg px-4 py-3 text-sm text-gray-700">
+                {item}
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           <aside className="lg:col-span-1">
             <h2 className="font-display text-2xl font-bold text-gray-900 mb-6">Kontaktinformationen</h2>
 
@@ -175,7 +190,7 @@ const Contact = () => {
           </aside>
 
           <div className="lg:col-span-2">
-            <GlassSurface variant="card" density="light" className="p-8">
+            <GlassSurface variant="card" density="light" className="p-6 md:p-8">
               <h2 className="font-display text-2xl font-bold text-gray-900 mb-3">
                 Schnellkontakt senden
               </h2>
@@ -230,14 +245,14 @@ const Contact = () => {
                       type="text"
                       id="name"
                       name="name"
-                      required
-                      value={formData.name}
-                      onFocus={handleFormStart}
-                      onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-colors"
-                      placeholder="Ihr Name"
-                    />
-                  </div>
+                    required
+                    value={formData.name}
+                    onFocus={handleFormStart}
+                    onChange={handleChange}
+                    className={fieldClassName}
+                    placeholder="Ihr Name"
+                  />
+                </div>
                   <div>
                     <label
                       htmlFor="email"
@@ -249,14 +264,14 @@ const Contact = () => {
                       type="email"
                       id="email"
                       name="email"
-                      required
-                      value={formData.email}
-                      onFocus={handleFormStart}
-                      onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-colors"
-                      placeholder="ihre.email@example.com"
-                    />
-                  </div>
+                    required
+                    value={formData.email}
+                    onFocus={handleFormStart}
+                    onChange={handleChange}
+                    className={fieldClassName}
+                    placeholder="ihre.email@example.com"
+                  />
+                </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -274,7 +289,7 @@ const Contact = () => {
                       value={formData.phone}
                       onFocus={handleFormStart}
                       onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-colors"
+                      className={fieldClassName}
                       placeholder="+49 ..."
                     />
                   </div>
@@ -292,7 +307,7 @@ const Contact = () => {
                       value={formData.company}
                       onFocus={handleFormStart}
                       onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-colors"
+                      className={fieldClassName}
                       placeholder="Unternehmen"
                     />
                   </div>
@@ -311,7 +326,7 @@ const Contact = () => {
                     value={formData.use_case}
                     onFocus={handleFormStart}
                     onChange={handleChange}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-colors"
+                    className={fieldClassName}
                   >
                     <option value="">Bitte auswählen</option>
                     <option value="rueckruf">Rückrufwunsch</option>
@@ -334,7 +349,7 @@ const Contact = () => {
                     value={formData.message}
                     onFocus={handleFormStart}
                     onChange={handleChange}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-colors"
+                    className={fieldClassName}
                     placeholder="Kurzbeschreibung Ihres Anliegens"
                   />
                 </div>
@@ -361,14 +376,32 @@ const Contact = () => {
                   </div>
                 </div>
 
-                <button
-                  type="submit"
-                  disabled={status === 'submitting'}
-                  className="w-full bg-primary-700 text-white px-6 py-4 rounded-lg font-medium hover:bg-primary-800 disabled:opacity-70 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
-                >
-                  <Send className="h-5 w-5" />
-                  <span>{status === 'submitting' ? 'Wird gesendet...' : 'Nachricht senden'}</span>
-                </button>
+                <div className="rounded-xl border border-primary-100 bg-primary-50/50 p-4">
+                  <button
+                    type="submit"
+                    disabled={status === 'submitting'}
+                    className="w-full bg-primary-700 text-white px-6 py-4 rounded-lg font-semibold hover:bg-primary-800 disabled:opacity-70 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
+                  >
+                    <Send className="h-5 w-5" />
+                    <span>{status === 'submitting' ? 'Wird gesendet...' : 'Nachricht senden'}</span>
+                  </button>
+                  <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm">
+                    <a
+                      href={phoneHref}
+                      className="inline-flex items-center gap-2 text-gray-700 hover:text-primary-700"
+                    >
+                      <Phone className="h-4 w-4" />
+                      {CONTACT.phone}
+                    </a>
+                    <a
+                      href={`mailto:${CONTACT.email}`}
+                      className="inline-flex items-center gap-2 text-gray-700 hover:text-primary-700"
+                    >
+                      <Mail className="h-4 w-4" />
+                      {CONTACT.email}
+                    </a>
+                  </div>
+                </div>
               </form>
             </GlassSurface>
           </div>
