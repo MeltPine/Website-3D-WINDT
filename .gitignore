@@ -24,3 +24,10 @@ dist-server
 *.sln
 *.sw?
 .env
+
+# Local skills and generated artifacts
+skills/
+.playwright-cli/
+output/
+.tmp_skill_backups/
+.netlify/
