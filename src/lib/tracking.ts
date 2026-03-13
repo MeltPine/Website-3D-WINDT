@@ -1,3 +1,5 @@
+import { trackInternalLeadEvent } from './internalTracking';
+
 type TrackingPayload = Record<string, string | number | boolean | null | undefined>;
 
 declare global {
@@ -33,10 +35,15 @@ export function trackEvent(eventName: string, payload: TrackingPayload = {}): vo
   });
 
   emitTrackingEvent(eventName, cleanedPayload);
+  trackInternalLeadEvent(eventName, cleanedPayload);
 
   // Mirror form submit into GA4 standard lead event for easier conversion setup.
   if (eventName === 'lead_form_submitted') {
     emitTrackingEvent('generate_lead', {
+      source_event: eventName,
+      ...cleanedPayload,
+    });
+    trackInternalLeadEvent('generate_lead', {
       source_event: eventName,
       ...cleanedPayload,
     });

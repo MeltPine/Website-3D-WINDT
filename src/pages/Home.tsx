@@ -14,10 +14,19 @@ import {
 import GlassSurface from '../components/GlassSurface';
 import { BRAND, CONTACT } from '../lib/brand';
 import { industryCaseStudies } from '../lib/caseStudies';
+import { trackEvent } from '../lib/tracking';
 
 const phoneHref = `tel:${CONTACT.phone.replace(/[^\d+]/g, '')}`;
 
 const Home = () => {
+  const trackHomeCta = (section: string, cta: string) => {
+    trackEvent('cta_clicked', {
+      page: 'home',
+      section,
+      cta,
+    });
+  };
+
   const verifiedCaseCount = industryCaseStudies.filter(
     (item) => item.proofStatus === 'verifiziert' || item.proofStatus === 'freigegeben',
   ).length;
@@ -197,6 +206,7 @@ const Home = () => {
               <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-3">
                 <Link
                   to="/projekt-starten/"
+                  onClick={() => trackHomeCta('hero', 'project_start')}
                   className="bg-primary-700 text-white px-6 py-4 rounded-lg font-semibold hover:bg-primary-800 transition-colors inline-flex items-center justify-center gap-2 shadow-sm w-full sm:w-auto text-center sm:whitespace-nowrap"
                 >
                   Datei hochladen und technische Prüfung starten
@@ -204,15 +214,24 @@ const Home = () => {
                 </Link>
                 <Link
                   to="/kontakt/"
+                  onClick={() => trackHomeCta('hero', 'callback')}
                   className="border border-primary-300 text-primary-800 px-6 py-4 rounded-lg font-semibold hover:bg-primary-50 transition-colors inline-flex items-center justify-center w-full sm:w-auto text-center sm:whitespace-nowrap"
                 >
                   Rückruf anfragen
                 </Link>
               </div>
 
+              <div className="mt-4 glass-lite px-4 py-3">
+                <p className="text-sm text-gray-700">
+                  Schnellstart: Für die erste Anfrage reichen Name, E-Mail und eine kurze
+                  Projektbeschreibung. Datei-Details können nachgereicht werden.
+                </p>
+              </div>
+
               <div className="mt-4">
                 <a
                   href={phoneHref}
+                  onClick={() => trackHomeCta('hero', 'phone')}
                   className="inline-flex items-center gap-2 text-sm text-gray-700 hover:text-primary-700"
                 >
                   <PhoneIcon className="h-4 w-4" />
@@ -343,6 +362,7 @@ const Home = () => {
                 <p className="text-gray-700 mb-4">{item.description}</p>
                 <Link
                   to={item.href}
+                  onClick={() => trackHomeCta('solution_cards', item.href)}
                   className="text-primary-700 font-medium hover:text-primary-800 inline-flex items-center gap-2"
                 >
                   Zur Landingpage
@@ -403,6 +423,7 @@ const Home = () => {
                 <p className="text-gray-700 mb-5">{study.measurableOutcome}</p>
                 <Link
                   to="/projekt-starten/"
+                  onClick={() => trackHomeCta('case_cards', 'project_start')}
                   className="mt-auto text-primary-700 font-medium hover:text-primary-800 inline-flex items-center gap-2"
                 >
                   Datei hochladen & technische Prüfung starten
@@ -469,6 +490,7 @@ const Home = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/projekt-starten/"
+                onClick={() => trackHomeCta('final_cta', 'project_start')}
                 className="bg-white text-primary-700 px-8 py-4 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
               >
                 Datei hochladen & technische Prüfung starten
@@ -476,6 +498,7 @@ const Home = () => {
               </Link>
               <Link
                 to="/kontakt/"
+                onClick={() => trackHomeCta('final_cta', 'callback')}
                 className="border border-white/75 text-white px-8 py-4 rounded-lg font-medium hover:bg-white/10 transition-colors inline-flex items-center justify-center"
               >
                 Rückruf anfragen

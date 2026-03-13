@@ -57,5 +57,22 @@
       <input type="file" name="project_files" multiple />
       <input type="text" name="bot-field" />
     </form>
+
+    <form
+      name="lead-metric"
+      method="POST"
+      netlify
+      data-netlify="true"
+    >
+      <input type="hidden" name="form-name" value="lead-metric" />
+      <input type="text" name="event_name" />
+      <input type="text" name="form_name" />
+      <input type="text" name="use_case" />
+      <input type="text" name="source_path" />
+      <input type="text" name="page_url" />
+      <input type="text" name="session_id" />
+      <input type="text" name="occurred_at" />
+      <textarea name="payload_json"></textarea>
+    </form>
   </body>
 </html>
