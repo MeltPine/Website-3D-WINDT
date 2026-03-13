@@ -3,12 +3,15 @@ import { Link, useLocation } from 'react-router-dom';
 import { CloseIcon, MenuIcon, PhoneIcon } from './icons';
 import BrandLogo from './BrandLogo';
 import GlassSurface from './GlassSurface';
+import ThemeToggle from './ThemeToggle';
 import { CONTACT } from '../lib/brand';
 import { normalizePathname } from '../lib/routes';
+import { useTheme } from '../lib/theme';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { resolvedTheme } = useTheme();
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -57,7 +60,7 @@ const Header = () => {
 
           <div className="flex items-center justify-between gap-3 py-3">
             <Link to="/" className="group shrink-0">
-              <BrandLogo theme="light" size="sm" />
+              <BrandLogo theme={resolvedTheme === 'dark' ? 'dark' : 'light'} size="sm" />
             </Link>
 
             <nav className="hidden lg:flex min-w-0 flex-1 items-center justify-center gap-1 xl:gap-2">
@@ -76,6 +79,10 @@ const Header = () => {
                 </Link>
               ))}
             </nav>
+
+            <div className="hidden lg:flex shrink-0">
+              <ThemeToggle compact />
+            </div>
 
             <div className="hidden xl:block shrink-0">
               <Link
@@ -97,6 +104,12 @@ const Header = () => {
 
           {isMenuOpen && (
             <div className="lg:hidden border-t border-primary-100/70 py-4 animate-fade-in">
+              <div className="mb-3">
+                <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                  Darstellung
+                </p>
+                <ThemeToggle className="w-full justify-between" />
+              </div>
               <nav className="flex flex-col space-y-2">
                 <Link
                   to="/projekt-starten/"

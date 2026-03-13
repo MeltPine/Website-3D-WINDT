@@ -9,6 +9,7 @@ import { routeSeo } from './lib/seo';
 import { initAnalytics, trackPageView } from './lib/analytics';
 import ConsentBanner from './components/ConsentBanner';
 import { normalizePathname, toTrailingSlashPath } from './lib/routes';
+import { ThemeProvider } from './lib/theme';
 
 const AppContent = () => {
   const location = useLocation();
@@ -17,17 +18,6 @@ const AppContent = () => {
 
   useEffect(() => {
     initAnalytics();
-  }, []);
-
-  useEffect(() => {
-    if (typeof document === 'undefined') {
-      return;
-    }
-    const root = document.documentElement;
-    root.classList.remove('dark');
-    root.dataset.themeMode = 'light';
-    root.dataset.resolvedTheme = 'light';
-    root.style.colorScheme = 'light';
   }, []);
 
   useEffect(() => {
@@ -57,9 +47,11 @@ const AppContent = () => {
 
 function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </ThemeProvider>
   );
 }
 

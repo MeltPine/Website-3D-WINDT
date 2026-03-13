@@ -103,3 +103,23 @@ export const BoxesIcon = ({ className = 'h-6 w-6' }: IconProps) => (
     <path d="M12 11v8" />
   </svg>
 );
+
+export const SunIcon = ({ className = 'h-4 w-4' }: IconProps) => (
+  <svg viewBox="0 0 24 24" className={className} {...base}>
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" />
+  </svg>
+);
+
+export const MoonIcon = ({ className = 'h-4 w-4' }: IconProps) => (
+  <svg viewBox="0 0 24 24" className={className} {...base}>
+    <path d="M20.4 14.8A8.5 8.5 0 1 1 9.2 3.6a7 7 0 1 0 11.2 11.2Z" />
+  </svg>
+);
+
+export const MonitorIcon = ({ className = 'h-4 w-4' }: IconProps) => (
+  <svg viewBox="0 0 24 24" className={className} {...base}>
+    <rect x="3" y="4" width="18" height="12" rx="2" />
+    <path d="M8 20h8M12 16v4" />
+  </svg>
+);
