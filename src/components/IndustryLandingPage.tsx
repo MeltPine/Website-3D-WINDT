@@ -79,7 +79,7 @@ const IndustryLandingPage = ({
           </p>
           <Link
             to="/projekt-starten/"
-            className="bg-white text-primary-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-flex items-center gap-2"
+            className="bg-white text-primary-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-flex items-center gap-2 dark:bg-primary-600 dark:text-white dark:hover:bg-primary-700 dark:hover:text-white"
           >
             Jetzt Datei hochladen
             <ArrowRight className="h-5 w-5" />

@@ -181,7 +181,7 @@ const Services = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/projekt-starten/"
-                className="bg-white text-primary-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
+                className="bg-white text-primary-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2 dark:bg-primary-600 dark:text-white dark:hover:bg-primary-700 dark:hover:text-white"
               >
                 Datei hochladen & Angebot erhalten
                 <ArrowRight className="h-5 w-5" />

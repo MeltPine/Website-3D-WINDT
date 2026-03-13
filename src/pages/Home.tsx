@@ -197,14 +197,14 @@ const Home = () => {
               <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-3">
                 <Link
                   to="/projekt-starten/"
-                  className="bg-primary-700 text-white px-6 py-4 rounded-lg font-semibold hover:bg-primary-800 transition-colors inline-flex items-center justify-center gap-2 shadow-sm w-full sm:w-auto whitespace-nowrap"
+                  className="bg-primary-700 text-white px-6 py-4 rounded-lg font-semibold hover:bg-primary-800 transition-colors inline-flex items-center justify-center gap-2 shadow-sm w-full sm:w-auto text-center sm:whitespace-nowrap"
                 >
                   Datei hochladen und technische Prüfung starten
                   <ArrowRightIcon className="h-5 w-5" />
                 </Link>
                 <Link
                   to="/kontakt/"
-                  className="border border-primary-300 text-primary-800 px-6 py-4 rounded-lg font-semibold hover:bg-primary-50 transition-colors inline-flex items-center justify-center w-full sm:w-auto whitespace-nowrap"
+                  className="border border-primary-300 text-primary-800 px-6 py-4 rounded-lg font-semibold hover:bg-primary-50 transition-colors inline-flex items-center justify-center w-full sm:w-auto text-center sm:whitespace-nowrap"
                 >
                   Rückruf anfragen
                 </Link>

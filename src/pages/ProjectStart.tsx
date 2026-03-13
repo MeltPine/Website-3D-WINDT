@@ -747,7 +747,7 @@ const ProjectStart = () => {
               <button
                 type="submit"
                 disabled={status === 'submitting'}
-                className="bg-primary-700 text-white px-6 sm:px-8 py-4 rounded-lg text-base sm:text-lg font-semibold hover:bg-primary-800 disabled:opacity-70 disabled:cursor-not-allowed transition-colors inline-flex items-center justify-center gap-2 w-full sm:w-auto whitespace-nowrap"
+                className="bg-primary-700 text-white px-6 sm:px-8 py-4 rounded-lg text-base sm:text-lg font-semibold hover:bg-primary-800 disabled:opacity-70 disabled:cursor-not-allowed transition-colors inline-flex items-center justify-center gap-2 w-full sm:w-auto text-center sm:whitespace-nowrap"
               >
                 <Send className="h-5 w-5" />
                 <span>
