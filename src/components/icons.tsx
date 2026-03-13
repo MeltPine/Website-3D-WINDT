@@ -104,6 +104,16 @@ export const BoxesIcon = ({ className = 'h-6 w-6' }: IconProps) => (
   </svg>
 );
 
+export const CookieIcon = ({ className = 'h-4 w-4' }: IconProps) => (
+  <svg viewBox="0 0 24 24" className={className} {...base}>
+    <path d="M12 2a2.5 2.5 0 0 0 2.5 2.5A2.5 2.5 0 0 1 17 7a2.5 2.5 0 0 0 2.5 2.5A2.5 2.5 0 0 1 22 12a10 10 0 1 1-10-10Z" />
+    <circle cx="8.5" cy="8.5" r="0.8" fill="currentColor" stroke="none" />
+    <circle cx="8.5" cy="13.5" r="0.8" fill="currentColor" stroke="none" />
+    <circle cx="13.5" cy="12.5" r="0.8" fill="currentColor" stroke="none" />
+    <circle cx="14.5" cy="16.5" r="0.8" fill="currentColor" stroke="none" />
+  </svg>
+);
+
 export const SunIcon = ({ className = 'h-4 w-4' }: IconProps) => (
   <svg viewBox="0 0 24 24" className={className} {...base}>
     <circle cx="12" cy="12" r="4" />

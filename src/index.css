@@ -242,11 +242,6 @@
     animation-delay: 0.24s;
   }
 
-  .dark .consent-banner {
-    background-color: rgba(15, 23, 42, 0.92);
-    border-color: var(--border-soft);
-  }
-
   .dark .bg-white:not(a):not(button):not(input):not(select):not(textarea):not(.theme-preserve-white) {
     background-color: var(--surface-0);
   }
