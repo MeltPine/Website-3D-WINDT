@@ -181,14 +181,14 @@ const Services = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/projekt-starten/"
-                className="bg-white text-primary-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2 dark:bg-primary-600 dark:text-white dark:hover:bg-primary-700 dark:hover:text-white"
+                className="bg-primary-800/65 border border-primary-200/45 text-primary-50 px-6 py-3 rounded-lg font-medium hover:bg-primary-800/80 transition-colors inline-flex items-center justify-center gap-2 shadow-sm"
               >
                 Datei hochladen & Angebot erhalten
                 <ArrowRight className="h-5 w-5" />
               </Link>
               <Link
                 to="/ersatzteile-3d-drucken/"
-                className="border border-white/80 text-white px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors"
+                className="bg-primary-900/25 border border-primary-200/40 text-primary-50 px-6 py-3 rounded-lg font-medium hover:bg-primary-900/40 transition-colors inline-flex items-center justify-center"
               >
                 Branchenlösungen ansehen
               </Link>

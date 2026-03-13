@@ -53,7 +53,7 @@ const Wissen = () => {
           </p>
           <Link
             to="/projekt-starten/"
-            className="bg-white text-primary-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2 dark:bg-primary-600 dark:text-white dark:hover:bg-primary-700 dark:hover:text-white"
+            className="bg-primary-800/65 border border-primary-200/45 text-primary-50 px-6 py-3 rounded-lg font-medium hover:bg-primary-800/80 transition-colors inline-flex items-center justify-center gap-2 shadow-sm"
           >
             Datei hochladen
             <ArrowRight className="h-4 w-4" />
