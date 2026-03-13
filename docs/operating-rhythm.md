@@ -11,11 +11,13 @@
 2. Drei Kennzahlen pruefen: qualifizierte Leads, B2B-Anteil, Antwortzeit.
 3. Offene Leads in `Verhandlung` und `Angebot versendet` aktiv nachfassen.
 4. Einen LinkedIn-Post mit CTA auf `/projekt-starten` veroeffentlichen.
+5. Release-Checkliste kurz gegenpruefen: `docs/release-checklist.md`.
 
 ## Monatlich (30 Minuten)
 1. Neue freigegebene Case-Assets in `docs/case-asset-board.csv` pflegen.
 2. Mindestens einen anonymisierten Case durch echten freigegebenen Case ersetzen.
 3. Texte auf Startseite/Galerie mit echten Ergebnissaussagen nachschaerfen.
+4. 8-Wochen-Plan-Fortschritt aktualisieren: `docs/b2b-funnel-8-week-plan.md`.
 
 ## GA4 Conversion Setup (einmalig)
 1. GA4 -> Verwaltung -> Ereignisse.

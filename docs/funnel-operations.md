@@ -4,6 +4,7 @@
 - Ein einheitlicher B2B-Funnel mit Conversion-Zielen auf `/danke-projekt` und `/danke-kontakt`
 - Event-Tracking für Form-Starts, Uploads, Submits, Errors und Follow-up
 - Automatische Follow-up-E-Mails an Interessenten plus interne Lead-Benachrichtigung
+- Keine Ad-Netzwerke oder Bannerwerbung auf der Website
 
 ## Erforderliche Netlify-Umgebungsvariablen
 - `VITE_GA_MEASUREMENT_ID` (z. B. `G-XXXXXXXXXX`)
@@ -75,6 +76,10 @@ Hinweis: `VITE_*` Variablen sind Build-Variablen und erfordern ein neues Deploy.
 9. GA-unabhängiges Tracking prüfen:
    - Netlify -> Forms -> `lead-metric`
    - Neue Einträge für `cta_clicked`, `lead_form_started`, `lead_form_submitted`, `generate_lead` prüfen
+
+## Release-Standard (verbindlich)
+- Vor jedem Push `npm run release:check` ausfuehren.
+- Manuelle Deploy-Abnahme nach `docs/release-checklist.md`.
 
 ## Ergaenzung: Proof- und Betriebsroutine (Maerz 2026)
 - Case-Asset-Board: `docs/case-asset-board.csv`
