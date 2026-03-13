@@ -75,14 +75,14 @@ const WissenDetail = () => {
                 to="/projekt-starten/"
                 className="bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors inline-flex items-center justify-center gap-2"
               >
-                Datei hochladen
+                Projekt starten
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 to="/kontakt/"
                 className="border border-primary-600 text-primary-700 px-6 py-3 rounded-lg font-medium hover:bg-primary-50 transition-colors inline-flex items-center justify-center"
               >
-                Rueckfragen klaeren
+                Rückruf anfragen
               </Link>
             </div>
           </section>

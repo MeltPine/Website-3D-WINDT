@@ -32,14 +32,14 @@ const IndustryLandingPage = ({
               to="/projekt-starten/"
               className="bg-primary-700 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-800 transition-colors inline-flex items-center justify-center gap-2"
             >
-              Datei hochladen & Angebot erhalten
+              Projekt starten
               <ArrowRight className="h-5 w-5" />
             </Link>
             <Link
               to="/kontakt/"
               className="border border-primary-700 text-primary-700 px-6 py-3 rounded-lg font-medium hover:bg-primary-50 transition-colors text-center"
             >
-              Projekt telefonisch vorab klären
+              Rückruf anfragen
             </Link>
           </div>
         </GlassSurface>
@@ -77,13 +77,21 @@ const IndustryLandingPage = ({
             Senden Sie Datei, Materialwunsch und Stückzahl. Wir liefern eine technisch belastbare
             Rückmeldung mit individuellem Angebot.
           </p>
-          <Link
-            to="/projekt-starten/"
-            className="bg-primary-800/65 border border-primary-200/45 text-primary-50 px-6 py-3 rounded-lg font-medium hover:bg-primary-800/80 transition-colors inline-flex items-center gap-2 shadow-sm"
-          >
-            Jetzt Datei hochladen
-            <ArrowRight className="h-5 w-5" />
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/projekt-starten/"
+              className="bg-primary-800/65 border border-primary-200/45 text-primary-50 px-6 py-3 rounded-lg font-medium hover:bg-primary-800/80 transition-colors inline-flex items-center justify-center gap-2 shadow-sm"
+            >
+              Projekt starten
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+            <Link
+              to="/kontakt/"
+              className="bg-primary-900/25 border border-primary-200/40 text-primary-50 px-6 py-3 rounded-lg font-medium hover:bg-primary-900/40 transition-colors inline-flex items-center justify-center"
+            >
+              Rückruf anfragen
+            </Link>
+          </div>
         </GlassSurface>
       </div>
     </div>

@@ -209,7 +209,7 @@ const Home = () => {
                   onClick={() => trackHomeCta('hero', 'project_start')}
                   className="bg-primary-700 text-white px-6 py-4 rounded-lg font-semibold hover:bg-primary-800 transition-colors inline-flex items-center justify-center gap-2 shadow-sm w-full sm:w-auto text-center sm:whitespace-nowrap"
                 >
-                  Datei hochladen und technische Prüfung starten
+                  Projekt starten
                   <ArrowRightIcon className="h-5 w-5" />
                 </Link>
                 <Link
@@ -426,7 +426,7 @@ const Home = () => {
                   onClick={() => trackHomeCta('case_cards', 'project_start')}
                   className="mt-auto text-primary-700 font-medium hover:text-primary-800 inline-flex items-center gap-2"
                 >
-                  Datei hochladen & technische Prüfung starten
+                  Projekt starten
                   <ArrowRightIcon className="h-4 w-4" />
                 </Link>
               </GlassSurface>
@@ -493,7 +493,7 @@ const Home = () => {
                 onClick={() => trackHomeCta('final_cta', 'project_start')}
                 className="bg-primary-800/65 border border-primary-200/45 text-primary-50 px-8 py-4 rounded-lg font-medium hover:bg-primary-800/80 transition-colors inline-flex items-center justify-center gap-2 shadow-sm"
               >
-                Datei hochladen & technische Prüfung starten
+                Projekt starten
                 <ArrowRightIcon className="h-5 w-5" />
               </Link>
               <Link

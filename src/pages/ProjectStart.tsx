@@ -102,7 +102,7 @@ const ProjectStart = () => {
       validFiles.push(file);
     });
 
-    setUploadError(errors.join(' | '));
+    setUploadError(errors.join(' • '));
 
     if (validFiles.length > 0) {
       setFiles((prev) => [...prev, ...validFiles]);
@@ -290,10 +290,7 @@ const ProjectStart = () => {
               </p>
               <p className="text-sm text-gray-500 mb-4">
                 Maximal {maxFileCount} Dateien und insgesamt {maxTotalUploadSizeMb} MB pro Anfrage.
-              </p>
-              <p className="text-sm text-gray-500 mb-4">
-                Laden Sie Ihre CAD-/STL-Datei hoch. Alternativ können Sie uns auch ein Musterteil
-                nach Absprache zusenden.
+                Für die Erstprüfung reichen meist 1-2 repräsentative Dateien aus.
               </p>
               <div className="mx-auto mb-4 max-w-2xl rounded-lg border border-primary-200 bg-primary-50/75 p-3 text-left">
                 <p className="text-sm text-gray-700 inline-flex items-start gap-2">
@@ -324,7 +321,9 @@ const ProjectStart = () => {
               {uploadError && (
                 <p className="mt-4 text-sm text-red-600 flex items-center justify-center gap-2">
                   <AlertCircle className="h-4 w-4" />
-                  <span>{uploadError}</span>
+                  <span>
+                    <span className="font-semibold">Upload-Hinweis:</span> {uploadError}
+                  </span>
                 </p>
               )}
             </div>

@@ -86,14 +86,14 @@ const Services = () => {
                     to="/projekt-starten/"
                     className="bg-primary-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-800 transition-colors inline-flex items-center justify-center gap-2"
                   >
-                    Datei hochladen & Angebot erhalten
+                    Projekt starten
                     <ArrowRight className="h-5 w-5" />
                   </Link>
                   <Link
                     to="/kontakt/"
                     className="border border-primary-300 text-primary-800 px-6 py-3 rounded-lg font-semibold hover:bg-primary-50 transition-colors inline-flex items-center justify-center"
                   >
-                    Rückfrage stellen
+                    Rückruf anfragen
                   </Link>
                 </div>
               </div>
@@ -183,14 +183,14 @@ const Services = () => {
                 to="/projekt-starten/"
                 className="bg-primary-800/65 border border-primary-200/45 text-primary-50 px-6 py-3 rounded-lg font-medium hover:bg-primary-800/80 transition-colors inline-flex items-center justify-center gap-2 shadow-sm"
               >
-                Datei hochladen & Angebot erhalten
+                Projekt starten
                 <ArrowRight className="h-5 w-5" />
               </Link>
               <Link
-                to="/ersatzteile-3d-drucken/"
+                to="/kontakt/"
                 className="bg-primary-900/25 border border-primary-200/40 text-primary-50 px-6 py-3 rounded-lg font-medium hover:bg-primary-900/40 transition-colors inline-flex items-center justify-center"
               >
-                Branchenlösungen ansehen
+                Rückruf anfragen
               </Link>
             </div>
           </GlassSurface>

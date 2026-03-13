@@ -1,11 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Factory, Phone, Ruler, Wrench } from 'lucide-react';
+import { ArrowRight, Factory, Ruler, Wrench } from 'lucide-react';
 import GlassSurface from '../components/GlassSurface';
-import { CONTACT } from '../lib/brand';
 import { industryCaseStudies } from '../lib/caseStudies';
-
-const phoneHref = `tel:${CONTACT.phone.replace(/[^\d+]/g, '')}`;
 
 const iconByCategory = {
   ersatzteil: Wrench,
@@ -136,7 +133,7 @@ const Gallery = () => {
                   to="/projekt-starten/"
                   className="text-primary-700 font-medium hover:text-primary-800 inline-flex items-center gap-2"
                 >
-                  Datei hochladen & technische Prüfung starten
+                  Projekt starten
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </GlassSurface>
@@ -156,16 +153,15 @@ const Gallery = () => {
                 to="/projekt-starten/"
                 className="bg-primary-800/65 border border-primary-200/45 text-primary-50 px-6 py-3 rounded-lg font-medium hover:bg-primary-800/80 transition-colors inline-flex items-center justify-center gap-2 shadow-sm"
               >
-                Datei hochladen & technische Prüfung starten
+                Projekt starten
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <a
-                href={phoneHref}
+              <Link
+                to="/kontakt/"
                 className="bg-primary-900/25 border border-primary-200/40 text-primary-50 px-6 py-3 rounded-lg font-medium hover:bg-primary-900/40 transition-colors inline-flex items-center justify-center gap-2"
               >
-                <Phone className="h-4 w-4" />
-                Telefonische Rückfrage
-              </a>
+                Rückruf anfragen
+              </Link>
             </div>
           </GlassSurface>
         </section>

@@ -282,13 +282,13 @@ const Sustainability = () => {
               href="/projekt-starten/"
               className="bg-primary-800/65 border border-primary-200/45 text-primary-50 px-6 py-3 rounded-lg font-medium hover:bg-primary-800/80 transition-colors inline-flex items-center justify-center shadow-sm"
             >
-              Nachhaltiges Projekt starten
+              Projekt starten
             </a>
             <a
               href="/kontakt/"
               className="bg-primary-900/25 border border-primary-200/40 text-primary-50 px-6 py-3 rounded-lg font-medium hover:bg-primary-900/40 transition-colors inline-flex items-center justify-center"
             >
-              Mehr erfahren
+              Rückruf anfragen
             </a>
           </div>
         </div>

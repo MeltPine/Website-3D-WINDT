@@ -4,8 +4,6 @@ import { ArrowRight, CheckCircle, ShieldCheck, Users } from 'lucide-react';
 import GlassSurface from '../components/GlassSurface';
 import { BRAND, CONTACT } from '../lib/brand';
 
-const phoneHref = `tel:${CONTACT.phone.replace(/[^\d+]/g, '')}`;
-
 const About = () => {
   const aboutHighlights = [
     'Technische Klarheit statt Marketing-Sprech',
@@ -163,15 +161,15 @@ const About = () => {
                 to="/projekt-starten/"
                 className="bg-primary-800/65 border border-primary-200/45 text-primary-50 px-6 py-3 rounded-lg font-medium hover:bg-primary-800/80 transition-colors inline-flex items-center justify-center gap-2 shadow-sm"
               >
-                Datei hochladen & technische Prüfung starten
+                Projekt starten
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <a
-                href={phoneHref}
+              <Link
+                to="/kontakt/"
                 className="bg-primary-900/25 border border-primary-200/40 text-primary-50 px-6 py-3 rounded-lg font-medium hover:bg-primary-900/40 transition-colors inline-flex items-center justify-center"
               >
-                Telefonische Rückfrage
-              </a>
+                Rückruf anfragen
+              </Link>
             </div>
           </GlassSurface>
         </section>

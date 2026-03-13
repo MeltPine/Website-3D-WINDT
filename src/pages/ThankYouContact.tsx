@@ -34,7 +34,7 @@ const ThankYouContact = () => {
               to="/projekt-starten/"
               className="border border-gray-300 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors"
             >
-              Datei hochladen
+              Projekt starten
             </Link>
           </div>
         </div>

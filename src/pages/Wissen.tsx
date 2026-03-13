@@ -51,13 +51,21 @@ const Wissen = () => {
             Wenn Sie bereits Daten haben, pruefen wir Ihren Anwendungsfall und geben eine belastbare
             Rueckmeldung mit Lieferfenster.
           </p>
-          <Link
-            to="/projekt-starten/"
-            className="bg-primary-800/65 border border-primary-200/45 text-primary-50 px-6 py-3 rounded-lg font-medium hover:bg-primary-800/80 transition-colors inline-flex items-center justify-center gap-2 shadow-sm"
-          >
-            Datei hochladen
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/projekt-starten/"
+              className="bg-primary-800/65 border border-primary-200/45 text-primary-50 px-6 py-3 rounded-lg font-medium hover:bg-primary-800/80 transition-colors inline-flex items-center justify-center gap-2 shadow-sm"
+            >
+              Projekt starten
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              to="/kontakt/"
+              className="bg-primary-900/25 border border-primary-200/40 text-primary-50 px-6 py-3 rounded-lg font-medium hover:bg-primary-900/40 transition-colors inline-flex items-center justify-center"
+            >
+              Rückruf anfragen
+            </Link>
+          </div>
         </section>
       </div>
     </div>
