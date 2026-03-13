@@ -1,11 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, ShieldCheck, Users } from 'lucide-react';
+import GlassSurface from '../components/GlassSurface';
 import { BRAND, CONTACT } from '../lib/brand';
 
 const phoneHref = `tel:${CONTACT.phone.replace(/[^\d+]/g, '')}`;
 
 const About = () => {
+  const aboutHighlights = [
+    'Technische Klarheit statt Marketing-Sprech',
+    'Reale Lieferfenster statt pauschaler Expressversprechen',
+    'B2B-Fokus auf Maschinenbau, Produktion und Instandhaltung',
+  ];
+
   const processSteps = [
     {
       title: '1. Projektaufnahme',
@@ -53,20 +60,41 @@ const About = () => {
   return (
     <div className="py-16 animate-fade-in">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <section className="text-center mb-14">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Über {BRAND.publicName}</h1>
-          <p className="text-xl text-gray-600 max-w-4xl mx-auto">
-            {BRAND.publicName} steht für industriellen 3D-Druck mit Prozesssicherheit,
-            technischer Klarheit und verlässlicher Kommunikation.
-          </p>
+        <section className="mb-14">
+          <GlassSurface variant="hero" density="normal" className="p-8 md:p-10">
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-start">
+              <div className="text-left">
+                <p className="inline-flex items-center rounded-full bg-primary-50 text-primary-800 ring-1 ring-primary-200 px-3 py-1 text-xs font-semibold tracking-wide uppercase">
+                  Über uns
+                </p>
+                <h1 className="font-display text-4xl font-bold text-gray-900 mt-4 mb-4">
+                  Über {BRAND.publicName}
+                </h1>
+                <p className="text-xl text-gray-700 max-w-4xl">
+                  {BRAND.publicName} steht für industriellen 3D-Druck mit Prozesssicherheit,
+                  technischer Klarheit und verlässlicher Kommunikation.
+                </p>
+              </div>
+              <div className="space-y-3">
+                {aboutHighlights.map((item) => (
+                  <div key={item} className="glass-lite rounded-lg px-4 py-3 text-sm text-gray-700">
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </GlassSurface>
         </section>
 
-        <section className="bg-gradient-to-br from-primary-50 to-white rounded-2xl p-8 md:p-12 mb-14">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">So läuft ein Industrieauftrag ab</h2>
+        <section className="mb-14">
+          <GlassSurface as="section" variant="card" density="light" className="p-8 md:p-10">
+            <h2 className="font-display text-3xl font-bold text-gray-900 mb-6 text-center">
+              So läuft ein Industrieauftrag ab
+            </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {processSteps.map((step) => (
-              <article key={step.title} className="bg-white border border-gray-200 rounded-xl p-5">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{step.title}</h3>
+              <article key={step.title} className="glass-lite rounded-xl p-5">
+                <h3 className="font-display text-lg font-semibold text-gray-900 mb-2">{step.title}</h3>
                 <p className="text-gray-700 mb-3">{step.detail}</p>
                 <p className="text-xs font-semibold text-primary-700 bg-primary-50 inline-block px-2 py-1 rounded">
                   Serviceziel: {step.sla}
@@ -74,11 +102,12 @@ const About = () => {
               </article>
             ))}
           </div>
+          </GlassSurface>
         </section>
 
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-14">
-          <article className="bg-white border border-gray-200 rounded-2xl p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Für wen wir arbeiten</h2>
+          <GlassSurface as="article" variant="card" density="light" className="p-8">
+            <h2 className="font-display text-2xl font-bold text-gray-900 mb-4">Für wen wir arbeiten</h2>
             <ul className="space-y-3">
               {fitProfiles.map((item) => (
                 <li key={item} className="flex items-start gap-3 text-gray-700">
@@ -87,10 +116,12 @@ const About = () => {
                 </li>
               ))}
             </ul>
-          </article>
+          </GlassSurface>
 
-          <article className="bg-white border border-gray-200 rounded-2xl p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Wofür wir nicht passend sind</h2>
+          <GlassSurface as="article" variant="card" density="light" className="p-8">
+            <h2 className="font-display text-2xl font-bold text-gray-900 mb-4">
+              Wofür wir nicht passend sind
+            </h2>
             <ul className="space-y-3">
               {notFitProfiles.map((item) => (
                 <li key={item} className="flex items-start gap-3 text-gray-700">
@@ -99,11 +130,14 @@ const About = () => {
                 </li>
               ))}
             </ul>
-          </article>
+          </GlassSurface>
         </section>
 
-        <section className="bg-white border border-gray-200 rounded-2xl p-8 mb-14">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Verlässlichkeit und Kommunikation</h2>
+        <section className="mb-14">
+          <GlassSurface as="section" variant="card" density="light" className="p-8">
+            <h2 className="font-display text-2xl font-bold text-gray-900 mb-4">
+              Verlässlichkeit und Kommunikation
+            </h2>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {trustPoints.map((item) => (
               <li key={item} className="flex items-start gap-3 text-gray-700">
@@ -112,29 +146,34 @@ const About = () => {
               </li>
             ))}
           </ul>
+          </GlassSurface>
         </section>
 
-        <section className="bg-primary-600 text-white rounded-2xl p-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Technisches Projekt direkt anfragen</h2>
-          <p className="text-primary-100 max-w-3xl mx-auto mb-6">
-            Wenn Sie ein belastbares Ergebnis statt Preisroulette wollen, senden Sie Ihre
-            Projektinformationen direkt über das Formular.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/projekt-starten/"
-              className="bg-white text-primary-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
-            >
-              Datei hochladen & technische Prüfung starten
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <a
-              href={phoneHref}
-              className="border border-white/70 text-white px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors"
-            >
-              Telefonische Rückfrage
-            </a>
-          </div>
+        <section>
+          <GlassSurface variant="cta" density="normal" className="p-8 text-center">
+            <h2 className="font-display text-3xl font-bold text-white mb-4">
+              Technisches Projekt direkt anfragen
+            </h2>
+            <p className="text-primary-50 max-w-3xl mx-auto mb-6">
+              Wenn Sie ein belastbares Ergebnis statt Preisroulette wollen, senden Sie Ihre
+              Projektinformationen direkt über das Formular.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/projekt-starten/"
+                className="bg-white text-primary-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
+              >
+                Datei hochladen & technische Prüfung starten
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <a
+                href={phoneHref}
+                className="border border-white/70 text-white px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors"
+              >
+                Telefonische Rückfrage
+              </a>
+            </div>
+          </GlassSurface>
         </section>
       </div>
     </div>
