@@ -10,6 +10,7 @@ import { initAnalytics, trackPageView } from './lib/analytics';
 import ConsentBanner from './components/ConsentBanner';
 import { normalizePathname, toTrailingSlashPath } from './lib/routes';
 import { ThemeProvider } from './lib/theme';
+import TrackingHealthPanel from './components/TrackingHealthPanel';
 
 const AppContent = () => {
   const location = useLocation();
@@ -41,6 +42,7 @@ const AppContent = () => {
       </main>
       <Footer />
       <ConsentBanner />
+      <TrackingHealthPanel />
     </div>
   );
 };

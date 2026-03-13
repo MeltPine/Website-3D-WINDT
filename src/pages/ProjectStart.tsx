@@ -169,7 +169,7 @@ const ProjectStart = () => {
 
       trackEvent('lead_form_submitted', {
         form: 'project',
-        use_case: useCase,
+        use_case: useCase || 'nicht_angegeben',
       });
 
       void triggerLeadFollowup({
@@ -178,7 +178,7 @@ const ProjectStart = () => {
         email,
         phone,
         company,
-        use_case: useCase,
+        use_case: useCase || 'nicht_angegeben',
         quantity,
         deadline,
         material_pref: materialPref,
@@ -203,7 +203,7 @@ const ProjectStart = () => {
         error_message: submitFailureReason,
         lead_email: email || undefined,
         form_data: {
-          use_case: useCase,
+          use_case: useCase || 'nicht_angegeben',
           quantity,
           deadline,
           material_pref: materialPref,
@@ -236,8 +236,8 @@ const ProjectStart = () => {
             Datei hochladen, Anforderungen hinterlegen und ein belastbares Angebot erhalten
           </p>
           <p className="mt-3 text-sm text-gray-600 max-w-3xl mx-auto">
-            Für ein präzises Angebot benötigen wir Anwendungsfall, Materialanforderung und Termin.
-            Je klarer die Angaben, desto schneller erhalten Sie eine qualifizierte Rückmeldung.
+            Für die Anfrage reichen Name, E-Mail und eine kurze Beschreibung. Technische Details
+            können Sie optional ergänzen, um ein präziseres Angebot zu erhalten.
           </p>
           <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3 text-left">
             {projectStartHighlights.map((item) => (
@@ -365,17 +365,20 @@ const ProjectStart = () => {
                 Schritt 2 von 4
               </p>
               <h2 className="font-display text-lg font-semibold text-gray-900 mb-4">
-                Projektanforderungen
+                Projektanforderungen (optional)
               </h2>
+              <p className="text-xs text-gray-500 mb-4">
+                Diese Angaben verbessern die Angebotsgüte, sind aber für den Erstkontakt nicht
+                zwingend erforderlich.
+              </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="use_case" className="block text-sm font-medium text-gray-700 mb-2">
-                    Anwendungsfall *
+                    Anwendungsfall (optional)
                   </label>
                   <select
                     id="use_case"
                     name="use_case"
-                    required
                     value={useCase}
                     onFocus={handleFormStart}
                     onChange={(e) => setUseCase(e.target.value)}
@@ -391,7 +394,7 @@ const ProjectStart = () => {
                 </div>
                 <div>
                   <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-2">
-                    Stückzahl *
+                    Stückzahl (optional)
                   </label>
                   <p className="text-xs text-gray-500 mb-2">
                     Geplante Menge pro Abruf oder Auftrag.
@@ -401,7 +404,6 @@ const ProjectStart = () => {
                     id="quantity"
                     name="quantity"
                     min="1"
-                    required
                     value={quantity}
                     onFocus={handleFormStart}
                     onChange={(e) => setQuantity(e.target.value)}
@@ -411,13 +413,12 @@ const ProjectStart = () => {
                 </div>
                 <div>
                   <label htmlFor="deadline" className="block text-sm font-medium text-gray-700 mb-2">
-                    Gewünschter Termin *
+                    Gewünschter Termin (optional)
                   </label>
                   <input
                     type="date"
                     id="deadline"
                     name="deadline"
-                    required
                     value={deadline}
                     onFocus={handleFormStart}
                     onChange={(e) => setDeadline(e.target.value)}
@@ -429,7 +430,7 @@ const ProjectStart = () => {
                     htmlFor="material_pref"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Material / Anforderung *
+                    Material / Anforderung (optional)
                   </label>
                   <p className="text-xs text-gray-500 mb-2">
                     Nennen Sie Materialwunsch und Einsatzbedingungen (z. B. Temperatur, UV, Last).
@@ -438,7 +439,6 @@ const ProjectStart = () => {
                     type="text"
                     id="material_pref"
                     name="material_pref"
-                    required
                     value={materialPref}
                     onFocus={handleFormStart}
                     onChange={(e) => setMaterialPref(e.target.value)}
@@ -707,16 +707,20 @@ const ProjectStart = () => {
               </div>
               <div className="mt-4">
                 <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="message">
-                  Zusätzliche Hinweise
+                  Kurzbeschreibung Ihres Projekts *
                 </label>
+                <p className="text-xs text-gray-500 mb-1">
+                  Bitte kurz Einsatzfall oder Ziel beschreiben, damit wir passend rückmelden können.
+                </p>
                 <textarea
                   id="message"
                   name="message"
+                  required
                   rows={4}
                   value={message}
                   onFocus={handleFormStart}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Einsatzbedingungen, kritische Maße oder weitere Wünsche"
+                  placeholder="z. B. Ersatzteil für Förderanlage, temperaturbelastet, Stückzahl zunächst 10"
                   className={fieldClassName}
                 />
               </div>

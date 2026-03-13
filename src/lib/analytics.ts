@@ -1,4 +1,9 @@
-import { hasAnalyticsConsent, subscribeAnalyticsConsent } from './consent';
+import {
+  getAnalyticsConsentState,
+  hasAnalyticsConsent,
+  subscribeAnalyticsConsent,
+  type AnalyticsConsentState,
+} from './consent';
 
 const GA_MEASUREMENT_ID = (import.meta.env.VITE_GA_MEASUREMENT_ID ?? '').trim();
 
@@ -6,6 +11,17 @@ const ANALYTICS_DELAY_MS = 2500;
 let initialized = false;
 let pendingPagePath: string | null = null;
 let hasAttachedConsentListener = false;
+
+export type AnalyticsHealthSnapshot = {
+  consentState: AnalyticsConsentState;
+  measurementIdConfigured: boolean;
+  measurementIdSuffix: string | null;
+  initialized: boolean;
+  gtagReady: boolean;
+  dataLayerEntries: number;
+  pendingPagePath: string | null;
+  scriptPresent: boolean;
+};
 
 declare global {
   interface Window {
@@ -46,6 +62,15 @@ function flushPendingPageView(): void {
     page_path: path,
     page_location: `${window.location.origin}${path}`,
   });
+}
+
+function toMeasurementIdSuffix(id: string): string | null {
+  if (!id) {
+    return null;
+  }
+
+  const suffixLength = 4;
+  return id.length <= suffixLength ? id : id.slice(-suffixLength);
 }
 
 function bootstrapAnalytics(): void {
@@ -144,4 +169,34 @@ export function trackPageView(path: string): void {
     page_path: path,
     page_location: `${window.location.origin}${path}`,
   });
+}
+
+export function getAnalyticsHealthSnapshot(): AnalyticsHealthSnapshot {
+  if (typeof window === 'undefined') {
+    return {
+      consentState: 'unset',
+      measurementIdConfigured: Boolean(GA_MEASUREMENT_ID),
+      measurementIdSuffix: toMeasurementIdSuffix(GA_MEASUREMENT_ID),
+      initialized,
+      gtagReady: false,
+      dataLayerEntries: 0,
+      pendingPagePath,
+      scriptPresent: false,
+    };
+  }
+
+  const scriptPresent = Boolean(
+    document.querySelector('script[src*="googletagmanager.com/gtag/js?id="]'),
+  );
+
+  return {
+    consentState: getAnalyticsConsentState(),
+    measurementIdConfigured: Boolean(GA_MEASUREMENT_ID),
+    measurementIdSuffix: toMeasurementIdSuffix(GA_MEASUREMENT_ID),
+    initialized,
+    gtagReady: typeof window.gtag === 'function',
+    dataLayerEntries: Array.isArray(window.dataLayer) ? window.dataLayer.length : 0,
+    pendingPagePath,
+    scriptPresent,
+  };
 }

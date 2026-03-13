@@ -63,7 +63,11 @@ Hinweis: `VITE_*` Variablen sind Build-Variablen und erfordern ein neues Deploy.
 6. In GA4 Realtime prüfen:
    - `page_view` auf Danke-Seite
    - `lead_form_submitted`
-7. Fehler-Monitoring prüfen:
+7. Tracking-Healthcheck im Browser prüfen:
+   - `/?tracking_debug=1` aufrufen
+   - Panel auf `Consent`, `GA-ID gesetzt`, `gtag bereit`, `Script geladen` prüfen
+   - Optional `Testevent senden` klicken und in GA4 Realtime auf `tracking_healthcheck_ping` prüfen
+8. Fehler-Monitoring prüfen:
    - Testweise Netlify-Form-Erkennung deaktivieren (nur kurz in Staging) oder absichtlich 500 simulieren
    - Prüfen, dass Alert-Mail `"[ALERT] Formularfehler ..."` ankommt
 
