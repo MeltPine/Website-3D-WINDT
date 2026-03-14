@@ -1,10 +1,12 @@
-# Academy Sidecar (separater Track)
+# Academy Sidecar Prototype (nur Referenz)
 
-Diese App ist bewusst getrennt von der bestehenden B2B-Service-Seite.
+Dieses Verzeichnis ist nur noch Prototyp-Referenz.
+Die produktive Academy wird als eigenstaendiges Projekt in `academy-growth-site/`
+vorbereitet und danach in ein separates Repo ueberfuehrt.
 
-## Ziel
-- Marketing-starker Academy-Funnel als eigenes Projekt.
-- Bestehende B2B-Website bleibt stabil und wird nicht strategisch umgebaut.
+## Hinweis
+- Nicht als finales Zielsystem weiterentwickeln.
+- Fuer neue Umsetzung den Cutover-Guide nutzen: `docs/academy-repo-cutover.md`.
 
 ## Struktur
 - `index.html` -> Academy Landing + Lead Form

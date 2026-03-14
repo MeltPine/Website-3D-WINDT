@@ -1,0 +1,13 @@
+{
+  "name": "academy-growth-site",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Standalone academy funnel starter",
+  "scripts": {
+    "dev": "serve . -l 4173",
+    "check": "echo 'Static site: run manual QA + academy launch checklist'"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}

@@ -2,7 +2,7 @@
 
 ## Vor Go-Live
 1. Bestehende B2B-Seite unveraendert lassen (nur Bugfixes erlaubt).
-2. Academy auf eigenem Netlify-Projekt deployen (`academy/` als Root).
+2. Academy aus eigenem Repo deployen (Starter: `academy-growth-site/`).
 3. Eigene GA-Property fuer Academy nutzen.
 4. CTA-Links pruefen (`hero`, `offer`, `form`, `thank-you`).
 5. Netlify Form `academy-lead` nach erstem Testsubmit sichtbar.
