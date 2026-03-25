@@ -33,7 +33,7 @@ export default function ConsentBanner() {
   }
 
   const statusLabel =
-    consentState === 'granted' ? 'Analytics-Cookies sind aktiviert' : 'Nur notwendige Cookies sind aktiv';
+    consentState === 'granted' ? 'Statistik-Cookies sind aktiviert' : 'Nur notwendige Cookies sind aktiv';
 
   return (
     <div className="consent-banner fixed inset-x-0 bottom-0 z-[70] px-3 pb-3 sm:px-4 sm:pb-4">
@@ -47,7 +47,7 @@ export default function ConsentBanner() {
               <div>
                 <h2 className="text-sm font-semibold text-gray-900 dark:text-slate-100">Cookie-Einstellungen</h2>
                 <p className="mt-1 text-sm leading-relaxed text-gray-700 dark:text-slate-300">
-                  Wir verwenden optionale Analytics-Cookies (GA4), um die Nutzung unserer Website zu verbessern.
+                  Wir verwenden optionale Statistik-Cookies (GA4), um die Nutzung unserer Website zu verbessern.
                   Ohne Ihre Zustimmung bleibt Analytics deaktiviert. Details in der{' '}
                   <Link to="/datenschutz/" className="font-medium text-primary-700 underline hover:text-primary-800">
                     Datenschutzerklärung
@@ -81,7 +81,7 @@ export default function ConsentBanner() {
                 onClick={() => applyChoice(true)}
                 className="px-4 py-2 rounded-lg bg-primary-700 text-white text-sm font-semibold hover:bg-primary-800 transition-colors"
               >
-                Analytics-Cookies erlauben
+                Statistik-Cookies erlauben
               </button>
             </div>
             {consentState !== 'unset' && (
