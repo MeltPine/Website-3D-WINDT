@@ -7,6 +7,7 @@ import GlassSurface from '../components/GlassSurface';
 import { triggerLeadFollowup } from '../lib/leadFollowup';
 import { reportLeadError } from '../lib/leadAlert';
 import { CONTACT } from '../lib/brand';
+import { isLikelyApplicationLead } from '../lib/leadIntent';
 
 type FinishingOption = 'none' | 'basic' | 'premium';
 
@@ -157,6 +158,18 @@ const ProjectStart = () => {
     files.forEach((file) => payload.append('project_files', file));
     payload.set('estimated_price', 'individuelles_angebot');
 
+    if (isLikelyApplicationLead([useCase, company, message, name])) {
+      trackEvent('lead_form_filtered', {
+        form: 'project',
+        reason: 'application_keywords',
+      });
+      setStatus('error');
+      setSubmitError(
+        'Dieses Formular ist für Projektanfragen gedacht. Bewerbungen oder Jobanfragen können wir hier nicht bearbeiten.',
+      );
+      return;
+    }
+
     try {
       const response = await fetch('/', {
         method: 'POST',
@@ -238,6 +251,10 @@ const ProjectStart = () => {
           <p className="mt-3 text-sm text-gray-600 max-w-3xl mx-auto">
             Für die Anfrage reichen Name, E-Mail und eine kurze Beschreibung. Technische Details
             können Sie optional ergänzen, um ein präziseres Angebot zu erhalten.
+          </p>
+          <p className="mt-3 text-sm text-amber-900 max-w-3xl mx-auto rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
+            Dieses Formular ist ausschließlich für Kunden- und Projektanfragen gedacht.
+            Bewerbungen oder Jobanfragen können hier nicht bearbeitet werden.
           </p>
           <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3 text-left">
             {projectStartHighlights.map((item) => (
@@ -724,6 +741,18 @@ const ProjectStart = () => {
                 />
               </div>
               <div className="mt-4 bg-gray-50 p-4 rounded-lg">
+                <div className="flex items-start space-x-3 mb-4">
+                  <input
+                    type="checkbox"
+                    id="business_intent"
+                    name="business_intent"
+                    required
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-600 border-gray-300 rounded mt-1"
+                  />
+                  <label htmlFor="business_intent" className="text-sm text-gray-600">
+                    Ich sende eine geschäftliche Projektanfrage (keine Bewerbung). *
+                  </label>
+                </div>
                 <div className="flex items-start space-x-3">
                   <input
                     type="checkbox"

@@ -46,6 +46,7 @@ const About = () => {
     'Preisgetriebene Massenaufträge ohne technische Klärung',
     'Deko- und Geschenkartikel ohne industriellen Einsatzfokus',
     'Projekte mit unklaren Anforderungen, aber festen Sofortpreis-Erwartungen',
+    'Bewerbungen und Jobanfragen (dafür ist dieses Anfrageformular nicht vorgesehen)',
   ];
 
   const trustPoints = [

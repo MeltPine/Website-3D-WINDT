@@ -6,6 +6,7 @@ import GlassSurface from '../components/GlassSurface';
 import { BRAND, CONTACT } from '../lib/brand';
 import { triggerLeadFollowup } from '../lib/leadFollowup';
 import { reportLeadError } from '../lib/leadAlert';
+import { isLikelyApplicationLead } from '../lib/leadIntent';
 
 type ContactFormData = {
   name: string;
@@ -64,6 +65,18 @@ const Contact = () => {
 
     const form = e.currentTarget;
     const payload = new FormData(form);
+
+    if (isLikelyApplicationLead([formData.use_case, formData.company, formData.message])) {
+      trackEvent('lead_form_filtered', {
+        form: 'contact',
+        reason: 'application_keywords',
+      });
+      setStatus('error');
+      setErrorMessage(
+        'Dieses Formular ist für Kundenanfragen gedacht. Bewerbungen oder Jobanfragen können wir hier nicht bearbeiten.',
+      );
+      return;
+    }
 
     try {
       const response = await fetch('/', {
@@ -197,6 +210,13 @@ const Contact = () => {
               <p className="text-gray-700 mb-6">
                 Pflichtfelder: Name, E-Mail, Nachricht. Weitere Angaben können Sie optional ergänzen.
               </p>
+
+              <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 mb-6">
+                <p className="text-sm text-amber-900">
+                  Dieses Formular ist ausschließlich für Kundenanfragen aus Industrie und Produktion.
+                  Bewerbungen oder Jobanfragen können hier nicht bearbeitet werden.
+                </p>
+              </div>
 
               <div className="glass-lite p-4 mb-6">
                 <p className="text-sm text-gray-700">
@@ -355,6 +375,18 @@ const Contact = () => {
                 </div>
 
                 <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="flex items-start space-x-3 mb-4">
+                    <input
+                      type="checkbox"
+                      id="business_intent"
+                      name="business_intent"
+                      required
+                      className="h-4 w-4 text-primary-700 focus:ring-primary-600 border-gray-300 rounded mt-1"
+                    />
+                    <label htmlFor="business_intent" className="text-sm text-gray-600">
+                      Ich sende eine geschäftliche Anfrage (keine Bewerbung). *
+                    </label>
+                  </div>
                   <div className="flex items-start space-x-3">
                     <input
                       type="checkbox"

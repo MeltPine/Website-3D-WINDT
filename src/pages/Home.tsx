@@ -142,6 +142,7 @@ const Home = () => {
     'Reine Preisvergleichsanfragen ohne technische Angaben',
     'Unkritische Deko- oder Hobbydrucke ohne Industriebezug',
     'Anfragen mit unklarer Datei-/Materiallage und unrealistischem Expresswunsch',
+    'Bewerbungen und Jobanfragen (dafür ist dieses Anfrageformular nicht vorgesehen)',
   ];
 
   const faqItems = [
