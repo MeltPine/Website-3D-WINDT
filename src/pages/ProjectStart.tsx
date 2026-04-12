@@ -40,6 +40,7 @@ const ProjectStart = () => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [company, setCompany] = useState('');
+  const [roleInCompany, setRoleInCompany] = useState('');
   const [useCase, setUseCase] = useState('');
   const [quantity, setQuantity] = useState('');
   const [deadline, setDeadline] = useState('');
@@ -138,6 +139,7 @@ const ProjectStart = () => {
     setEmail('');
     setPhone('');
     setCompany('');
+    setRoleInCompany('');
     setUseCase('');
     setQuantity('');
     setDeadline('');
@@ -158,7 +160,7 @@ const ProjectStart = () => {
     files.forEach((file) => payload.append('project_files', file));
     payload.set('estimated_price', 'individuelles_angebot');
 
-    if (isLikelyApplicationLead([useCase, company, message, name])) {
+    if (isLikelyApplicationLead([roleInCompany, useCase, company, message, name])) {
       trackEvent('lead_form_filtered', {
         form: 'project',
         reason: 'application_keywords',
@@ -191,6 +193,7 @@ const ProjectStart = () => {
         email,
         phone,
         company,
+        role_in_company: roleInCompany,
         use_case: useCase || 'nicht_angegeben',
         quantity,
         deadline,
@@ -217,6 +220,7 @@ const ProjectStart = () => {
         lead_email: email || undefined,
         form_data: {
           use_case: useCase || 'nicht_angegeben',
+          role_in_company: roleInCompany || null,
           quantity,
           deadline,
           material_pref: materialPref,
@@ -705,20 +709,44 @@ const ProjectStart = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="company">
-                    Unternehmen
+                    Unternehmen *
                   </label>
                   <p className="text-xs text-gray-500 mb-1">
-                    Optional: Für schnellere Zuordnung Ihrer Anfrage.
+                    Bitte Firma, Werk oder Standort angeben.
                   </p>
                   <input
                     type="text"
                     id="company"
                     name="company"
+                    required
                     value={company}
                     onFocus={handleFormStart}
                     onChange={(e) => setCompany(e.target.value)}
                     className={fieldClassName}
                   />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="role_in_company">
+                    Rolle im Unternehmen *
+                  </label>
+                  <select
+                    id="role_in_company"
+                    name="role_in_company"
+                    required
+                    value={roleInCompany}
+                    onFocus={handleFormStart}
+                    onChange={(e) => setRoleInCompany(e.target.value)}
+                    className={fieldClassName}
+                  >
+                    <option value="">Bitte auswählen</option>
+                    <option value="instandhaltung">Instandhaltung</option>
+                    <option value="konstruktion_entwicklung">Konstruktion / Entwicklung</option>
+                    <option value="produktion_fertigung">Produktion / Fertigung</option>
+                    <option value="einkauf_beschaffung">Einkauf / Beschaffung</option>
+                    <option value="qualitaet">Qualität</option>
+                    <option value="geschaeftsfuehrung">Geschäftsführung / Leitung</option>
+                    <option value="sonstiges_geschaeftlich">Sonstiges (geschäftlich)</option>
+                  </select>
                 </div>
               </div>
               <div className="mt-4">

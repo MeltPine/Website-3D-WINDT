@@ -6,6 +6,7 @@ type LeadFollowupPayload = {
   email: string;
   phone?: string;
   company?: string;
+  role_in_company?: string;
   use_case?: string;
   quantity?: string;
   deadline?: string;

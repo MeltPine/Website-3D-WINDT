@@ -13,6 +13,7 @@ type ContactFormData = {
   email: string;
   phone: string;
   company: string;
+  role_in_company: string;
   use_case: string;
   message: string;
 };
@@ -22,6 +23,7 @@ const initialFormData: ContactFormData = {
   email: '',
   phone: '',
   company: '',
+  role_in_company: '',
   use_case: '',
   message: '',
 };
@@ -66,7 +68,14 @@ const Contact = () => {
     const form = e.currentTarget;
     const payload = new FormData(form);
 
-    if (isLikelyApplicationLead([formData.use_case, formData.company, formData.message])) {
+    if (
+      isLikelyApplicationLead([
+        formData.role_in_company,
+        formData.use_case,
+        formData.company,
+        formData.message,
+      ])
+    ) {
       trackEvent('lead_form_filtered', {
         form: 'contact',
         reason: 'application_keywords',
@@ -99,6 +108,7 @@ const Contact = () => {
         email: formData.email,
         phone: formData.phone,
         company: formData.company,
+        role_in_company: formData.role_in_company,
         use_case: formData.use_case || 'schnellkontakt',
         message: formData.message,
         source_path: '/kontakt/',
@@ -120,6 +130,7 @@ const Contact = () => {
         error_message: submitError,
         lead_email: formData.email || undefined,
         form_data: {
+          role_in_company: formData.role_in_company || null,
           use_case: formData.use_case || 'schnellkontakt',
           company: formData.company || null,
         },
@@ -208,7 +219,7 @@ const Contact = () => {
                 Schnellkontakt senden
               </h2>
               <p className="text-gray-700 mb-6">
-                Pflichtfelder: Name, E-Mail, Nachricht. Weitere Angaben können Sie optional ergänzen.
+                Pflichtfelder: Name, E-Mail, Unternehmen, Rolle im Unternehmen, Thema, Nachricht.
               </p>
 
               <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 mb-6">
@@ -318,19 +329,47 @@ const Contact = () => {
                       htmlFor="company"
                       className="block text-sm font-medium text-gray-700 mb-2"
                     >
-                      Unternehmen (optional)
+                      Unternehmen *
                     </label>
                     <input
                       type="text"
                       id="company"
                       name="company"
+                      required
                       value={formData.company}
                       onFocus={handleFormStart}
                       onChange={handleChange}
                       className={fieldClassName}
-                      placeholder="Unternehmen"
+                      placeholder="Unternehmen / Werk / Standort"
                     />
                   </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="role_in_company"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    Rolle im Unternehmen *
+                  </label>
+                  <select
+                    id="role_in_company"
+                    name="role_in_company"
+                    required
+                    value={formData.role_in_company}
+                    onFocus={handleFormStart}
+                    onChange={handleChange}
+                    className={fieldClassName}
+                  >
+                    <option value="">Bitte auswählen</option>
+                    <option value="instandhaltung">Instandhaltung</option>
+                    <option value="konstruktion_entwicklung">Konstruktion / Entwicklung</option>
+                    <option value="produktion_fertigung">Produktion / Fertigung</option>
+                    <option value="einkauf_beschaffung">Einkauf / Beschaffung</option>
+                    <option value="qualitaet">Qualität</option>
+                    <option value="geschaeftsfuehrung">Geschäftsführung / Leitung</option>
+                    <option value="sonstiges_geschaeftlich">Sonstiges (geschäftlich)</option>
+                  </select>
                 </div>
 
                 <div>
@@ -338,22 +377,26 @@ const Contact = () => {
                     htmlFor="use_case"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Thema (optional)
+                    Thema *
                   </label>
                   <select
                     id="use_case"
                     name="use_case"
+                    required
                     value={formData.use_case}
                     onFocus={handleFormStart}
                     onChange={handleChange}
                     className={fieldClassName}
                   >
                     <option value="">Bitte auswählen</option>
-                    <option value="rueckruf">Rückrufwunsch</option>
-                    <option value="projektabstimmung">Projektabstimmung</option>
-                    <option value="materialfrage">Materialfrage</option>
+                    <option value="ersatzteilbedarf">Ersatzteilbedarf</option>
+                    <option value="prototyping">Prototyping</option>
+                    <option value="vorrichtung_montagehilfe">Vorrichtung / Montagehilfe</option>
+                    <option value="kleinserie">Kleinserie</option>
+                    <option value="material_toleranzklaerung">Material- / Toleranzklärung</option>
                     <option value="bestehender_auftrag">Bestehender Auftrag</option>
-                    <option value="sonstiges">Sonstiges</option>
+                    <option value="rueckruf">Rückrufwunsch</option>
+                    <option value="sonstiges_b2b">Sonstiges (B2B)</option>
                   </select>
                 </div>
 

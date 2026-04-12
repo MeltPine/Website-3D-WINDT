@@ -13,6 +13,14 @@ const APPLICATION_PATTERNS: RegExp[] = [
   /\bstelle(?:n)?\b/i,
   /\bkarriere\b/i,
   /\binitiativbewerb(?:ung)?\b/i,
+  /\bresume\b/i,
+  /\bcover\s*letter\b/i,
+  /\binternship\b/i,
+  /\btrainee\b/i,
+  /\bjob\s*application\b/i,
+  /\bvacanc(?:y|ies)\b/i,
+  /\bhiring\b/i,
+  /\bcareer(?:s)?\b/i,
 ];
 
 export function isLikelyApplicationLead(values: Array<string | null | undefined>): boolean {

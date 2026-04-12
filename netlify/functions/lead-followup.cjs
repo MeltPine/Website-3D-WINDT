@@ -74,6 +74,7 @@ exports.handler = async function handler(event) {
   const email = cleanString(payload.email).toLowerCase();
   const phone = cleanString(payload.phone);
   const company = cleanString(payload.company);
+  const roleInCompany = cleanString(payload.role_in_company);
   const useCase = cleanString(payload.use_case);
   const quantity = cleanString(payload.quantity);
   const deadline = cleanString(payload.deadline);
@@ -118,6 +119,7 @@ exports.handler = async function handler(event) {
   const safeMaterial = escapeHtml(materialPref || 'Keine Angabe');
   const safeBudget = escapeHtml(budgetBand || 'Keine Angabe');
   const safePhone = escapeHtml(phone || 'Keine Angabe');
+  const safeRoleInCompany = escapeHtml(roleInCompany || 'Keine Angabe');
   const safeMessage = escapeHtml(message || 'Keine Angabe');
   const safeSourcePath = escapeHtml(sourcePath || 'unbekannt');
   const safeFiles = fileNames.length > 0 ? escapeHtml(fileNames.join(', ')) : 'Keine Datei übermittelt';
@@ -140,6 +142,7 @@ exports.handler = async function handler(event) {
       <li>E-Mail: ${escapeHtml(email)}</li>
       <li>Telefon: ${safePhone}</li>
       <li>Firma: ${safeCompany}</li>
+      <li>Rolle im Unternehmen: ${safeRoleInCompany}</li>
       <li>Anwendungsfall: ${safeUseCase}</li>
       <li>Stückzahl: ${safeQuantity}</li>
       <li>Termin: ${safeDeadline}</li>

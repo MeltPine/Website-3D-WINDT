@@ -81,6 +81,12 @@ const Services = () => {
                   Von der technischen Klärung bis zur Auslieferung: Wir unterstützen Produktion,
                   Instandhaltung und Entwicklung mit professionellem 3D-Druck Service.
                 </p>
+                <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
+                  <p className="text-sm text-amber-900">
+                    Diese Leistungen sind für Industrie- und B2B-Anfragen gedacht. Bewerbungen oder
+                    Jobanfragen werden über diese Formulare nicht bearbeitet.
+                  </p>
+                </div>
                 <div className="mt-6 flex flex-col sm:flex-row gap-3">
                   <Link
                     to="/projekt-starten/"
