@@ -1,16 +1,16 @@
 import {
   getAnalyticsConsentState,
-  hasAnalyticsConsent,
   subscribeAnalyticsConsent,
   type AnalyticsConsentState,
 } from './consent';
 
 const GA_MEASUREMENT_ID = (import.meta.env.VITE_GA_MEASUREMENT_ID ?? '').trim();
 
-const ANALYTICS_DELAY_MS = 2500;
 let initialized = false;
 let pendingPagePath: string | null = null;
 let hasAttachedConsentListener = false;
+type ConsentModeCommand = 'default' | 'update';
+type ConsentModeState = 'granted' | 'denied';
 
 export type AnalyticsHealthSnapshot = {
   consentState: AnalyticsConsentState;
@@ -64,6 +64,26 @@ function flushPendingPageView(): void {
   });
 }
 
+function toConsentModeState(state: AnalyticsConsentState): ConsentModeState {
+  return state === 'granted' ? 'granted' : 'denied';
+}
+
+function applyConsentMode(command: ConsentModeCommand, state: AnalyticsConsentState): void {
+  if (typeof window.gtag !== 'function') {
+    return;
+  }
+
+  const analyticsStorage = toConsentModeState(state);
+  window.gtag('consent', command, {
+    analytics_storage: analyticsStorage,
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    functionality_storage: 'granted',
+    security_storage: 'granted',
+  });
+}
+
 function toMeasurementIdSuffix(id: string): string | null {
   if (!id) {
     return null;
@@ -74,12 +94,13 @@ function toMeasurementIdSuffix(id: string): string | null {
 }
 
 function bootstrapAnalytics(): void {
-  if (initialized || typeof window === 'undefined' || !GA_MEASUREMENT_ID || !hasAnalyticsConsent()) {
+  if (initialized || typeof window === 'undefined' || !GA_MEASUREMENT_ID) {
     return;
   }
 
   initialized = true;
   ensureDataLayerStub();
+  applyConsentMode('default', getAnalyticsConsentState());
 
   injectScript(
     'ga4-script-fallback',
@@ -102,25 +123,12 @@ function ensureConsentListener(): void {
 
   hasAttachedConsentListener = true;
   subscribeAnalyticsConsent((state) => {
-    if (state === 'granted') {
+    if (!initialized) {
       bootstrapAnalytics();
     }
+    applyConsentMode('update', state);
+    flushPendingPageView();
   });
-}
-
-function scheduleBootstrap(): void {
-  if (typeof window === 'undefined') {
-    return;
-  }
-
-  if (typeof window.requestIdleCallback === 'function') {
-    window.requestIdleCallback(() => bootstrapAnalytics(), {
-      timeout: ANALYTICS_DELAY_MS,
-    });
-    return;
-  }
-
-  window.setTimeout(() => bootstrapAnalytics(), ANALYTICS_DELAY_MS);
 }
 
 export function initAnalytics(): void {
@@ -129,25 +137,16 @@ export function initAnalytics(): void {
   }
 
   ensureConsentListener();
-  if (!hasAnalyticsConsent()) {
-    return;
-  }
 
   // If GA is already present in static HTML snippet, use it directly.
   if (typeof window.gtag === 'function') {
     initialized = true;
+    applyConsentMode('default', getAnalyticsConsentState());
     flushPendingPageView();
     return;
   }
 
-  ensureDataLayerStub();
-
-  const activate = () => bootstrapAnalytics();
-  window.addEventListener('pointerdown', activate, { once: true, passive: true });
-  window.addEventListener('keydown', activate, { once: true });
-  window.addEventListener('scroll', activate, { once: true, passive: true });
-
-  scheduleBootstrap();
+  bootstrapAnalytics();
 }
 
 export function trackPageView(path: string): void {
@@ -155,13 +154,11 @@ export function trackPageView(path: string): void {
     return;
   }
 
-  if (!hasAnalyticsConsent()) {
-    pendingPagePath = path;
-    return;
-  }
-
   if (!initialized || typeof window.gtag !== 'function') {
     pendingPagePath = path;
+    if (!initialized) {
+      bootstrapAnalytics();
+    }
     return;
   }
 

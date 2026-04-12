@@ -48,7 +48,7 @@ export default function ConsentBanner() {
                 <h2 className="text-sm font-semibold text-gray-900 dark:text-slate-100">Cookie-Einstellungen</h2>
                 <p className="mt-1 text-sm leading-relaxed text-gray-700 dark:text-slate-300">
                   Wir verwenden optionale Statistik-Cookies (GA4), um die Nutzung unserer Website zu verbessern.
-                  Ohne Ihre Zustimmung bleibt Analytics deaktiviert. Details in der{' '}
+                  Ohne Ihre Zustimmung werden keine Statistik-Cookies gesetzt. Details in der{' '}
                   <Link to="/datenschutz/" className="font-medium text-primary-700 underline hover:text-primary-800">
                     Datenschutzerklärung
                   </Link>

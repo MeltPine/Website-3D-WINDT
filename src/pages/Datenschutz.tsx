@@ -85,7 +85,7 @@ const Datenschutz = () => {
                 </h3>
                 <p>
                   Sofern Sie zustimmen, nutzen wir Google Analytics 4 (GA4), um Seitenaufrufe und
-                  Formularprozesse auszuwerten. Ohne Einwilligung bleibt Analytics deaktiviert.
+                  Formularprozesse auszuwerten. Ohne Einwilligung werden keine Statistik-Cookies gesetzt.
                 </p>
                 <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mt-3 text-sm text-blue-800">
                   <p>
@@ -110,7 +110,7 @@ const Datenschutz = () => {
               <ul className="list-disc list-inside space-y-1">
                 <li>Netlify (Hosting, Form-Verarbeitung, technische Logs)</li>
                 <li>Resend (Versand von Eingangs- und Alert-E-Mails)</li>
-                <li>Google (GA4, nur nach Einwilligung)</li>
+                <li>Google (GA4, Statistik-Cookies nur nach Einwilligung)</li>
               </ul>
             </div>
           </section>
@@ -128,7 +128,7 @@ const Datenschutz = () => {
               <ul className="list-disc list-inside space-y-1">
                 <li>Projekt- und Kontaktdaten: in der Regel bis zu 24 Monate nach Abschluss</li>
                 <li>Technische Server-Logs: in der Regel bis zu 30 Tage</li>
-                <li>Analytics-Daten (GA4): gemaess Google-Konfiguration, nur nach Einwilligung</li>
+                <li>Analytics-Daten (GA4): gemaess Google-Konfiguration, Statistik-Cookies nur nach Einwilligung</li>
               </ul>
               <p>
                 Anfrage- und Projektdaten werden regelmaessig ueberprueft und bei Wegfall des
