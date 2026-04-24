@@ -224,8 +224,8 @@ const Home = () => {
 
               <div className="mt-4 glass-lite px-4 py-3">
                 <p className="text-sm text-gray-700">
-                  Schnellstart: Für die erste Anfrage reichen Name, E-Mail und eine kurze
-                  Projektbeschreibung. Datei-Details können nachgereicht werden.
+                  Schnellstart: Für die erste Anfrage reichen Kontaktdaten, Unternehmen, Rolle und
+                  eine kurze Projektbeschreibung. Datei-Details können nachgereicht werden.
                 </p>
               </div>
 

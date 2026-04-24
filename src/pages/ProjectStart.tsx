@@ -253,8 +253,8 @@ const ProjectStart = () => {
             Datei hochladen, Anforderungen hinterlegen und ein belastbares Angebot erhalten
           </p>
           <p className="mt-3 text-sm text-gray-600 max-w-3xl mx-auto">
-            Für die Anfrage reichen Name, E-Mail und eine kurze Beschreibung. Technische Details
-            können Sie optional ergänzen, um ein präziseres Angebot zu erhalten.
+            Für die Anfrage reichen Kontaktdaten, Unternehmen, Rolle und eine kurze Beschreibung.
+            Technische Details können Sie optional ergänzen, um ein präziseres Angebot zu erhalten.
           </p>
           <p className="mt-3 text-sm text-amber-900 max-w-3xl mx-auto rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
             Dieses Formular ist ausschließlich für Kunden- und Projektanfragen gedacht.

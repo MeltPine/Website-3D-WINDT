@@ -1,1 +1,9 @@
+# Alte WordPress-/Blog-Pfade aus Google sauber in den neuen Wissensbereich führen.
+/2025/*    /wissen/   301
+/2024/*    /wissen/   301
+/2023/*    /wissen/   301
+/category/*    /wissen/   301
+/tag/*    /wissen/   301
+/author/*    /ueber-uns/   301
+
 /*    /index.html   200
