@@ -5,6 +5,19 @@ const SALES_STEPS = [
   'Angebot mit Lieferfenster',
 ];
 
+const ATTRIBUTION_FIELDS = [
+  ['Landingpage', 'landing_page'],
+  ['Referrer', 'initial_referrer'],
+  ['UTM Source', 'utm_source'],
+  ['UTM Medium', 'utm_medium'],
+  ['UTM Campaign', 'utm_campaign'],
+  ['UTM Term', 'utm_term'],
+  ['UTM Content', 'utm_content'],
+  ['Google Click ID', 'gclid'],
+  ['Google GBRAID', 'gbraid'],
+  ['Google WBRAID', 'wbraid'],
+];
+
 function cleanString(value) {
   if (typeof value !== 'string') {
     return '';
@@ -85,6 +98,12 @@ exports.handler = async function handler(event) {
   const fileNames = Array.isArray(payload.file_names)
     ? payload.file_names.filter((item) => typeof item === 'string').map((item) => item.trim())
     : [];
+  const attributionRows = ATTRIBUTION_FIELDS.map(([label, key]) => {
+    const value = cleanString(payload[key]);
+    return value ? `<li>${escapeHtml(label)}: ${escapeHtml(value)}</li>` : '';
+  })
+    .filter(Boolean)
+    .join('');
 
   if (!email) {
     return {
@@ -150,6 +169,7 @@ exports.handler = async function handler(event) {
       <li>Projektumfang: ${safeBudget}</li>
       <li>Dateien: ${safeFiles}</li>
       <li>Quelle: ${safeSourcePath}</li>
+      ${attributionRows}
       <li>Nachricht: ${safeMessage}</li>
     </ul>
     <p><strong>Vertriebsstatus:</strong> Neu eingegangen - Antwortziel innerhalb 24h.</p>

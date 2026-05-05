@@ -2,6 +2,8 @@ import { BRAND, CONTACT, SITE } from './brand';
 import { knowledgePages, knowledgePath, knowledgeRouteKey } from './knowledgePages';
 
 export const SITE_URL = SITE.url;
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/logo/3dw-logo-full.webp`;
+export const DEFAULT_OG_IMAGE_ALT = `${BRAND.publicName} Logo - industrieller 3D-Druck Service`;
 
 export type SeoSchema = Record<string, unknown> | Array<Record<string, unknown>>;
 export type RobotsValue = 'index,follow' | 'noindex,nofollow';
@@ -13,17 +15,65 @@ export interface RouteSeoConfig {
   robots?: RobotsValue;
   ogType?: 'website' | 'article';
   schema?: SeoSchema;
+  image?: string;
+  imageAlt?: string;
 }
 
-const organizationSchema = {
+const offerCatalogSchema = {
+  '@type': 'OfferCatalog',
+  name: 'Industrieller 3D-Druck Service',
+  itemListElement: [
+    {
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        name: 'Ersatzteile 3D-Druck',
+        serviceType: 'Additive Fertigung von Ersatzteilen',
+      },
+    },
+    {
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        name: 'Prototypenfertigung per 3D-Druck',
+        serviceType: 'Prototypenbau und Iterationsfertigung',
+      },
+    },
+    {
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        name: 'Montagehilfen und Vorrichtungen',
+        serviceType: 'Fertigung produktionsnaher Hilfsmittel',
+      },
+    },
+  ],
+};
+
+const businessSchema = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
+  '@type': 'LocalBusiness',
+  '@id': `${SITE_URL}/#business`,
   name: BRAND.publicName,
   alternateName: BRAND.shortName,
   legalName: BRAND.legalName,
+  description:
+    'Industrieller 3D-Druck Service fuer Maschinenbau, Produktion, Anlagenbau und Werkstaetten.',
   url: SITE_URL,
+  image: DEFAULT_OG_IMAGE,
   email: CONTACT.email,
   telephone: CONTACT.phone,
+  priceRange: 'Nach Angebot',
+  areaServed: [
+    {
+      '@type': 'Country',
+      name: 'Deutschland',
+    },
+    {
+      '@type': 'AdministrativeArea',
+      name: 'Rhein-Main-Gebiet',
+    },
+  ],
   address: {
     '@type': 'PostalAddress',
     streetAddress: CONTACT.streetAddress,
@@ -31,6 +81,46 @@ const organizationSchema = {
     addressLocality: CONTACT.city,
     addressCountry: CONTACT.countryCode,
   },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '17:00',
+    },
+  ],
+  hasOfferCatalog: offerCatalogSchema,
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Wie schnell erhalten wir eine Rueckmeldung?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'In der Regel erhalten Sie innerhalb von 24 Stunden eine qualifizierte technische Einschaetzung.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Welche Materialien sind fuer industrielle Anwendungen verfuegbar?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Je nach Einsatzfall arbeitet 3D-WINDT unter anderem mit ABS, ASA, PC, PA-basierten Werkstoffen und TPU sowie weiteren technischen Materialien auf Anfrage.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Welche Genauigkeit ist beim 3D-Druck realistisch?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Die erreichbare Genauigkeit haengt von Geometrie, Material und Funktion ab. Relevante Toleranzen werden vor Produktionsstart abgestimmt.',
+      },
+    },
+  ],
 };
 
 const baseRouteSeo: Record<string, RouteSeoConfig> = {
@@ -40,13 +130,14 @@ const baseRouteSeo: Record<string, RouteSeoConfig> = {
       'Industrieller 3D-Druck Service fuer Maschinenbau, Produktion und Werkstaetten: Ersatzteile, Prototypenfertigung und Vorrichtungen mit technischer Pruefung, klaren Lieferfenstern und Rueckmeldung in der Regel innerhalb von 24 Stunden.',
     path: '/',
     schema: [
-      organizationSchema,
+      businessSchema,
       {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
         name: BRAND.publicName,
         url: SITE_URL,
       },
+      faqSchema,
     ],
   },
   '/leistungen': {
@@ -59,10 +150,12 @@ const baseRouteSeo: Record<string, RouteSeoConfig> = {
       '@type': 'Service',
       serviceType: '3D-Druck Dienstleistung',
       provider: {
-        '@type': 'Organization',
+        '@type': 'LocalBusiness',
         name: BRAND.publicName,
+        url: SITE_URL,
       },
       areaServed: 'Deutschland',
+      hasOfferCatalog: offerCatalogSchema,
     },
   },
   '/ersatzteile-3d-drucken': {

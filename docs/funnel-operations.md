@@ -91,3 +91,8 @@ Hinweis: `VITE_*` Variablen sind Build-Variablen und erfordern ein neues Deploy.
   - `lead_form_submitted`
   - `generate_lead`
 - `generate_lead` wird beim Formular-Submit automatisch mitgesendet.
+
+## Google-/Funnel-Finalisierung
+- Aktuelle Kontrollliste: `docs/google-funnel-final-checklist.md`
+- Wichtig: Search Console und GA4 koennen technisch vorbereitet werden, aber die finale Bestaetigung muss im jeweiligen Google-Konto erfolgen.
+- Lead-Attribution wird bei neuen Formularen automatisch mitgespeichert (`landing_page`, `initial_referrer`, `utm_*`, `gclid`, `gbraid`, `wbraid`).

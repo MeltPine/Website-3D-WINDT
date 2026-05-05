@@ -15,6 +15,16 @@ type LeadFollowupPayload = {
   message?: string;
   source_path: string;
   file_names?: string[];
+  landing_page?: string;
+  initial_referrer?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_term?: string;
+  utm_content?: string;
+  gclid?: string;
+  gbraid?: string;
+  wbraid?: string;
 };
 
 export async function triggerLeadFollowup(payload: LeadFollowupPayload): Promise<void> {

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { SITE_URL, type SeoSchema } from '../lib/seo';
+import { BRAND } from '../lib/brand';
+import { DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_ALT, SITE_URL, type SeoSchema } from '../lib/seo';
 
 interface SeoProps {
   title: string;
@@ -8,6 +9,8 @@ interface SeoProps {
   ogType?: 'website' | 'article';
   schema?: SeoSchema;
   robots?: 'index,follow' | 'noindex,nofollow';
+  image?: string;
+  imageAlt?: string;
 }
 
 function upsertMetaByName(name: string, content: string): void {
@@ -47,6 +50,8 @@ export default function Seo({
   ogType = 'website',
   schema,
   robots = 'index,follow',
+  image = DEFAULT_OG_IMAGE,
+  imageAlt = DEFAULT_OG_IMAGE_ALT,
 }: SeoProps): null {
   useEffect(() => {
     const canonicalUrl = new URL(path, SITE_URL).toString();
@@ -54,12 +59,18 @@ export default function Seo({
 
     upsertMetaByName('description', description);
     upsertMetaByProperty('og:type', ogType);
+    upsertMetaByProperty('og:locale', 'de_DE');
+    upsertMetaByProperty('og:site_name', BRAND.publicName);
     upsertMetaByProperty('og:title', title);
     upsertMetaByProperty('og:description', description);
     upsertMetaByProperty('og:url', canonicalUrl);
+    upsertMetaByProperty('og:image', image);
+    upsertMetaByProperty('og:image:alt', imageAlt);
     upsertMetaByName('twitter:card', 'summary');
     upsertMetaByName('twitter:title', title);
     upsertMetaByName('twitter:description', description);
+    upsertMetaByName('twitter:image', image);
+    upsertMetaByName('twitter:image:alt', imageAlt);
     upsertMetaByName('robots', robots);
     upsertCanonical(canonicalUrl);
 
@@ -75,7 +86,7 @@ export default function Seo({
       script.textContent = JSON.stringify(schema);
       document.head.appendChild(script);
     }
-  }, [title, description, path, ogType, schema, robots]);
+  }, [title, description, path, ogType, schema, robots, image, imageAlt]);
 
   return null;
 }

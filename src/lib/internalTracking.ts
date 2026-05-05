@@ -1,3 +1,5 @@
+import { ATTRIBUTION_FIELD_NAMES, getAttributionFields } from './attribution';
+
 type InternalTrackingPayload = Record<string, string | number | boolean | null>;
 
 const INTERNAL_TRACKING_ENABLED = (import.meta.env.VITE_INTERNAL_TRACKING_ENABLED ?? '1').trim() !== '0';
@@ -61,6 +63,14 @@ function buildBody(eventName: string, payload: InternalTrackingPayload): URLSear
   params.set('session_id', getSessionId());
   params.set('occurred_at', new Date().toISOString());
   params.set('payload_json', payloadToJson(payload));
+
+  const attributionFields = getAttributionFields();
+  ATTRIBUTION_FIELD_NAMES.forEach((fieldName) => {
+    const value = attributionFields[fieldName];
+    if (value) {
+      params.set(fieldName, value);
+    }
+  });
 
   const formName = payload.form;
   if (typeof formName === 'string' && formName) {

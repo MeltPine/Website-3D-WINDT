@@ -8,6 +8,9 @@ const rootDir = path.resolve(__dirname, '..');
 const distDir = path.join(rootDir, 'dist');
 const distServerDir = path.join(rootDir, 'dist-server');
 const SITE_URL = 'https://3d-windt.de';
+const SITE_NAME = '3D-WINDT';
+const DEFAULT_OG_IMAGE = `${SITE_URL}/logo/3dw-logo-full.webp`;
+const DEFAULT_OG_IMAGE_ALT = '3D-WINDT Logo - industrieller 3D-Druck Service';
 const GOOGLE_SITE_VERIFICATION = (process.env.VITE_GOOGLE_SITE_VERIFICATION ?? '').trim();
 
 const coreRoutes = [
@@ -91,18 +94,26 @@ function upsertTag(html, regex, tag) {
 function addSeoTags(html, seo) {
   const canonical = new URL(seo.path, SITE_URL).toString();
   const robotsValue = seo.robots ?? 'index,follow';
+  const image = seo.image ?? DEFAULT_OG_IMAGE;
+  const imageAlt = seo.imageAlt ?? DEFAULT_OG_IMAGE_ALT;
 
   const title = `<title>${escapeHtml(seo.title)}</title>`;
   const description = `<meta name="description" content="${escapeHtml(seo.description)}" />`;
   const robotsTag = `<meta name="robots" content="${escapeHtml(robotsValue)}" data-prerender-seo="robots" />`;
   const canonicalTag = `<link rel="canonical" href="${escapeHtml(canonical)}" data-prerender-seo="canonical" />`;
   const ogTypeTag = `<meta property="og:type" content="${escapeHtml(seo.ogType ?? 'website')}" data-prerender-seo="og:type" />`;
+  const ogLocaleTag = '<meta property="og:locale" content="de_DE" data-prerender-seo="og:locale" />';
+  const ogSiteNameTag = `<meta property="og:site_name" content="${escapeHtml(SITE_NAME)}" data-prerender-seo="og:site_name" />`;
   const ogTitleTag = `<meta property="og:title" content="${escapeHtml(seo.title)}" data-prerender-seo="og:title" />`;
   const ogDescriptionTag = `<meta property="og:description" content="${escapeHtml(seo.description)}" data-prerender-seo="og:description" />`;
   const ogUrlTag = `<meta property="og:url" content="${escapeHtml(canonical)}" data-prerender-seo="og:url" />`;
+  const ogImageTag = `<meta property="og:image" content="${escapeHtml(image)}" data-prerender-seo="og:image" />`;
+  const ogImageAltTag = `<meta property="og:image:alt" content="${escapeHtml(imageAlt)}" data-prerender-seo="og:image:alt" />`;
   const twitterCardTag = '<meta name="twitter:card" content="summary" data-prerender-seo="twitter:card" />';
   const twitterTitleTag = `<meta name="twitter:title" content="${escapeHtml(seo.title)}" data-prerender-seo="twitter:title" />`;
   const twitterDescriptionTag = `<meta name="twitter:description" content="${escapeHtml(seo.description)}" data-prerender-seo="twitter:description" />`;
+  const twitterImageTag = `<meta name="twitter:image" content="${escapeHtml(image)}" data-prerender-seo="twitter:image" />`;
+  const twitterImageAltTag = `<meta name="twitter:image:alt" content="${escapeHtml(imageAlt)}" data-prerender-seo="twitter:image:alt" />`;
 
   let output = html;
   output = output.replace(/<title>.*?<\/title>/is, title);
@@ -117,12 +128,18 @@ function addSeoTags(html, seo) {
     robotsTag,
     canonicalTag,
     ogTypeTag,
+    ogLocaleTag,
+    ogSiteNameTag,
     ogTitleTag,
     ogDescriptionTag,
     ogUrlTag,
+    ogImageTag,
+    ogImageAltTag,
     twitterCardTag,
     twitterTitleTag,
     twitterDescriptionTag,
+    twitterImageTag,
+    twitterImageAltTag,
   ];
 
   tags.forEach((tag) => {

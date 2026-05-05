@@ -7,6 +7,7 @@ import { BRAND, CONTACT } from '../lib/brand';
 import { triggerLeadFollowup } from '../lib/leadFollowup';
 import { reportLeadError } from '../lib/leadAlert';
 import { isLikelyApplicationLead } from '../lib/leadIntent';
+import { appendAttributionToFormData, getAttributionFields } from '../lib/attribution';
 
 type ContactFormData = {
   name: string;
@@ -67,6 +68,8 @@ const Contact = () => {
 
     const form = e.currentTarget;
     const payload = new FormData(form);
+    appendAttributionToFormData(payload);
+    const attributionFields = getAttributionFields();
 
     if (
       isLikelyApplicationLead([
@@ -100,6 +103,8 @@ const Contact = () => {
       trackEvent('lead_form_submitted', {
         form: 'contact',
         use_case: formData.use_case || 'schnellkontakt',
+        landing_page: attributionFields.landing_page || 'unknown',
+        utm_source: attributionFields.utm_source || 'direct',
       });
 
       void triggerLeadFollowup({
@@ -112,6 +117,7 @@ const Contact = () => {
         use_case: formData.use_case || 'schnellkontakt',
         message: formData.message,
         source_path: '/kontakt/',
+        ...attributionFields,
       });
 
       setFormData(initialFormData);

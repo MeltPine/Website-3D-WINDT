@@ -8,6 +8,7 @@ import { triggerLeadFollowup } from '../lib/leadFollowup';
 import { reportLeadError } from '../lib/leadAlert';
 import { CONTACT } from '../lib/brand';
 import { isLikelyApplicationLead } from '../lib/leadIntent';
+import { appendAttributionToFormData, getAttributionFields } from '../lib/attribution';
 
 type FinishingOption = 'none' | 'basic' | 'premium';
 
@@ -156,6 +157,8 @@ const ProjectStart = () => {
 
     const form = event.currentTarget;
     const payload = new FormData(form);
+    appendAttributionToFormData(payload);
+    const attributionFields = getAttributionFields();
     payload.delete('project_files');
     files.forEach((file) => payload.append('project_files', file));
     payload.set('estimated_price', 'individuelles_angebot');
@@ -185,6 +188,8 @@ const ProjectStart = () => {
       trackEvent('lead_form_submitted', {
         form: 'project',
         use_case: useCase || 'nicht_angegeben',
+        landing_page: attributionFields.landing_page || 'unknown',
+        utm_source: attributionFields.utm_source || 'direct',
       });
 
       void triggerLeadFollowup({
@@ -202,6 +207,7 @@ const ProjectStart = () => {
         message,
         source_path: '/projekt-starten/',
         file_names: files.map((file) => file.name),
+        ...attributionFields,
       });
 
       form.reset();

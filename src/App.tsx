@@ -11,6 +11,7 @@ import ConsentBanner from './components/ConsentBanner';
 import { normalizePathname, toTrailingSlashPath } from './lib/routes';
 import { ThemeProvider } from './lib/theme';
 import TrackingHealthPanel from './components/TrackingHealthPanel';
+import { captureAttribution } from './lib/attribution';
 
 const AppContent = () => {
   const location = useLocation();
@@ -18,8 +19,13 @@ const AppContent = () => {
   const seoConfig = routeSeo[normalizedPath] ?? routeSeo['/404'] ?? routeSeo['/'];
 
   useEffect(() => {
+    captureAttribution();
     initAnalytics();
   }, []);
+
+  useEffect(() => {
+    captureAttribution();
+  }, [normalizedPath, location.search]);
 
   useEffect(() => {
     const analyticsPath = `${toTrailingSlashPath(normalizedPath)}${location.search}`;
@@ -35,6 +41,8 @@ const AppContent = () => {
         schema={seoConfig.schema}
         ogType={seoConfig.ogType}
         robots={seoConfig.robots}
+        image={seoConfig.image}
+        imageAlt={seoConfig.imageAlt}
       />
       <Header />
       <main className="flex-1">
