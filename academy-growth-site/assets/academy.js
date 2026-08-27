@@ -4,6 +4,8 @@
   const gaMeasurementId = root.dataset.gaMeasurementId || '';
   let analyticsEnabled = false;
 
+  /* ── Consent ────────────────────────────────────────────────── */
+
   function readConsent() {
     try {
       return window.localStorage.getItem(CONSENT_KEY) || 'unset';
@@ -19,6 +21,8 @@
       // Ignore storage write failures.
     }
   }
+
+  /* ── GA4 / gtag ─────────────────────────────────────────────── */
 
   function loadGtag(id) {
     if (!id || document.querySelector('script[data-academy-gtag="1"]')) {
@@ -56,6 +60,8 @@
       console.info('[academy-track]', eventName, payload);
     }
   }
+
+  /* ── Cookie Consent Banner ──────────────────────────────────── */
 
   function setupConsentBanner() {
     const banner = document.getElementById('cookieBanner');
@@ -99,6 +105,8 @@
     });
   }
 
+  /* ── CTA Tracking ───────────────────────────────────────────── */
+
   function setupCtaTracking() {
     document.querySelectorAll('[data-track-cta]').forEach((element) => {
       element.addEventListener('click', () => {
@@ -112,6 +120,8 @@
       });
     });
   }
+
+  /* ── Lead Form ──────────────────────────────────────────────── */
 
   function setupLeadForm() {
     const form = document.getElementById('academyLeadForm');
@@ -130,6 +140,7 @@
       const submitButton = form.querySelector('button[type="submit"]');
       if (submitButton instanceof HTMLButtonElement) {
         submitButton.disabled = true;
+        submitButton.textContent = 'Wird gesendet…';
       }
 
       const formData = new FormData(form);
@@ -157,10 +168,13 @@
       } finally {
         if (submitButton instanceof HTMLButtonElement) {
           submitButton.disabled = false;
+          submitButton.textContent = 'Anfrage senden';
         }
       }
     });
   }
+
+  /* ── Purchase Marker (Thank-You Page) ───────────────────────── */
 
   function setupPurchaseMarker() {
     const button = document.getElementById('markPurchaseBtn');
@@ -172,15 +186,176 @@
       track('academy_purchase', {
         source: 'thank_you_demo_button',
       });
-      button.textContent = 'Purchase-Event gesendet';
+      button.textContent = 'Purchase-Event gesendet ✓';
       button.disabled = true;
     });
   }
+
+  /* ── Scroll Reveal (IntersectionObserver) ────────────────────── */
+
+  function setupScrollReveal() {
+    const revealElements = document.querySelectorAll('.reveal');
+    if (revealElements.length === 0) {
+      return;
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      revealElements.forEach((el) => el.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.08,
+        rootMargin: '0px 0px -40px 0px',
+      }
+    );
+
+    revealElements.forEach((el) => observer.observe(el));
+  }
+
+  /* ── Sticky Header Scroll State ─────────────────────────────── */
+
+  function setupStickyHeader() {
+    const header = document.getElementById('siteHeader');
+    if (!header) {
+      return;
+    }
+
+    let ticking = false;
+    const scrollThreshold = 60;
+
+    function updateHeader() {
+      if (window.scrollY > scrollThreshold) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateHeader);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    updateHeader();
+  }
+
+  /* ── Smooth Scroll for Anchor Links ─────────────────────────── */
+
+  function setupSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener('click', (e) => {
+        const targetId = anchor.getAttribute('href');
+        if (!targetId || targetId === '#') {
+          return;
+        }
+
+        const target = document.querySelector(targetId);
+        if (!target) {
+          return;
+        }
+
+        e.preventDefault();
+
+        const headerOffset = 80;
+        const elementPosition = target.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth',
+        });
+      });
+    });
+  }
+
+  /* ── Counter Animation (Proof Section) ──────────────────────── */
+
+  function setupCounterAnimation() {
+    const counters = document.querySelectorAll('[data-counter]');
+    if (counters.length === 0) {
+      return;
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    counters.forEach((counter) => observer.observe(counter));
+  }
+
+  function animateCounter(element) {
+    const finalText = element.getAttribute('data-counter') || element.textContent;
+    const match = finalText.match(/([+-]?)(\d+\.?\d*)(.*)/);
+
+    if (!match) {
+      return;
+    }
+
+    const prefix = match[1];
+    const targetNum = parseFloat(match[2]);
+    const suffix = match[3];
+    const hasDecimal = match[2].includes('.');
+    const duration = 1600;
+    const startTime = performance.now();
+
+    function update(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = targetNum * eased;
+
+      if (hasDecimal) {
+        element.textContent = `${prefix}${current.toFixed(1)}${suffix}`;
+      } else {
+        element.textContent = `${prefix}${Math.round(current)}${suffix}`;
+      }
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      } else {
+        element.textContent = finalText;
+      }
+    }
+
+    element.textContent = `${prefix}0${suffix}`;
+    requestAnimationFrame(update);
+  }
+
+  /* ── Initialisation ─────────────────────────────────────────── */
 
   setupConsentBanner();
   setupCtaTracking();
   setupLeadForm();
   setupPurchaseMarker();
+  setupScrollReveal();
+  setupStickyHeader();
+  setupSmoothScroll();
+  setupCounterAnimation();
 
   track('academy_lp_view', {
     page_name: document.title,

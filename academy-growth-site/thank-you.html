@@ -15,14 +15,17 @@
   </head>
   <body>
     <main class="page">
-      <section class="section glass" style="margin-top: 2rem; text-align:center;">
-        <h1 style="font-size: clamp(1.8rem, 3vw, 2.5rem);">Danke, Anfrage ist eingegangen.</h1>
+      <section class="section glass thankyou-section reveal">
+        <div class="thankyou-icon" aria-hidden="true">✓</div>
+        <h1 style="font-size: clamp(1.8rem, 3vw, 2.5rem); background: linear-gradient(135deg, var(--ink), var(--brand)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+          Danke, Anfrage ist eingegangen.
+        </h1>
         <p class="section-kicker" style="max-width: 52ch; margin: 0.8rem auto 0;">
           Wir melden uns mit einem klaren naechsten Schritt. Wenn du direkt einen Call willst,
           kannst du den Terminlink nutzen.
         </p>
 
-        <div class="cta-stack" style="justify-content:center; margin-top: 1.2rem;">
+        <div class="cta-stack" style="justify-content:center; margin-top: 1.4rem;">
           <a class="btn btn-primary" href="https://calendly.com" target="_blank" rel="noreferrer" data-track-cta="thankyou_call" data-track-checkout="thankyou_call">
             Call buchen
           </a>
@@ -34,7 +37,7 @@
           </button>
         </div>
 
-        <nav class="legal-nav" aria-label="Rechtliches" style="justify-content:center; margin-top: 1rem;">
+        <nav class="legal-nav" aria-label="Rechtliches" style="justify-content:center; margin-top: 1.4rem;">
           <a href="./impressum.html">Impressum</a>
           <a href="./datenschutz.html">Datenschutz</a>
           <a href="./cookies.html">Cookies</a>
