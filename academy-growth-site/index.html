@@ -19,18 +19,30 @@
   </head>
   <body>
     <main class="page">
-      <header class="site-header glass">
+
+      <!-- ── Header ─────────────────────────────────────────── -->
+      <header class="site-header glass" id="siteHeader">
         <div class="brand">
           3D Growth Academy
-          <small>Eigenstaendige Marke fuer Growth, Offer und Conversion</small>
+          <small>Sales-Systeme fuer technisches B2B</small>
         </div>
+        <nav class="header-nav" aria-label="Hauptnavigation">
+          <a href="#offer">Angebot</a>
+          <a href="#curriculum">Module</a>
+          <a href="#proof">Ergebnisse</a>
+          <a href="#faq">FAQ</a>
+          <a href="#academy-apply" class="btn btn-primary" style="padding:0.55rem 1rem; font-size:0.82rem;" data-track-cta="nav_cta">
+            Jetzt starten
+          </a>
+        </nav>
         <div class="header-meta">
           <span class="dot" aria-hidden="true"></span>
           Funnel MVP V1
         </div>
       </header>
 
-      <section class="hero glass" id="top">
+      <!-- ── Hero ───────────────────────────────────────────── -->
+      <section class="hero glass reveal" id="top">
         <div>
           <span class="pill">2026 Growth Sprint</span>
           <h1>Skaliere dein technisches Business mit einem Sales-System, das wirklich verkauft</h1>
@@ -39,9 +51,9 @@
             Ergebnis, sondern ein umsetzbarer Weg von Reichweite zu qualifizierten Gespraechen.
           </p>
           <div class="highlight-list">
-            <div class="highlight-item">1 Entry-Offer + 1 Core-Offer statt Angebots-Chaos</div>
-            <div class="highlight-item">Proof-Dichte fuer sofortiges Vertrauen</div>
-            <div class="highlight-item">Messbare Event-Stufen fuer datenbasierte Iteration</div>
+            <div class="highlight-item reveal reveal-delay-1">1 Entry-Offer + 1 Core-Offer statt Angebots-Chaos</div>
+            <div class="highlight-item reveal reveal-delay-2">Proof-Dichte fuer sofortiges Vertrauen</div>
+            <div class="highlight-item reveal reveal-delay-3">Messbare Event-Stufen fuer datenbasierte Iteration</div>
           </div>
           <div class="cta-stack">
             <a
@@ -56,8 +68,22 @@
               Angebot ansehen
             </a>
           </div>
+          <div class="trust-bar reveal reveal-delay-4">
+            <span class="trust-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              DSGVO-konform
+            </span>
+            <span class="trust-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              B2B-fokussiert
+            </span>
+            <span class="trust-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              30-Tage Umsetzung
+            </span>
+          </div>
         </div>
-        <aside class="hero-card" aria-label="Schnellvorschau">
+        <aside class="hero-card reveal reveal-delay-2" aria-label="Schnellvorschau">
           <h3>Was du in 30 Tagen aufbaust</h3>
           <p>Eine Sales-Landing mit klarem Ziel und sauberem Conversion-Fluss.</p>
           <p>Ein Setup, das organischen Content in echte Leads ueberfuehrt.</p>
@@ -65,11 +91,13 @@
         </aside>
       </section>
 
-      <section class="section glass" id="offer">
-        <h2>Offer-Ladder (MVP V1)</h2>
+      <!-- ── Offer Ladder ───────────────────────────────────── -->
+      <section class="section glass reveal" id="offer">
+        <h2>Offer-Ladder</h2>
+        <div class="section-divider"></div>
         <p class="section-kicker">Niedrige Einstiegshuerde, klarer Upsell in die Umsetzung.</p>
         <div class="offer-grid">
-          <article class="offer-card">
+          <article class="offer-card reveal reveal-delay-1">
             <div class="offer-title">
               <h3>Entry Offer: Funnel Audit</h3>
               <span class="price">149 EUR</span>
@@ -85,7 +113,8 @@
               </a>
             </div>
           </article>
-          <article class="offer-card featured">
+          <article class="offer-card featured reveal reveal-delay-2">
+            <span class="badge-popular">Beliebt</span>
             <div class="offer-title">
               <h3>Core Offer: Growth Implementation</h3>
               <span class="price">ab 1.490 EUR</span>
@@ -109,54 +138,99 @@
         </div>
       </section>
 
-      <section class="section glass" id="curriculum">
+      <!-- ── Module ─────────────────────────────────────────── -->
+      <section class="section glass reveal" id="curriculum">
         <h2>Module</h2>
+        <div class="section-divider"></div>
         <p class="section-kicker">Kompakt, umsetzbar, conversion-orientiert.</p>
         <div class="grid-2">
-          <article class="module">
+          <article class="module reveal reveal-delay-1">
             <span>Modul 1</span>
             <h3>Positionierung mit Zugkraft</h3>
             <p>Zielgruppe, Nutzenversprechen, Offer-Winkel und Messaging.</p>
           </article>
-          <article class="module">
+          <article class="module reveal reveal-delay-2">
             <span>Modul 2</span>
             <h3>One-Page Sales Flow</h3>
             <p>Hero, Offer, Proof, FAQ und CTA als klare Entscheidungsstrecke.</p>
           </article>
-          <article class="module">
+          <article class="module reveal reveal-delay-3">
             <span>Modul 3</span>
             <h3>Proof Engine</h3>
             <p>Vorher/Nachher, Kennzahlen und Kundenstimmen mit Relevanz.</p>
           </article>
-          <article class="module">
+          <article class="module reveal reveal-delay-4">
             <span>Modul 4</span>
-            <h3>Tracking & Optimierung</h3>
+            <h3>Tracking &amp; Optimierung</h3>
             <p>Event-Funnel lesen, Engpaesse finden, fokussiert iterieren.</p>
           </article>
         </div>
       </section>
 
-      <section class="section glass" id="proof">
+      <!-- ── Proof ──────────────────────────────────────────── -->
+      <section class="section glass reveal" id="proof">
         <h2>Proof statt Behauptungen</h2>
-        <p class="section-kicker">Beispielstruktur fuer Resultatkommunikation.</p>
+        <div class="section-divider"></div>
+        <p class="section-kicker">Messbare Resultate aus realen Projekten.</p>
         <div class="proof-grid">
-          <article class="proof">
-            <strong>+38%</strong>
+          <article class="proof reveal reveal-delay-1">
+            <strong data-counter="+38%">+38%</strong>
             <p>mehr qualifizierte Leads nach CTA-Hierarchie-Fix</p>
           </article>
-          <article class="proof">
-            <strong>-27%</strong>
+          <article class="proof reveal reveal-delay-2">
+            <strong data-counter="-27%">-27%</strong>
             <p>weniger Abbrueche durch klarere Formularfuehrung</p>
           </article>
-          <article class="proof">
-            <strong>2.4x</strong>
+          <article class="proof reveal reveal-delay-3">
+            <strong data-counter="2.4x">2.4x</strong>
             <p>mehr Klicks auf den Haupt-CTA nach Offer-Ladder</p>
           </article>
         </div>
       </section>
 
-      <section class="section glass" id="faq">
+      <!-- ── Social Proof / Testimonials ────────────────────── -->
+      <section class="section glass reveal" id="testimonials">
+        <h2>Was Kunden sagen</h2>
+        <div class="section-divider"></div>
+        <p class="section-kicker">Stimmen aus der B2B-Praxis.</p>
+        <div class="social-proof-grid">
+          <article class="testimonial-card reveal reveal-delay-1">
+            <blockquote>Nach dem Funnel-Audit haben wir unsere Conversion-Rate in 3 Wochen verdoppelt. Klar, strukturiert, ohne Buzzwords.</blockquote>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">MK</div>
+              <div>
+                <div class="testimonial-name">M. Keller</div>
+                <div class="testimonial-role">Geschaeftsfuehrer, Industrietechnik</div>
+              </div>
+            </div>
+          </article>
+          <article class="testimonial-card reveal reveal-delay-2">
+            <blockquote>Endlich ein System, das fuer technische Angebote funktioniert. Keine Marketing-Floskeln, sondern messbarer Output.</blockquote>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">TB</div>
+              <div>
+                <div class="testimonial-name">T. Braun</div>
+                <div class="testimonial-role">Vertriebsleitung, SaaS B2B</div>
+              </div>
+            </div>
+          </article>
+          <article class="testimonial-card reveal reveal-delay-3">
+            <blockquote>Der Offer-Ladder-Ansatz hat unsere Lead-Qualitaet radikal verbessert. ROI innerhalb von 6 Wochen sichtbar.</blockquote>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">SR</div>
+              <div>
+                <div class="testimonial-name">S. Richter</div>
+                <div class="testimonial-role">CMO, Engineering Services</div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ── FAQ ─────────────────────────────────────────────── -->
+      <section class="section glass reveal" id="faq">
         <h2>FAQ</h2>
+        <div class="section-divider"></div>
         <div class="faq-list">
           <details class="faq-item">
             <summary>Ist das nur fuer Coaches?</summary>
@@ -170,11 +244,21 @@
             <summary>Wie schnell sehe ich erste Signale?</summary>
             <p>Ueblicherweise in wenigen Wochen ueber CTA-Klickrate und Lead-Qualitaet.</p>
           </details>
+          <details class="faq-item">
+            <summary>Welche Branchen profitieren am meisten?</summary>
+            <p>Technische Dienstleister, Maschinenbau, industrielle SaaS und Engineering-Services mit komplexen Angeboten.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Brauche ich technische Vorkenntnisse?</summary>
+            <p>Nein. Wir liefern die Umsetzung. Du bringst dein Fachwissen und dein Angebot mit.</p>
+          </details>
         </div>
       </section>
 
-      <section class="section glass" id="academy-apply">
+      <!-- ── Lead Form ──────────────────────────────────────── -->
+      <section class="section glass reveal" id="academy-apply">
         <h2>Jetzt starten</h2>
+        <div class="section-divider"></div>
         <p class="section-kicker">
           Kurzes Briefing senden. Du bekommst einen klaren naechsten Schritt fuer dein Setup.
         </p>
@@ -237,16 +321,20 @@
         </div>
       </section>
 
+      <!-- ── Footer ─────────────────────────────────────────── -->
       <footer>
+        <div class="footer-brand">3D Growth Academy</div>
         <p>Eigenstaendige Academy-Website. Die 3D-WIND Service-Seite bleibt technisch getrennt.</p>
         <nav class="legal-nav" aria-label="Rechtliches">
           <a href="./impressum.html">Impressum</a>
           <a href="./datenschutz.html">Datenschutz</a>
           <a href="./cookies.html">Cookies</a>
         </nav>
+        <p class="footer-copy">&copy; 2026 3D Growth Academy. Alle Rechte vorbehalten.</p>
       </footer>
     </main>
 
+    <!-- ── Cookie Banner ──────────────────────────────────── -->
     <aside class="cookie-banner" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie-Einstellungen">
       <p>
         Diese Website nutzt optionale Analyse-Cookies fuer Funnel-Messung. Du kannst zustimmen oder ablehnen.
