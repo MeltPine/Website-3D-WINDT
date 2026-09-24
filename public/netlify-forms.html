@@ -44,7 +44,6 @@
       netlify
       data-netlify="true"
       data-netlify-honeypot="bot-field"
-      enctype="multipart/form-data"
     >
       <input type="hidden" name="form-name" value="project-request" />
       <input type="text" name="name" />
@@ -78,7 +77,14 @@
       <input type="text" name="gclid" />
       <input type="text" name="gbraid" />
       <input type="text" name="wbraid" />
-      <input type="file" name="project_files" multiple />
+      <textarea name="uploaded_files"></textarea>
+      <input type="text" name="upload_status" />
+      <textarea name="model_summary"></textarea>
+      <input type="text" name="price_range" />
+      <input type="text" name="calc_material" />
+      <input type="text" name="calc_infill" />
+      <input type="text" name="calc_lead_time" />
+      <input type="text" name="calc_quantity" />
       <input type="text" name="bot-field" />
     </form>
 

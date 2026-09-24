@@ -31,10 +31,35 @@ the structure actually changes, don't let it drift like the old top-level SSoT d
   `linkedin-post-templates.md`, and more. **Read these before writing new
   marketing/funnel docs — don't duplicate what's already tracked here.**
 
+## Price calculator, 3D viewer, file upload (added 2026-09-24)
+- `/3d-druck-preisrechner/` and step 1 of `/projekt-starten/` share one in-memory
+  session (`src/lib/quote/quoteSession.ts`); navigating from calculator to form
+  keeps files and parameters. Files are never persisted in browser storage.
+- Parsing/analysis (`src/lib/geometry/`: STL, OBJ, 3MF DOM-free; STEP via
+  occt-import-js WASM) runs in a single-use Web Worker. The worker is started
+  through `/api/geometry-worker` (Function) because the STEP kernel needs
+  `unsafe-eval`; Function responses do not receive the site-wide CSP from
+  `netlify.toml`, so only that worker gets the relaxed policy
+  (`netlify/shared/workerEntry.ts`). Do not add `unsafe-eval` to the site CSP.
+- Pricing: `src/lib/quote/pricing.ts` is a port of druckwerk `computeQuote`
+  (SSoT `Extrutex/3DW-3dprint-preisrechner-`, `assets/quote.js`) plus a range
+  (`PRICING_CONFIG.range`). Materials: FDM-INSPECT DB vendored as
+  `src/data/fdm-inspect-materials.json` (`npm run materials:sync -- <path>`),
+  priced via explicit polymer -> price group mapping in `materials.ts`.
+- Uploads: Netlify Forms caps a submission at 8 MB, Functions at ~4.5 MB binary.
+  Files go in 3 MiB chunks through `netlify/functions/upload-*.mts` into Netlify
+  Blobs (store `project-uploads`, region `eu-central-1`), HMAC-signed sessions and
+  download links (`UPLOAD_SIGNING_SECRET`, required, >= 32 chars). The form
+  submission carries signed links to `/datei-abruf/` (internal retrieval page,
+  noindex). `upload-cleanup` deletes after 90 days (2 days if incomplete) — the
+  privacy page states these numbers from `src/lib/upload/policy.ts`.
+- Heavy code is lazy: `QuoteDetails` (calculator + material DB), `ModelViewer`
+  (three.js), the STEP kernel and the upload client load only when used.
+
 ## Working here
 - Follow the owner's cross-project rules (language split, subagent
   roster) and `01_Industrial_3DW/AGENTS.md` for the Dual-Branding split — this
   site is the 3D-Windt.de brand, keep Agentic-Gateway.de content out of it.
-- No test suite exists yet (`package.json` has `lint` + `release:check` =
-  `lint && build`) — run `npm run release:check` before calling frontend work
-  done here.
+- Tests: vitest (`npm test`, `tests/`), typecheck `npm run typecheck` (`tsc -b`,
+  covers `src/`, `netlify/`, `tests/`). Run `npm run release:check`
+  (lint + typecheck + test + build) before calling work done here.

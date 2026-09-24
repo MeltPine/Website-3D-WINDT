@@ -1,5 +1,6 @@
 import { Shield, Database, Lock, UserCheck, FileText, Eye } from 'lucide-react';
 import { BRAND, CONTACT, FULL_ADDRESS, LEGAL_REPRESENTATION } from '../lib/brand';
+import { UPLOAD_POLICY } from '../lib/upload/policy';
 
 const Datenschutz = () => {
   return (
@@ -64,9 +65,29 @@ const Datenschutz = () => {
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Datei-Uploads</h3>
                 <p>
-                  Hochgeladene Dateien (z. B. STL, OBJ, 3MF, SVG) werden ausschließlich zur
+                  Hochgeladene Dateien (z. B. STEP, STL, OBJ, 3MF, SVG) werden ausschließlich zur
                   technischen Prüfung und zur Bearbeitung Ihres Projekts genutzt.
                 </p>
+                <p className="mt-2">
+                  3D-Vorschau, Maße und Richtpreis im Preisrechner und im Projektformular werden
+                  vollständig in Ihrem Browser berechnet; dabei werden keine Dateien übertragen. Erst
+                  wenn Sie die Projektanfrage absenden, werden die Dateien verschlüsselt (HTTPS) an
+                  unseren Hosting-Anbieter Netlify übertragen und im Speicherdienst Netlify Blobs in
+                  der Region Frankfurt am Main (EU) abgelegt. Zugriff erhält nur 3D-WINDT über
+                  signierte, zeitlich begrenzte Links. Die Dateien werden{' '}
+                  {UPLOAD_POLICY.retentionDays} Tage nach dem Hochladen automatisch gelöscht, nicht
+                  abgeschlossene Uploads nach {UPLOAD_POLICY.incompleteRetentionDays} Tagen. Wird aus
+                  der Anfrage ein Auftrag, übernehmen wir die für die Fertigung erforderlichen Daten
+                  in unsere Auftragsunterlagen.
+                </p>
+                <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mt-3 text-sm text-blue-800">
+                  <p>
+                    <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO
+                    <br />
+                    <strong>Speicherdauer:</strong> {UPLOAD_POLICY.retentionDays} Tage, danach
+                    automatische Löschung
+                  </p>
+                </div>
               </div>
 
               <div>
@@ -107,7 +128,7 @@ const Datenschutz = () => {
                 Wir arbeiten mit technisch erforderlichen Dienstleistern zusammen, insbesondere:
               </p>
               <ul className="list-disc list-inside space-y-1">
-                <li>Netlify (Hosting, Form-Verarbeitung, technische Logs)</li>
+                <li>Netlify (Hosting, Form-Verarbeitung, Datei-Speicher Netlify Blobs in Frankfurt, technische Logs)</li>
                 <li>Resend (Versand von Eingangs- und Alert-E-Mails)</li>
                 <li>Google (GA4, Statistik-Cookies nur nach Einwilligung)</li>
               </ul>

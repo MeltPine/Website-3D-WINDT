@@ -48,6 +48,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/3d-druck-preisrechner/" className="text-gray-300 hover:text-primary-400 transition-colors">
+                  3D-Druck Preisrechner
+                </Link>
+              </li>
+              <li>
                 <Link to="/leistungen/" className="text-gray-300 hover:text-primary-400 transition-colors">
                   Leistungen
                 </Link>

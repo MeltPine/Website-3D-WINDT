@@ -21,6 +21,7 @@ const coreRoutes = [
   '/montagehilfen-vorrichtungen/',
   '/kunststoffteile-nachfertigen/',
   '/projekt-starten/',
+  '/3d-druck-preisrechner/',
   '/danke-projekt/',
   '/kontakt/',
   '/danke-kontakt/',

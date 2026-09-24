@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { Upload, FileText, AlertCircle, Send, ShieldCheck } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { AlertCircle, Calculator, Send } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { MailIcon, PhoneIcon } from '../components/icons';
 import { trackEvent } from '../lib/tracking';
@@ -9,25 +9,25 @@ import { reportLeadError } from '../lib/leadAlert';
 import { CONTACT } from '../lib/brand';
 import { isLikelyApplicationLead } from '../lib/leadIntent';
 import { appendAttributionToFormData, getAttributionFields } from '../lib/attribution';
+import QuoteWorkbench from '../components/quote/QuoteWorkbench';
+import { getQuoteSession, resetQuoteSession, useQuoteSession } from '../lib/quote/quoteSession';
+import { formatMegabytes } from '../lib/quote/summary';
+import type { UploadOutcome } from '../lib/upload/uploadClient';
 
 type FinishingOption = 'none' | 'basic' | 'premium';
+type SubmitStatus = 'idle' | 'uploading' | 'submitting' | 'error';
+type UploadStatusField = 'none' | 'complete' | 'partial' | 'skipped_after_error';
 
-const acceptedFileTypes = ['.stl', '.obj', '.3mf', '.svg'];
-const maxFileSizeMb = 50;
-const maxFileCount = 8;
-const maxTotalUploadSizeMb = 200;
-
-const toMb = (bytes: number) => bytes / 1024 / 1024;
-const formatMb = (bytes: number) => `${toMb(bytes).toFixed(2)} MB`;
 const fieldClassName =
   'w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-colors';
 
 const ProjectStart = () => {
   const navigate = useNavigate();
-  const [files, setFiles] = useState<File[]>([]);
-  const [uploadError, setUploadError] = useState('');
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
+  const quoteSession = useQuoteSession();
+  const [status, setStatus] = useState<SubmitStatus>('idle');
   const [submitError, setSubmitError] = useState('');
+  const [uploadProgress, setUploadProgress] = useState<{ uploadedBytes: number; totalBytes: number } | null>(null);
+  const [offerSendWithoutFiles, setOfferSendWithoutFiles] = useState(false);
   const [hasTrackedStart, setHasTrackedStart] = useState(false);
 
   const [weight, setWeight] = useState('');
@@ -49,7 +49,41 @@ const ProjectStart = () => {
   const [budgetBand, setBudgetBand] = useState('');
   const [message, setMessage] = useState('');
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const uploadAbortRef = useRef<AbortController | null>(null);
+
+  // Prefill from the price calculator (client-side navigation keeps the session).
+  useEffect(() => {
+    const session = getQuoteSession();
+    if (session.entries.length === 0) {
+      return undefined;
+    }
+    let cancelled = false;
+    void import('../lib/quote/requestPayload').then(({ summarizeQuoteSession }) => {
+      if (cancelled) return;
+      const summary = summarizeQuoteSession(session);
+      setQuantity((current) => current || String(summary.quantity));
+      setMaterialPref((current) => current || summary.materialName);
+      setExpressDelivery((current) => current || summary.expressSelected);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Warn before leaving while files are being transferred.
+  useEffect(() => {
+    if (status !== 'uploading') {
+      return undefined;
+    }
+    const onBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+    };
+    window.addEventListener('beforeunload', onBeforeUnload);
+    return () => window.removeEventListener('beforeunload', onBeforeUnload);
+  }, [status]);
+
+  useEffect(() => () => uploadAbortRef.current?.abort(), []);
 
   const handleFormStart = () => {
     if (hasTrackedStart) {
@@ -59,73 +93,10 @@ const ProjectStart = () => {
     trackEvent('lead_form_started', { form: 'project' });
   };
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    handleFormStart();
-    const selectedFiles = Array.from(event.target.files || []);
-    const validFiles: File[] = [];
-    const errors: string[] = [];
-    const existingSizeBytes = files.reduce((sum, file) => sum + file.size, 0);
-    const maxTotalUploadSizeBytes = maxTotalUploadSizeMb * 1024 * 1024;
-    const remainingSlots = maxFileCount - files.length;
-    let projectedSizeBytes = existingSizeBytes;
-
-    if (remainingSlots <= 0) {
-      setUploadError(`Maximal ${maxFileCount} Dateien möglich. Bitte entfernen Sie zuerst eine Datei.`);
-      event.target.value = '';
-      return;
-    }
-
-    if (selectedFiles.length > remainingSlots) {
-      errors.push(
-        `Maximal ${maxFileCount} Dateien insgesamt möglich (noch ${remainingSlots} verfügbar).`,
-      );
-    }
-
-    selectedFiles.forEach((file, index) => {
-      if (index >= remainingSlots) {
-        return;
-      }
-
-      const extension = `.${file.name.split('.').pop()?.toLowerCase()}`;
-      if (!acceptedFileTypes.includes(extension)) {
-        errors.push(`${file.name}: Dateityp nicht unterstützt`);
-        return;
-      }
-      if (file.size > maxFileSizeMb * 1024 * 1024) {
-        errors.push(`${file.name}: größer als ${maxFileSizeMb} MB`);
-        return;
-      }
-      if (projectedSizeBytes + file.size > maxTotalUploadSizeBytes) {
-        errors.push(
-          `${file.name}: Gesamtlimit von ${maxTotalUploadSizeMb} MB würde überschritten`,
-        );
-        return;
-      }
-      projectedSizeBytes += file.size;
-      validFiles.push(file);
-    });
-
-    setUploadError(errors.join(' • '));
-
-    if (validFiles.length > 0) {
-      setFiles((prev) => [...prev, ...validFiles]);
-      trackEvent('file_upload_added', {
-        form: 'project',
-        file_count: validFiles.length,
-      });
-    }
-
-    event.target.value = '';
-  };
-
-  const removeFile = (index: number) => {
-    setFiles((prev) => prev.filter((_, i) => i !== index));
-    setUploadError('');
-  };
-
   const resetForm = () => {
-    setFiles([]);
-    setUploadError('');
+    resetQuoteSession();
+    setUploadProgress(null);
+    setOfferSendWithoutFiles(false);
     setSubmitError('');
     setHasTrackedStart(false);
 
@@ -149,36 +120,93 @@ const ProjectStart = () => {
     setMessage('');
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    handleFormStart();
-    setStatus('submitting');
-    setSubmitError('');
-
-    const form = event.currentTarget;
-    const payload = new FormData(form);
-    appendAttributionToFormData(payload);
+  const sendRequest = async (form: HTMLFormElement, skipFiles: boolean) => {
+    const files = getQuoteSession().entries.map((entry) => entry.file);
+    const formData = new FormData(form);
+    appendAttributionToFormData(formData);
     const attributionFields = getAttributionFields();
-    payload.delete('project_files');
-    files.forEach((file) => payload.append('project_files', file));
-    payload.set('estimated_price', 'individuelles_angebot');
 
-    if (isLikelyApplicationLead([roleInCompany, useCase, company, message, name])) {
-      trackEvent('lead_form_filtered', {
-        form: 'project',
-        reason: 'application_keywords',
-      });
-      setStatus('error');
-      setSubmitError(
-        'Dieses Formular ist für Projektanfragen gedacht. Bewerbungen oder Jobanfragen können wir hier nicht bearbeiten.',
-      );
-      return;
+    let outcome: UploadOutcome | null = null;
+    let uploadStatus: UploadStatusField = 'none';
+
+    if (files.length > 0 && !skipFiles) {
+      setStatus('uploading');
+      setUploadProgress({ uploadedBytes: 0, totalBytes: files.reduce((sum, file) => sum + file.size, 0) });
+      trackEvent('file_upload_started', { form: 'project', file_count: files.length });
+      const controller = new AbortController();
+      uploadAbortRef.current = controller;
+      try {
+        const { uploadProjectFiles } = await import('../lib/upload/uploadClient');
+        outcome = await uploadProjectFiles(files, setUploadProgress, controller.signal);
+        uploadStatus = outcome.failedFileNames.length > 0 ? 'partial' : 'complete';
+        trackEvent('file_upload_completed', {
+          form: 'project',
+          file_count: outcome.files.length,
+          failed_count: outcome.failedFileNames.length,
+        });
+      } catch (error) {
+        const reason =
+          error instanceof Error && 'reason' in error && typeof error.reason === 'string' ? error.reason : 'network';
+        const message = error instanceof Error ? error.message : 'Unbekannter Fehler';
+        trackEvent('file_upload_failed', { form: 'project', reason });
+        void reportLeadError({
+          form_name: 'project-request',
+          source_path: '/projekt-starten/',
+          error_message: `Datei-Upload fehlgeschlagen: ${message}`,
+          lead_email: email || undefined,
+          form_data: { file_count: files.length, reason },
+        });
+        setStatus('error');
+        setOfferSendWithoutFiles(true);
+        setSubmitError(
+          `Die Dateien konnten nicht übertragen werden (${message}). Ihre Angaben sind nicht verloren: ` +
+            'Sie können es erneut versuchen oder die Anfrage ohne Dateien senden – wir melden uns dann und ' +
+            'Sie können die Dateien per E-Mail nachreichen.',
+        );
+        return;
+      } finally {
+        uploadAbortRef.current = null;
+      }
+    } else if (files.length > 0) {
+      uploadStatus = 'skipped_after_error';
     }
+
+    setStatus('submitting');
+    // Re-read the session: analyses may have finished while files were uploading.
+    const { summarizeQuoteSession } = await import('../lib/quote/requestPayload');
+    const summary = summarizeQuoteSession(getQuoteSession());
+    const fileLines =
+      outcome?.files.map((file) => `${file.name} (${formatMegabytes(file.size)}): ${file.url}`) ?? [];
+    if (outcome && outcome.failedFileNames.length > 0) {
+      fileLines.push(`Nicht übertragen: ${outcome.failedFileNames.join(', ')}`);
+    }
+    if (uploadStatus === 'skipped_after_error') {
+      fileLines.push(`Upload fehlgeschlagen, Dateien werden nachgereicht: ${files.map((file) => file.name).join(', ')}`);
+    }
+
+    const hasFiles = summary.hasFiles;
+    formData.set('uploaded_files', fileLines.join('\n'));
+    formData.set('upload_status', uploadStatus);
+    formData.set('model_summary', summary.modelSummary);
+    formData.set('price_range', hasFiles ? summary.priceRange : '');
+    formData.set('calc_material', hasFiles ? summary.materialName : '');
+    formData.set('calc_infill', hasFiles ? summary.infillLabel : '');
+    formData.set('calc_lead_time', hasFiles ? summary.leadTimeLabel : '');
+    formData.set('calc_quantity', hasFiles ? String(summary.quantity) : '');
+    formData.set('estimated_price', summary.hasPriceRange ? 'richtpreis_spanne' : 'individuelles_angebot');
+
+    const body = new URLSearchParams();
+    formData.forEach((value, key) => {
+      if (typeof value === 'string') {
+        body.append(key, value);
+      }
+    });
 
     try {
       const response = await fetch('/', {
         method: 'POST',
-        body: payload,
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString(),
       });
 
       if (!response.ok) {
@@ -190,6 +218,8 @@ const ProjectStart = () => {
         use_case: useCase || 'nicht_angegeben',
         landing_page: attributionFields.landing_page || 'unknown',
         utm_source: attributionFields.utm_source || 'direct',
+        file_count: outcome?.files.length ?? 0,
+        has_price_range: summary.hasPriceRange,
       });
 
       void triggerLeadFollowup({
@@ -207,6 +237,12 @@ const ProjectStart = () => {
         message,
         source_path: '/projekt-starten/',
         file_names: files.map((file) => file.name),
+        file_links: (outcome?.files ?? []).map((file) => {
+          const url = new URL(file.url);
+          return { name: file.name, size: file.size, path: `${url.pathname}${url.search}` };
+        }),
+        price_range: hasFiles ? summary.priceRange : '',
+        model_summary: summary.modelSummary,
         ...attributionFields,
       });
 
@@ -232,6 +268,7 @@ const ProjectStart = () => {
           material_pref: materialPref,
           budget_band: budgetBand,
           file_count: files.length,
+          upload_status: uploadStatus,
         },
       });
       setStatus('error');
@@ -242,17 +279,57 @@ const ProjectStart = () => {
     }
   };
 
-  const totalUploadedBytes = files.reduce((sum, file) => sum + file.size, 0);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    handleFormStart();
+    setSubmitError('');
+    setOfferSendWithoutFiles(false);
+
+    if (isLikelyApplicationLead([roleInCompany, useCase, company, message, name])) {
+      trackEvent('lead_form_filtered', {
+        form: 'project',
+        reason: 'application_keywords',
+      });
+      setStatus('error');
+      setSubmitError(
+        'Dieses Formular ist für Projektanfragen gedacht. Bewerbungen oder Jobanfragen können wir hier nicht bearbeiten.',
+      );
+      return;
+    }
+
+    if (getQuoteSession().entries.some((entry) => entry.status === 'queued' || entry.status === 'analyzing')) {
+      trackEvent('lead_form_submit_during_analysis', { form: 'project' });
+    }
+
+    await sendRequest(event.currentTarget, false);
+  };
+
+  const sendWithoutFiles = () => {
+    const form = formRef.current;
+    if (!form || !form.reportValidity()) {
+      return;
+    }
+    setSubmitError('');
+    setOfferSendWithoutFiles(false);
+    void sendRequest(form, true);
+  };
+
+  const isBusy = status === 'uploading' || status === 'submitting';
+  const uploadPercent =
+    uploadProgress && uploadProgress.totalBytes > 0
+      ? Math.round((uploadProgress.uploadedBytes / uploadProgress.totalBytes) * 100)
+      : 0;
+
   const phoneHref = `tel:${CONTACT.phone.replace(/[^\d+]/g, '')}`;
   const projectStartHighlights = [
     'Technische Prüfung statt Sofortpreis ohne Kontext',
     'Rückmeldung in der Regel innerhalb von 24 Stunden (werktags)',
-    'Datei-Upload bis 8 Dateien und 200 MB Gesamtvolumen',
+    '3D-Vorschau und Richtpreis-Spanne direkt nach dem Hochladen',
   ];
 
   return (
     <div className="py-16 animate-fade-in">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
           <h1 className="font-display text-4xl font-bold text-gray-900 mb-4">Projekt starten</h1>
           <p className="text-xl text-gray-700">
@@ -280,17 +357,26 @@ const ProjectStart = () => {
 
         <GlassSurface variant="card" density="light" className="p-4 md:p-8">
           <form
+            ref={formRef}
             name="project-request"
             method="POST"
             data-netlify="true"
             data-netlify-honeypot="bot-field"
-            encType="multipart/form-data"
             onSubmit={handleSubmit}
             className="space-y-8"
           >
             <input type="hidden" name="form-name" value="project-request" />
             <input type="hidden" name="estimated_price" value="individuelles_angebot" />
             <input type="hidden" name="source_path" value="/projekt-starten/" />
+            {/* Filled on submit; declared here so Netlify registers the fields. */}
+            <input type="hidden" name="uploaded_files" value="" />
+            <input type="hidden" name="upload_status" value="none" />
+            <input type="hidden" name="model_summary" value="" />
+            <input type="hidden" name="price_range" value="" />
+            <input type="hidden" name="calc_material" value="" />
+            <input type="hidden" name="calc_infill" value="" />
+            <input type="hidden" name="calc_lead_time" value="" />
+            <input type="hidden" name="calc_quantity" value="" />
             <p className="hidden">
               <label>
                 Nicht ausfüllen: <input name="bot-field" />
@@ -298,93 +384,41 @@ const ProjectStart = () => {
             </p>
 
             {status === 'error' && (
-              <div className="bg-red-50 border border-red-200 p-4 rounded-xl">
+              <div className="bg-red-50 border border-red-200 p-4 rounded-xl" role="alert">
                 <p className="text-red-700 flex items-start gap-2">
-                  <AlertCircle className="h-5 w-5 mt-0.5" />
+                  <AlertCircle className="h-5 w-5 mt-0.5 shrink-0" />
                   <span>{submitError}</span>
                 </p>
+                {offerSendWithoutFiles && (
+                  <div className="mt-3 flex flex-col sm:flex-row gap-2">
+                    <button
+                      type="submit"
+                      className="bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary-800"
+                    >
+                      Upload erneut versuchen
+                    </button>
+                    <button
+                      type="button"
+                      onClick={sendWithoutFiles}
+                      className="border border-primary-700 text-primary-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary-50"
+                    >
+                      Anfrage ohne Dateien senden
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 
-            <div className="bg-white border-2 border-dashed border-gray-300 rounded-xl p-7 md:p-8 text-center hover:border-primary-400 transition-colors shadow-sm">
-              <p className="text-xs uppercase tracking-wide text-primary-700 font-semibold mb-2">
-                Schritt 1 von 4
-              </p>
-              <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h2 className="text-lg font-semibold text-gray-900 mb-2">Dateien hochladen</h2>
-              <p className="text-gray-600 mb-4">
-                Unterstützte Formate: STL, OBJ, 3MF, SVG (max. {maxFileSizeMb} MB pro Datei)
-              </p>
-              <p className="text-sm text-gray-500 mb-4">
-                Maximal {maxFileCount} Dateien und insgesamt {maxTotalUploadSizeMb} MB pro Anfrage.
-                Für die Erstprüfung reichen meist 1-2 repräsentative Dateien aus.
-              </p>
-              <div className="mx-auto mb-4 max-w-2xl rounded-lg border border-primary-200 bg-primary-50/75 p-3 text-left">
-                <p className="text-sm text-gray-700 inline-flex items-start gap-2">
-                  <ShieldCheck className="h-4 w-4 text-primary-700 mt-0.5" />
-                  CAD- und Projektdaten behandeln wir vertraulich und ausschließlich zur technischen
-                  Prüfung Ihres Anwendungsfalls.
-                </p>
-                <p className="text-xs text-gray-600 mt-2">
-                  Auf Wunsch stellen wir vor Datenaustausch eine NDA-Vereinbarung bereit.
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                className="inline-flex items-center justify-center bg-primary-700 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-primary-800 transition-colors"
-              >
-                Dateien auswählen
-              </button>
-              <input
-                ref={fileInputRef}
-                type="file"
-                name="project_files"
-                multiple
-                accept=".stl,.obj,.3mf,.svg"
-                onChange={handleFileUpload}
-                className="hidden"
-              />
-              {uploadError && (
-                <p className="mt-4 text-sm text-red-600 flex items-center justify-center gap-2">
-                  <AlertCircle className="h-4 w-4" />
-                  <span>
-                    <span className="font-semibold">Upload-Hinweis:</span> {uploadError}
-                  </span>
+            <div>
+              <QuoteWorkbench stepLabel="Schritt 1 von 4 (optional)" onInteract={handleFormStart} />
+              {quoteSession.entries.length === 0 && (
+                <p className="mt-3 text-sm text-gray-600 text-center">
+                  <Calculator className="inline h-4 w-4 mr-1 text-primary-700" aria-hidden="true" />
+                  Nach dem Hochladen sehen Sie Ihr Modell in 3D und eine unverbindliche Richtpreis-Spanne. Für die
+                  Erstprüfung reichen meist 1–2 repräsentative Dateien.
                 </p>
               )}
             </div>
-
-            {files.length > 0 && (
-              <div className="bg-gray-50 p-6 rounded-xl">
-                <h3 className="font-semibold text-gray-900 mb-4">Hochgeladene Dateien</h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  {files.length}/{maxFileCount} Dateien | {formatMb(totalUploadedBytes)} von{' '}
-                  {maxTotalUploadSizeMb} MB genutzt
-                </p>
-                <div className="space-y-2">
-                  {files.map((file, index) => (
-                    <div
-                      key={`${file.name}-${index}`}
-                      className="flex items-center justify-between bg-white p-3 rounded-lg"
-                    >
-                      <div className="flex items-center space-x-3">
-                        <FileText className="h-5 w-5 text-primary-500" />
-                        <span className="text-gray-900">{file.name}</span>
-                        <span className="text-sm text-gray-500">({formatMb(file.size)})</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => removeFile(index)}
-                        className="text-red-500 hover:text-red-700 text-sm"
-                      >
-                        Entfernen
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
 
             <div className="bg-white p-6 md:p-7 rounded-xl border border-gray-200 shadow-sm">
               <p className="text-xs uppercase tracking-wide text-primary-700 font-semibold mb-2">
@@ -812,14 +846,42 @@ const ProjectStart = () => {
             <div className="text-center rounded-xl border border-primary-100 bg-primary-50/50 p-5">
               <button
                 type="submit"
-                disabled={status === 'submitting'}
+                disabled={isBusy}
                 className="bg-primary-700 text-white px-6 sm:px-8 py-4 rounded-lg text-base sm:text-lg font-semibold hover:bg-primary-800 disabled:opacity-70 disabled:cursor-not-allowed transition-colors inline-flex items-center justify-center gap-2 w-full sm:w-auto text-center sm:whitespace-nowrap"
               >
                 <Send className="h-5 w-5" />
                 <span>
-                  {status === 'submitting' ? 'Wird gesendet...' : 'Projektanfrage senden'}
+                  {status === 'uploading'
+                    ? `Dateien werden übertragen … ${uploadPercent} %`
+                    : status === 'submitting'
+                      ? 'Wird gesendet...'
+                      : 'Projektanfrage senden'}
                 </span>
               </button>
+              {status === 'uploading' && uploadProgress && (
+                <div className="mx-auto mt-4 max-w-md text-left" aria-live="polite">
+                  <div
+                    className="h-2 w-full overflow-hidden rounded-full bg-primary-100"
+                    role="progressbar"
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={uploadPercent}
+                    aria-label="Fortschritt Datei-Upload"
+                  >
+                    <div className="h-full bg-primary-600 transition-all" style={{ width: `${uploadPercent}%` }} />
+                  </div>
+                  <p className="mt-1 text-xs text-gray-600">
+                    {formatMegabytes(uploadProgress.uploadedBytes)} von {formatMegabytes(uploadProgress.totalBytes)}{' '}
+                    übertragen – bitte die Seite nicht schließen.
+                  </p>
+                </div>
+              )}
+              {quoteSession.entries.length > 0 && status !== 'uploading' && (
+                <p className="text-xs text-gray-500 mt-3">
+                  Mit dem Absenden werden {quoteSession.entries.length} Datei
+                  {quoteSession.entries.length === 1 ? '' : 'en'} verschlüsselt übertragen und in der EU gespeichert.
+                </p>
+              )}
               <p className="text-sm text-gray-600 mt-3">
                 Sie erhalten in der Regel innerhalb von 24 Stunden eine Rückmeldung.
               </p>

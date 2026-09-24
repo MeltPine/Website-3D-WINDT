@@ -1,0 +1,1186 @@
+{
+  "schema_version": "1.0",
+  "generated": "2026-09-24T23:02:23",
+  "generator": "FDM-INSPECT tools/parse_tds.py",
+  "disclaimer": "Alle Werte stammen aus den verlinkten Herstellerdatenblättern und wurden maschinell ausgelesen. Sie gelten für das Rohmaterial bzw. die vom Hersteller genannten Prüfkörper, nicht für ein konkret gedrucktes Bauteil. Fehlende Angaben sind null und wurden nicht geschätzt. Für Konstruktionsnachweise ist das Originaldatenblatt maßgeblich.",
+  "materials": [
+    {
+      "id": "spectrum_pla_premium",
+      "manufacturer": "Spectrum Filaments",
+      "product": "PLA Premium",
+      "polymer": "PLA",
+      "source": {
+        "url": "https://spectrumfilaments.com/wp-content/uploads/2021/12/en_tds_spectrum_pla_premium.pdf",
+        "origin": "official",
+        "mirror_note": null,
+        "retrieved": "2026-09-24",
+        "sha256": "642ff025cedb0d62f790086a24a8cb4387d0e40834ea230c6b1300fc2b6010c8"
+      },
+      "properties": {
+        "density": {
+          "value": 1.24,
+          "min": null,
+          "max": null,
+          "unit": "g/cm3",
+          "standard": "D 792",
+          "source_text": "Specific Gravity  1.24 g/cm3  D 792  Spectrum PLA Premium is a most popular filament",
+          "notes": null
+        },
+        "mfr": {
+          "value": 6.0,
+          "min": null,
+          "max": null,
+          "unit": "g/10min",
+          "standard": "D 1238",
+          "source_text": "MFR (210°C, 2.16kg)  6 g/10min  D 1238",
+          "notes": null
+        },
+        "tensile_strength_break": {
+          "value": 53.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "D 882",
+          "source_text": "Tensile Strength at Break  53 MPa  D 882  extrusion ensures a highly efficient printing with",
+          "notes": null
+        },
+        "tensile_strength": {
+          "value": 60.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "D 882",
+          "source_text": "Tensile Yield Strength  60 MPa  D 882",
+          "notes": null
+        },
+        "tensile_modulus": {
+          "value": 3500.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "D 882",
+          "source_text": "Tensile Modulus  3.5 Gpa  D 882  Premium yields excellent surface quality and detail,",
+          "notes": [
+            "umgerechnet aus 3.5 GPa"
+          ]
+        },
+        "elongation_at_break": {
+          "value": 6.0,
+          "min": null,
+          "max": null,
+          "unit": "%",
+          "standard": "D 882",
+          "source_text": "Tensile Elongation  6,00%  D 882  producing reliable results.",
+          "notes": null
+        },
+        "flexural_strength": {
+          "value": 83.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "D790",
+          "source_text": "Flexural Strength  83 MPa  D790  FEAUTURES",
+          "notes": null
+        },
+        "flexural_modulus": {
+          "value": 3.8,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "D790",
+          "source_text": "Flexural Modulus  3.8 MPa  D790  • made of biodegradable raw materials",
+          "notes": null,
+          "suspect": true
+        },
+        "hdt_a": {
+          "value": 55.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": "E 2092",
+          "source_text": "Heat Distortion Temperature  55°C  E 2092  • user friendly",
+          "notes": null
+        },
+        "glass_transition": {
+          "value": 57.5,
+          "min": 55.0,
+          "max": 60.0,
+          "unit": "degC",
+          "standard": "D3418",
+          "source_text": "Glass Transition Temperature  55-60°C  D3418  • high aesthetic surface quality",
+          "notes": null
+        },
+        "nozzle_temperature": {
+          "value": 200.0,
+          "min": 185.0,
+          "max": 215.0,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Nozzle temperature  185-215°C",
+          "notes": null
+        },
+        "bed_temperature": {
+          "value": 22.5,
+          "min": 0.0,
+          "max": 45.0,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Bed temperature  0-45°C  temperature. Recommended storage temperature",
+          "notes": null
+        }
+      },
+      "flags": [
+        {
+          "field": "flexural_modulus",
+          "value": 3.8,
+          "unit": "MPa",
+          "reason": "ausserhalb des plausiblen Bereichs 5–30000 MPa",
+          "action": "Wert wie im Datenblatt uebernommen, nicht korrigiert"
+        },
+        {
+          "field": "flexural_modulus",
+          "value": 3.8,
+          "unit": "MPa",
+          "reason": "flexural_modulus (3.8 MPa) ist nicht groesser als flexural_strength (83.0 MPa) - bei Thermoplasten physikalisch nicht moeglich, vermutlich Einheitenfehler im Datenblatt (GPa statt MPa)",
+          "action": "Wert wie im Datenblatt uebernommen, nicht korrigiert"
+        }
+      ]
+    },
+    {
+      "id": "spectrum_pla_tough",
+      "manufacturer": "Spectrum Filaments",
+      "product": "PLA Tough",
+      "polymer": "PLA",
+      "source": {
+        "url": "https://spectrumfilaments.com/wp-content/uploads/2022/05/en_tds_spectrum_pla_tough.pdf",
+        "origin": "official",
+        "mirror_note": null,
+        "retrieved": "2026-09-24",
+        "sha256": "23131d74fa4760eab9f6d028130986850de6039bfd3dcb7e5177c2d42e276204"
+      },
+      "properties": {
+        "density": {
+          "value": 1.2,
+          "min": null,
+          "max": null,
+          "unit": "g/cm3",
+          "standard": "D 792",
+          "source_text": "Specific Gravity  1.20 g/cm3  D 792  Spectrum PLA Tough is a specially modified PLA-",
+          "notes": null
+        },
+        "mfr": {
+          "value": 9.42,
+          "min": null,
+          "max": null,
+          "unit": "g/10min",
+          "standard": "D 1238",
+          "source_text": "MFR (210°C, 2.16kg)  9,42 g/10min  D 1238",
+          "notes": null
+        },
+        "tensile_strength": {
+          "value": 53.2,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "D638",
+          "source_text": "Tensile Strength  53,2 MPa  D638  an enormous range of applications. It is a perfect",
+          "notes": null
+        },
+        "elongation_at_break": {
+          "value": 15.0,
+          "min": null,
+          "max": null,
+          "unit": "%",
+          "standard": "D638",
+          "source_text": "Elongation at Break  15,00%  D638  PLA.",
+          "notes": null
+        },
+        "flexural_modulus": {
+          "value": 2493.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ISO 178",
+          "source_text": "Flexural modulus  2493 MPa  ISO 178",
+          "notes": null
+        },
+        "hdt_a": {
+          "value": 55.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": "E 2092",
+          "source_text": "Heat Distortion Temperature  55°C  E 2092  unmodified PLA",
+          "notes": null
+        },
+        "glass_transition": {
+          "value": 57.5,
+          "min": 55.0,
+          "max": 60.0,
+          "unit": "degC",
+          "standard": "D3418",
+          "source_text": "Glass Transition Temperature  55-60°C  D3418",
+          "notes": null
+        },
+        "nozzle_temperature": {
+          "value": 210.0,
+          "min": 190.0,
+          "max": 230.0,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Nozzle temperature  190-230°C  is ca. 18-25°C (64.4 -77.0°F). Keep out of moisture,",
+          "notes": [
+            "weitere Angaben in derselben Zeile: 18-25 degC (andere Druckrichtung oder Einheit)"
+          ]
+        },
+        "bed_temperature": {
+          "value": 22.5,
+          "min": 0.0,
+          "max": 45.0,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Bed temperature  0-45°C  sunlight and direct heat. When stored properly,",
+          "notes": null
+        }
+      },
+      "flags": null
+    },
+    {
+      "id": "spectrum_asa_275",
+      "manufacturer": "Spectrum Filaments",
+      "product": "ASA 275",
+      "polymer": "ASA",
+      "source": {
+        "url": "https://spectrumfilaments.com/wp-content/uploads/2022/05/en_tds_spectrum_asa_275.pdf",
+        "origin": "official",
+        "mirror_note": null,
+        "retrieved": "2026-09-24",
+        "sha256": "4a4c4479cf013c15c7f227d70317281980af5e95aaf522571979d6006a31af93"
+      },
+      "properties": {
+        "density": {
+          "value": 1.07,
+          "min": null,
+          "max": null,
+          "unit": "g/cm3",
+          "standard": "ASTM D792",
+          "source_text": "Specific Gravity, 23°C  1.07 g/cm3  ASTM D792  Filament Spectrum ASA 275 is a professional materi-",
+          "notes": null
+        },
+        "mfr": {
+          "value": 5.0,
+          "min": null,
+          "max": null,
+          "unit": "g/10min",
+          "standard": "ASTM D1238",
+          "source_text": "Melt Flow Rate, 220°C, 10kg  5 g/10min  ASTM D1238",
+          "notes": null
+        },
+        "tensile_strength": {
+          "value": 42.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ASTM D638",
+          "source_text": "Tensile Strength, at Yield, 23°C *  42 MPa  ASTM D638  flexible, improve flow parameters, reduce shrinkage,",
+          "notes": null
+        },
+        "elongation_at_break": {
+          "value": 35.0,
+          "min": null,
+          "max": null,
+          "unit": "%",
+          "standard": "ASTM D638",
+          "source_text": "Tensile Elongation at Break, 23°C *  35% (Min)  ASTM D638",
+          "notes": null
+        },
+        "tensile_modulus": {
+          "value": 1800.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ASTM D638",
+          "source_text": "Tensile Modulus, 23°C *  1800 MPa  ASTM D638  conditions.",
+          "notes": null
+        },
+        "flexural_strength": {
+          "value": 64.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ASTM D790",
+          "source_text": "Flexural Strength, 23°C **  64 MPa  ASTM D790",
+          "notes": null
+        },
+        "flexural_modulus": {
+          "value": 1900.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ASTM D790",
+          "source_text": "Flexural Modulus, 23°C **  1900 MPa  ASTM D790  FEAUTURES",
+          "notes": null
+        },
+        "hdt_a": {
+          "value": 86.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": "ASTM D648",
+          "source_text": "Heat Deflection Temperature  86°C  ASTM D648  a heated chamber",
+          "notes": null
+        },
+        "vicat": {
+          "value": 50.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": "ASTM D1525",
+          "source_text": "VICAT, 50N, 50°C/h  94°C  ASTM D1525  • glossy print surface,",
+          "notes": [
+            "weitere Angaben in derselben Zeile: 94 degC (andere Druckrichtung oder Einheit)"
+          ]
+        },
+        "nozzle_temperature": {
+          "value": 220.0,
+          "min": 200.0,
+          "max": 240.0,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Nozzle temperature  200-240°C",
+          "notes": null
+        },
+        "bed_temperature": {
+          "value": 50.0,
+          "min": 40.0,
+          "max": 60.0,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Bed temperature  40-60°C",
+          "notes": null
+        }
+      },
+      "flags": null
+    },
+    {
+      "id": "spectrum_abs_gp450",
+      "manufacturer": "Spectrum Filaments",
+      "product": "ABS GP450",
+      "polymer": "ABS",
+      "source": {
+        "url": "https://spectrumfilaments.com/wp-content/uploads/2021/09/en_tds_spectrum_abs_gp450.pdf",
+        "origin": "official",
+        "mirror_note": null,
+        "retrieved": "2026-09-24",
+        "sha256": "4a15be1725d7f9574a622b0a8e301d38b021c52250bbfe1ac808a9bb5f454135"
+      },
+      "properties": {
+        "density": {
+          "value": 1.04,
+          "min": null,
+          "max": null,
+          "unit": "g/cm3",
+          "standard": "ISO 1183-1",
+          "source_text": "Specific Gravity  1.04 g/cm3  ISO 1183-1  Spectrum ABS GP450 is an industrial grade, con-",
+          "notes": null
+        },
+        "elongation_at_break": {
+          "value": 13.0,
+          "min": null,
+          "max": null,
+          "unit": "%",
+          "standard": "ISO 527-1",
+          "source_text": "Elongation at Break (1mm/min)  13,00%  ISO 527-1,2",
+          "notes": null
+        },
+        "tensile_modulus": {
+          "value": 2100.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ISO 527-1",
+          "source_text": "Tensile Modulus (1mm/min)  2100 MPa  ISO 527-1,2  at a very high speed (up to 200mm/s) without any",
+          "notes": null
+        },
+        "flexural_modulus": {
+          "value": 2000.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ISO 178",
+          "source_text": "Flexural Modulus (2mm/min)  2000 MPa  ISO 178  mechanical properties losses ABS GP450 exhibits",
+          "notes": null
+        },
+        "impact_charpy_notched": {
+          "value": 19.0,
+          "min": null,
+          "max": null,
+          "unit": "kJ/m2",
+          "standard": "ISO 180-1A",
+          "source_text": "Izod Impact Strength, Notched @ 23°C  19 KJ/m2  ISO 180-1A  materials available on the market.",
+          "notes": null
+        },
+        "vicat": {
+          "value": 95.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": "ISO 306",
+          "source_text": "Vicat Softening Temperature  95°C  ISO 306  • high impact resistance",
+          "notes": null
+        },
+        "nozzle_temperature": {
+          "value": 245.0,
+          "min": 235.0,
+          "max": 255.0,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Nozzle temperature  235-255°C",
+          "notes": null
+        },
+        "bed_temperature": {
+          "value": 100.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Bed temperature  100°C",
+          "notes": null
+        }
+      },
+      "flags": null
+    },
+    {
+      "id": "spectrum_pctg",
+      "manufacturer": "Spectrum Filaments",
+      "product": "PCTG Premium",
+      "polymer": "PCTG",
+      "source": {
+        "url": "https://spectrumfilaments.com/wp-content/uploads/2022/05/en_tds_spectrum_pctg.pdf",
+        "origin": "official",
+        "mirror_note": null,
+        "retrieved": "2026-09-24",
+        "sha256": "9a479a8fb4f070f263959b4bc1ba2637eef4ff62a35294d21e16f8e870d238d1"
+      },
+      "properties": {
+        "density": {
+          "value": 1.23,
+          "min": null,
+          "max": null,
+          "unit": "g/cm3",
+          "standard": "ASTM D792",
+          "source_text": "Specific Gravity  1.23 g/cm3  ASTM D792  Spectrum Premium PCTG filament is an excellent",
+          "notes": null
+        },
+        "tensile_strength": {
+          "value": 44.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ISO 527",
+          "source_text": "Tensile Strength at Yield  44 MPa  ISO 527  ease of printing as PET-G. A very important advan-",
+          "notes": null
+        },
+        "tensile_strength_break": {
+          "value": 46.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ISO 527",
+          "source_text": "Tensile Strength at Break  46 Mpa  ISO 527",
+          "notes": null
+        },
+        "elongation_at_break": {
+          "value": 220.0,
+          "min": null,
+          "max": null,
+          "unit": "%",
+          "standard": "ISO 527",
+          "source_text": "Elongation at Break  220%  ISO 527  combines the most desirable features of Tough PLA",
+          "notes": null
+        },
+        "flexural_strength": {
+          "value": 60.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ISO 178",
+          "source_text": "Flexural Strength  60 Mpa  ISO 178",
+          "notes": null
+        },
+        "flexural_modulus": {
+          "value": 1600.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ISO 178",
+          "source_text": "Flexural Modulus  1600 Mpa  ISO 178",
+          "notes": null
+        },
+        "vicat": {
+          "value": 88.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "VICAT Softening Temperature  88°C  DSC  • hydrophobic, odourless",
+          "notes": null
+        },
+        "nozzle_temperature": {
+          "value": 260.0,
+          "min": 250.0,
+          "max": 270.0,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Nozzle temperature  250-270°C",
+          "notes": null
+        },
+        "bed_temperature": {
+          "value": 80.0,
+          "min": 60.0,
+          "max": 100.0,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Bed temperature  60-100°C  temperature. Recommended storage temperature",
+          "notes": null
+        }
+      },
+      "flags": null
+    },
+    {
+      "id": "spectrum_pa6_lowwarp_cf15",
+      "manufacturer": "Spectrum Filaments",
+      "product": "PA6 Low Warp CF15",
+      "polymer": "PA6-CF",
+      "source": {
+        "url": "https://spectrumfilaments.com/wp-content/uploads/2022/10/en_tds_spectrum_pa6_low_warp_cf15s.pdf",
+        "origin": "official",
+        "mirror_note": null,
+        "retrieved": "2026-09-24",
+        "sha256": "32ab1078b68ab34b597f7fb3f959acbd3ef143170de09b13a4b11c027aa69134"
+      },
+      "properties": {
+        "density": {
+          "value": 1.18,
+          "min": null,
+          "max": null,
+          "unit": "g/cm3",
+          "standard": "EN ISO 1183",
+          "source_text": "Density  1,18 g/cm3  EN ISO 1183  Spectrum PA6 Low Warp CF15S is a heat-stabi-",
+          "notes": null
+        },
+        "moisture_absorption": {
+          "value": 50.0,
+          "min": null,
+          "max": null,
+          "unit": "%",
+          "standard": "ISO 62",
+          "source_text": "Moisture Absortpion (23 ºC / 50% r.h.)  2,50%  ISO 62",
+          "notes": [
+            "weitere Angaben in derselben Zeile: 2,50 % (andere Druckrichtung oder Einheit)"
+          ]
+        },
+        "tensile_strength": {
+          "value": 120.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "EN ISO 527-1",
+          "source_text": "Tensile strength (23 ºC, 50 mm/min)  120 MPa  EN ISO 527-1",
+          "notes": null
+        },
+        "tensile_modulus": {
+          "value": 9000.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "EN ISO 527-1",
+          "source_text": "Tensile modulus (23 ºC, 50 mm/min)  9000 MPa  EN ISO 527-1  printing functional models that require high rigidity",
+          "notes": null
+        },
+        "elongation_at_break": {
+          "value": 4.0,
+          "min": null,
+          "max": null,
+          "unit": "%",
+          "standard": "EN ISO 527-1",
+          "source_text": "Elongation at break (23 ºC, 50 mm/min)  4,00%  EN ISO 527-1  and continuous high-temperature and chemical",
+          "notes": null
+        },
+        "flexural_modulus": {
+          "value": 8000.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "EN ISO 178",
+          "source_text": "Flexural Modulus (23 ºC, 2 mm/min)  8000 MPa  EN ISO 178",
+          "notes": null
+        },
+        "flexural_strength": {
+          "value": 180.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "EN ISO 178",
+          "source_text": "Flexural Strength (23 ºC, 2 mm/min)  180 MPa  EN ISO 178  FEAUTURES",
+          "notes": null
+        },
+        "impact_charpy_unnotched": {
+          "value": 60.0,
+          "min": null,
+          "max": null,
+          "unit": "kJ/m2",
+          "standard": "ISO 179/1eU",
+          "source_text": "Unnotched @ 23°C  60 kJ/m2  ISO 179/1eU",
+          "notes": null
+        },
+        "impact_charpy_notched": {
+          "value": 4.0,
+          "min": null,
+          "max": null,
+          "unit": "kJ/m2",
+          "standard": "ISO 179/1eU",
+          "source_text": "Notched @ 23°C  4 kJ/m2  ISO 179/1eU  • high mechanical properties and abrasion",
+          "notes": null
+        },
+        "hdt_a": {
+          "value": 65.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": "ISO 75",
+          "source_text": "1.8 MPa  65°C  ISO 75 -1/-2  chamber",
+          "notes": [
+            "weitere Angaben in derselben Zeile: -1 degC (andere Druckrichtung oder Einheit)"
+          ]
+        },
+        "hdt_b": {
+          "value": 180.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": "ISO 75",
+          "source_text": "0.45 MPa  180°C  ISO 75 -1/-2",
+          "notes": [
+            "weitere Angaben in derselben Zeile: -1 degC (andere Druckrichtung oder Einheit)"
+          ]
+        },
+        "nozzle_temperature": {
+          "value": 265.0,
+          "min": 250.0,
+          "max": 280.0,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Nozzle temperature  250-280°C  Filament should be stored in a dry room at room",
+          "notes": null
+        },
+        "bed_temperature": {
+          "value": 80.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Bed temperature  < 80°C  is ca. 18-25°C (64.4 -77.0°F). Keep out of moisture,",
+          "notes": [
+            "weitere Angaben in derselben Zeile: 18-25 degC (andere Druckrichtung oder Einheit)"
+          ]
+        }
+      },
+      "flags": null
+    },
+    {
+      "id": "spectrum_hips_x",
+      "manufacturer": "Spectrum Filaments",
+      "product": "HIPS-X",
+      "polymer": "HIPS",
+      "source": {
+        "url": "https://spectrumfilaments.com/wp-content/uploads/2022/05/en_tds_spectrum_hipsx.pdf",
+        "origin": "official",
+        "mirror_note": null,
+        "retrieved": "2026-09-24",
+        "sha256": "14ae19e583630f59cec1e99425f0ac1cd29cf7e2251a2c2f1be589f0d4abeb9d"
+      },
+      "properties": {
+        "density": {
+          "value": 1.05,
+          "min": null,
+          "max": null,
+          "unit": "g/cm3",
+          "standard": "ISO 1183",
+          "source_text": "Density  1.05 g/cm3  ISO 1183  Spectrum HIPS–X is a support material designed for",
+          "notes": null
+        },
+        "mfr": {
+          "value": 12.0,
+          "min": null,
+          "max": null,
+          "unit": "g/10min",
+          "standard": "ISO 1133",
+          "source_text": "Melt Flow Rate, (200°C/5.0kg)  12 g/10min  ISO 1133",
+          "notes": null
+        },
+        "flexural_modulus": {
+          "value": 2000.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ISO 178",
+          "source_text": "Flexural Modulus  2000 MPa  ISO 178",
+          "notes": null
+        },
+        "flexural_strength": {
+          "value": 50.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ISO 178",
+          "source_text": "Flexural Strength  50 MPa  ISO 178",
+          "notes": null
+        },
+        "impact_charpy_notched": {
+          "value": 7.0,
+          "min": null,
+          "max": null,
+          "unit": "kJ/m2",
+          "standard": "ISO 179/2",
+          "source_text": "Charpy Notched Impact Strength  7kJ/m2  ISO 179/2",
+          "notes": null
+        },
+        "vicat": {
+          "value": 87.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": "ISO 306/B50",
+          "source_text": "Vicat Softening Temperature  87°C  ISO 306/B50  • light",
+          "notes": null
+        },
+        "hdt_a": {
+          "value": 88.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": "ISO 75-2/B",
+          "source_text": "Heat Deflection Temperature  88°C  ISO 75-2/B",
+          "notes": null
+        },
+        "nozzle_temperature": {
+          "value": 237.5,
+          "min": 230.0,
+          "max": 245.0,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Nozzle temperature  230-245°C",
+          "notes": null
+        },
+        "bed_temperature": {
+          "value": 90.0,
+          "min": 80.0,
+          "max": 100.0,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Bed temperature  80-100°C  product has a shelf life of 24 months.",
+          "notes": null
+        }
+      },
+      "flags": null
+    },
+    {
+      "id": "basf_pa",
+      "manufacturer": "Forward AM (BASF)",
+      "product": "Ultrafuse PA",
+      "polymer": "PA",
+      "source": {
+        "url": "https://move.forward-am.com/hubfs/AES%20Documentation/Engineering%20Filaments/PA/TDS/Ultrafuse_PA_TDS_EN_v2.2.pdf",
+        "origin": "official",
+        "mirror_note": null,
+        "retrieved": "2026-09-24",
+        "sha256": "5cbcd002a2f1bda57e9cd323429333a76707e04318300cee21909892957fdcb5"
+      },
+      "properties": {
+        "nozzle_temperature": {
+          "value": 235.0,
+          "min": 220.0,
+          "max": 250.0,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Nozzle Temperature  220 – 250 °C / 428 – 482 °F  245 °C / X °F",
+          "notes": [
+            "weitere Angaben in derselben Zeile: 245 degC (andere Druckrichtung oder Einheit)"
+          ]
+        },
+        "bed_temperature": {
+          "value": 105.0,
+          "min": 90.0,
+          "max": 120.0,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Bed Temperature  90 – 120 °C / 194 – 248 °F  90 °C / X °F",
+          "notes": [
+            "weitere Angaben in derselben Zeile: 90 degC (andere Druckrichtung oder Einheit)"
+          ]
+        },
+        "density": {
+          "value": 1.115,
+          "min": null,
+          "max": null,
+          "unit": "g/cm3",
+          "standard": "ISO 1183-1",
+          "source_text": "Density*1  1115 kg/m3 / 69.6 lb/ft3  ISO 1183-1",
+          "notes": [
+            "umgerechnet aus 1115.0 kg/m3"
+          ]
+        },
+        "hdt_a": {
+          "value": 57.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": "ISO 75-2",
+          "source_text": "HDT A at 1.8 MPa1  57 °C / 134.6 °F  ISO 75-2",
+          "notes": null
+        },
+        "hdt_b": {
+          "value": 113.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": "ISO 75-2",
+          "source_text": "HDT B at 0.45 MPa1  113 °C / 235.4 °F  ISO 75-2",
+          "notes": null
+        },
+        "vicat": {
+          "value": 160.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": "ISO 306",
+          "source_text": "Vicat softening point @ 50 N1  160 °C / 320 °F  ISO 306",
+          "notes": null
+        },
+        "glass_transition": {
+          "value": 49.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": "ISO 11357-2",
+          "source_text": "Glass Transition Temperature  49 °C / 120 °F  ISO 11357-2",
+          "notes": null
+        },
+        "melting_temperature": {
+          "value": 196.0,
+          "min": 195.0,
+          "max": 197.0,
+          "unit": "degC",
+          "standard": "ISO 11357-3",
+          "source_text": "Melting Temperature  195 - 197 °C / 383 - 386 °F  ISO 11357-3",
+          "notes": null
+        },
+        "tensile_strength": {
+          "value": 61.4,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ISO 527",
+          "source_text": "Tensile strength2  ISO 527  61.4 MPa / 8.9 ksi  -  16.4 MPa / 2.4 ksi",
+          "notes": [
+            "weitere Angaben in derselben Zeile: 16.4 MPa (andere Druckrichtung oder Einheit)"
+          ]
+        },
+        "elongation_at_break": {
+          "value": 9.6,
+          "min": null,
+          "max": null,
+          "unit": "%",
+          "standard": "ISO 527",
+          "source_text": "Elongation at Break  ISO 527  9.6 %  -  0.8 %",
+          "notes": [
+            "weitere Angaben in derselben Zeile: 0.8 % (andere Druckrichtung oder Einheit)"
+          ]
+        },
+        "tensile_modulus": {
+          "value": 2419.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ISO 527",
+          "source_text": "Young’s Modulus3  ISO 527  2419 MPa / 351 ksi  -  2122 MPa / 308 ksi",
+          "notes": [
+            "weitere Angaben in derselben Zeile: 2122 MPa (andere Druckrichtung oder Einheit)"
+          ]
+        },
+        "flexural_strength": {
+          "value": 40.2,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ISO 178",
+          "source_text": "Flexural Strength4  ISO 178  X MPa / X ksi  X MPa / X ksi  40.2 MPa / 5.8 ksi",
+          "notes": null
+        },
+        "flexural_modulus": {
+          "value": 2149.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ISO 178",
+          "source_text": "Flexural Modulus4  ISO 178  X MPa / X ksi  X MPa / X ksi  2149 MPa / 312 ksi",
+          "notes": null
+        },
+        "impact_charpy_notched": {
+          "value": 5.6,
+          "min": null,
+          "max": null,
+          "unit": "kJ/m2",
+          "standard": "ISO 179-2",
+          "source_text": "Impact Strength Charpy (notched)  ISO 179-2  5.6 kJ/m2  3.3 kJ/m2  1.2 kJ/m2",
+          "notes": [
+            "weitere Angaben in derselben Zeile: 3.3 kJ/m2, 1.2 kJ/m2 (andere Druckrichtung oder Einheit)"
+          ]
+        },
+        "impact_charpy_unnotched": {
+          "value": 23.0,
+          "min": null,
+          "max": null,
+          "unit": "kJ/m2",
+          "standard": "ISO 179-2",
+          "source_text": "Impact Strength Charpy (unnotched)  ISO 179-2  23 kJ/m2  29.7 kJ/m2  3.5 kJ/m2",
+          "notes": [
+            "weitere Angaben in derselben Zeile: 29.7 kJ/m2, 3.5 kJ/m2 (andere Druckrichtung oder Einheit)"
+          ]
+        }
+      },
+      "flags": null
+    },
+    {
+      "id": "basf_tpu95a",
+      "manufacturer": "Forward AM (BASF)",
+      "product": "Ultrafuse TPU 95A",
+      "polymer": "TPU",
+      "source": {
+        "url": "https://move.forward-am.com/hubfs/AES%20Documentation/Flexible%20Filaments/TPU%2095A/TDS/Ultrafuse_TPU-95A_TDS_EN_v1.0.pdf",
+        "origin": "official",
+        "mirror_note": null,
+        "retrieved": "2026-09-24",
+        "sha256": "9d9546868f11db7eaf7246160ba3ee8fbc053705e1c99cf2a04d0da7c67ff31d"
+      },
+      "properties": {
+        "nozzle_temperature": {
+          "value": 220.0,
+          "min": 210.0,
+          "max": 230.0,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Nozzle Temperature  210 – 230 °C / 410 – 446 °F  220 °C / 428 °F",
+          "notes": [
+            "weitere Angaben in derselben Zeile: 220 degC (andere Druckrichtung oder Einheit)"
+          ]
+        },
+        "bed_temperature": {
+          "value": 40.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Bed Temperature  40 °C / 104 °F  40 °C / 104 °F",
+          "notes": null
+        },
+        "vicat": {
+          "value": 27.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": "ISO 306",
+          "source_text": "Vicat softening point @ 50 N  <27 °C / <81 °F  ISO 306",
+          "notes": null
+        },
+        "glass_transition": {
+          "value": -25.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": "ISO 11357-2",
+          "source_text": "Glass Transition Temperature  -25 °C / -13 °F  ISO 11357-2",
+          "notes": null
+        },
+        "melting_temperature": {
+          "value": 144.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": "ISO 11357-3",
+          "source_text": "Melting Temperature  144 °C / 291 °F  ISO 11357-3",
+          "notes": null
+        },
+        "elongation_at_break": {
+          "value": 661.0,
+          "min": null,
+          "max": null,
+          "unit": "%",
+          "standard": "ISO 527",
+          "source_text": "Elongation at Break, TPE2  ISO 527  661 %  -  192 %",
+          "notes": [
+            "weitere Angaben in derselben Zeile: 192 % (andere Druckrichtung oder Einheit)"
+          ]
+        },
+        "impact_charpy_notched": {
+          "value": 16.8,
+          "min": null,
+          "max": null,
+          "unit": "kJ/m2",
+          "standard": "ISO 179-2",
+          "source_text": "Impact Strength Charpy (notched)  ISO 179-2  No break  No break  16.8 kJ/m2",
+          "notes": null
+        }
+      },
+      "flags": null
+    },
+    {
+      "id": "extrudr_pla_nx2",
+      "manufacturer": "Extrudr",
+      "product": "PLA NX2",
+      "polymer": "PLA",
+      "source": {
+        "url": "https://filamentworld.de/fact-sheets/Extrudr_PLA-NX2_Datenblatt_DE.pdf",
+        "origin": "mirror",
+        "mirror_note": "Original-Datenblatt von Extrudr, gehostet bei filamentworld.de. Extrudr liefert seine eigene Datenblattseite nur per JavaScript aus.",
+        "retrieved": "2026-09-24",
+        "sha256": "6f6b4f413b1bc734f03a3d2485da02e489934fb57172fed35f5942fafec68712"
+      },
+      "properties": {
+        "flexural_modulus": {
+          "value": 2650.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ISO 178",
+          "source_text": "Biege E-Modul  ISO 178  MPa  2650  Düse  200-230°C",
+          "notes": null
+        },
+        "nozzle_temperature": {
+          "value": 215.0,
+          "min": 200.0,
+          "max": 230.0,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Biege E-Modul  ISO 178  MPa  2650  Düse  200-230°C",
+          "notes": null
+        },
+        "tensile_modulus": {
+          "value": 2600.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ISO 527",
+          "source_text": "Zug E-Modul  ISO 527  MPa  2600  Heizbett  20-60°C",
+          "notes": null
+        },
+        "bed_temperature": {
+          "value": 40.0,
+          "min": 20.0,
+          "max": 60.0,
+          "unit": "degC",
+          "standard": null,
+          "source_text": "Zug E-Modul  ISO 527  MPa  2600  Heizbett  20-60°C",
+          "notes": null
+        },
+        "tensile_strength": {
+          "value": 47.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ISO 527",
+          "source_text": "Zugfestigkeit  ISO 527  MPa  47  Haftmittel  nicht benötigt",
+          "notes": null
+        },
+        "elongation_at_break": {
+          "value": 4.0,
+          "min": null,
+          "max": null,
+          "unit": "%",
+          "standard": "ISO 527",
+          "source_text": "Zugdehnung  ISO 527  %  4  Geschwindigkeit  20-200mm/s",
+          "notes": null
+        },
+        "tensile_strength_break": {
+          "value": 23.0,
+          "min": null,
+          "max": null,
+          "unit": "MPa",
+          "standard": "ISO 527",
+          "source_text": "Bruchspannung  ISO 527  MPa  23  Kühlung  30-100%",
+          "notes": null
+        },
+        "impact_charpy_notched": {
+          "value": 7.0,
+          "min": null,
+          "max": null,
+          "unit": "kJ/m2",
+          "standard": "ISO 179/1eA",
+          "source_text": "Kerbschlagzähigkeit  ISO 179/1eA  kj/m²  7  Gehärtete Nozzle  nein",
+          "notes": null
+        },
+        "vicat": {
+          "value": 60.0,
+          "min": null,
+          "max": null,
+          "unit": "degC",
+          "standard": "ISO 306",
+          "source_text": "VICAT A (VST)  ISO 306  °C  60*  Geschwindigkeit",
+          "notes": null
+        },
+        "melting_temperature": {
+          "value": 190.0,
+          "min": 180.0,
+          "max": 200.0,
+          "unit": "degC",
+          "standard": "ISO 3146-C",
+          "source_text": "Schmelztemperatur  ISO 3146-C  °C  180-200  Vorgeschlagene Einstellungen für Drucker mit 0.4 mm",
+          "notes": null
+        },
+        "mfr": {
+          "value": 5.0,
+          "min": null,
+          "max": null,
+          "unit": "g/10min",
+          "standard": "ISO 1133",
+          "source_text": "MFR  ISO 1133  g/10min  5  zwischen Druckern variieren und sind zudem von Umweltfak-",
+          "notes": null
+        },
+        "shrinkage": {
+          "value": 0.3,
+          "min": null,
+          "max": null,
+          "unit": "%",
+          "standard": "ISO 294-4",
+          "source_text": "Schwindung  ISO 294-4  %  0.3  toren abhängig.",
+          "notes": null
+        },
+        "density": {
+          "value": 1.3,
+          "min": null,
+          "max": null,
+          "unit": "g/cm3",
+          "standard": "ISO 1183",
+          "source_text": "Dichte  ISO 1183  g/cm³  1.3",
+          "notes": null
+        }
+      },
+      "flags": null
+    }
+  ],
+  "skipped": [
+    {
+      "id": "basf_abs",
+      "manufacturer": "Forward AM (BASF)",
+      "product": "Ultrafuse ABS",
+      "reason": "nur 205 Zeichen Text — das PDF enthaelt die Kennwerte als Bild und ist nicht maschinell auswertbar"
+    },
+    {
+      "id": "basf_pcabs_fr",
+      "manufacturer": "Forward AM (BASF)",
+      "product": "Ultrafuse PC/ABS FR Black",
+      "reason": "nur 307 Zeichen Text — das PDF enthaelt die Kennwerte als Bild und ist nicht maschinell auswertbar"
+    }
+  ]
+}

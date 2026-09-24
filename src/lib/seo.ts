@@ -194,6 +194,21 @@ const baseRouteSeo: Record<string, RouteSeoConfig> = {
       url: `${SITE_URL}/projekt-starten/`,
     },
   },
+  '/3d-druck-preisrechner': {
+    title: `3D-Druck Preisrechner mit STEP- & STL-Viewer | ${BRAND.publicName}`,
+    description:
+      'CAD-Datei (STEP, STL, 3MF, OBJ) hochladen, 3D-Vorschau und Masse sehen und sofort eine unverbindliche Richtpreis-Spanne fuer industriellen FDM-3D-Druck erhalten.',
+    path: '/3d-druck-preisrechner/',
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      name: `3D-Druck Preisrechner ${BRAND.publicName}`,
+      url: `${SITE_URL}/3d-druck-preisrechner/`,
+      applicationCategory: 'BusinessApplication',
+      operatingSystem: 'Web',
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    },
+  },
   '/kontakt': {
     title: `Kontakt | ${BRAND.publicName}`,
     description:

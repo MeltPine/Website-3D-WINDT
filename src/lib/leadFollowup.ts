@@ -15,6 +15,10 @@ type LeadFollowupPayload = {
   message?: string;
   source_path: string;
   file_names?: string[];
+  /** Relative retrieval paths (/datei-abruf/?...) of uploaded files. */
+  file_links?: Array<{ name: string; size: number; path: string }>;
+  price_range?: string;
+  model_summary?: string;
   landing_page?: string;
   initial_referrer?: string;
   utm_source?: string;

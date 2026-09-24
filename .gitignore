@@ -32,3 +32,4 @@ output/
 .tmp_skill_backups/
 .netlify/
 
+*.tsbuildinfo

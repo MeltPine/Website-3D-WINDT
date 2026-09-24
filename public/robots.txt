@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /datei-abruf/
+Disallow: /api/
 
 Host: 3d-windt.de
 Sitemap: https://3d-windt.de/sitemap.xml
