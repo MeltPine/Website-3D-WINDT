@@ -1,4 +1,3 @@
-import React from 'react';
 import { Leaf, Recycle, MapPin, Factory, Truck, Heart } from 'lucide-react';
 
 const Sustainability = () => {

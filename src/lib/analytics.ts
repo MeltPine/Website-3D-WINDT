@@ -27,7 +27,6 @@ declare global {
   interface Window {
     dataLayer?: Array<unknown>;
     gtag?: (...args: unknown[]) => void;
-    requestIdleCallback?: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number;
   }
 }
 

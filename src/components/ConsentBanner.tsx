@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAnalyticsConsentState, setAnalyticsConsent, type AnalyticsConsentState } from '../lib/consent';
 import { CloseIcon, CookieIcon } from './icons';

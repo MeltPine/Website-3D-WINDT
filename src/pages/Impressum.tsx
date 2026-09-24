@@ -1,4 +1,3 @@
-import React from 'react';
 import { Building, Mail, Phone, Users } from 'lucide-react';
 import { BRAND, CONTACT, FULL_ADDRESS, LEGAL, LEGAL_REPRESENTATION } from '../lib/brand';
 

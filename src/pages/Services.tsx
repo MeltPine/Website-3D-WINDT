@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Printer, PenTool, Scan as Scan3D, Package, Clock, Shield, ArrowRight } from 'lucide-react';
 import GlassSurface from '../components/GlassSurface';
