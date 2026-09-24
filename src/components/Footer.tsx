@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { MailIcon, MapPinIcon, PhoneIcon } from './icons';
 import { BRAND, BRAND_SIGNATURE, CONTACT } from '../lib/brand';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, SearchX } from 'lucide-react';
 import GlassSurface from '../components/GlassSurface';

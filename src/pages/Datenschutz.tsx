@@ -1,4 +1,3 @@
-import React from 'react';
 import { Shield, Database, Lock, UserCheck, FileText, Eye } from 'lucide-react';
 import { BRAND, CONTACT, FULL_ADDRESS, LEGAL_REPRESENTATION } from '../lib/brand';
 

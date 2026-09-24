@@ -1,4 +1,3 @@
-import React from 'react';
 import IndustryLandingPage from '../components/IndustryLandingPage';
 
 const Prototypen3DDruck = () => {

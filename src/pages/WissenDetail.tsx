@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { knowledgePageBySlug } from '../lib/knowledgePages';
