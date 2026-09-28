@@ -77,6 +77,11 @@ const Footer = () => {
                   Wissen
                 </Link>
               </li>
+              <li>
+                <Link to="/werkstoffe/" className="text-gray-300 hover:text-primary-400 transition-colors">
+                  Werkstoff-Bibliothek
+                </Link>
+              </li>
             </ul>
           </div>
 

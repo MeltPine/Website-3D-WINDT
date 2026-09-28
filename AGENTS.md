@@ -56,6 +56,19 @@ the structure actually changes, don't let it drift like the old top-level SSoT d
 - Heavy code is lazy: `QuoteDetails` (calculator + material DB), `ModelViewer`
   (three.js), the STEP kernel and the upload client load only when used.
 
+## Material library `/werkstoffe/` (added 2026-09-28)
+- Families + routing: `src/lib/werkstoffe/families.ts` (light, main bundle;
+  explicit `productIds` per family). Copy: `content.ts` (no numbers allowed).
+  Values: `datasheetValues.ts` resolves the FDM-INSPECT DB incl. a manual
+  review (`FIELD_REVIEW`: withhold mis-parsed values, relabel e.g. Izod vs
+  Charpy). The calculator key facts use the same reviewed values.
+- Pages + DB are a lazy chunk (`src/pages/werkstoffePages.ts`); `main.tsx`
+  preloads it on direct visits. Server routes import the pages eagerly.
+- `?material=<catalog id>` on `/3d-druck-preisrechner/` preselects a material.
+- After `npm run materials:sync`: re-check `FIELD_REVIEW`, assign new products
+  to a family; `tests/werkstoffe.test.ts` fails until done. New family = add it
+  to `scripts/prerender.mjs` and `public/sitemap.xml` too (tested).
+
 ## Working here
 - Follow the owner's cross-project rules (language split, subagent
   roster) and `01_Industrial_3DW/AGENTS.md` for the Dual-Branding split — this

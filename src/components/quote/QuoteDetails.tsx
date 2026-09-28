@@ -1,5 +1,6 @@
 import React, { Suspense, lazy, useEffect, useMemo } from 'react';
 import { Box, FileText, Loader2, Trash2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { MODEL_FORMAT_LABEL } from '../../lib/geometry/format';
 import {
   MATERIAL_CATALOG,
@@ -19,6 +20,7 @@ import {
 import { computeSessionEstimate } from '../../lib/quote/sessionEstimate';
 import { formatDimensions, formatEur, formatMegabytes, formatVolumeCm3 } from '../../lib/quote/summary';
 import { trackEvent } from '../../lib/tracking';
+import { familyForCatalogMaterial, werkstoffPath } from '../../lib/werkstoffe/families';
 
 /*
  * Everything the workbench shows once at least one file is selected: viewer,
@@ -60,44 +62,57 @@ function statusLine(entry: QuoteFileEntry): React.ReactNode {
   }
 }
 
-const MaterialFacts = ({ material }: { material: MaterialSpec }) => (
-  <div className="mt-2 space-y-1 text-xs text-gray-600">
-    {material.description && <p>{material.description}</p>}
-    {material.keyFacts.length > 0 && (
-      <ul className="space-y-0.5">
-        {material.keyFacts.map((fact) => (
-          <li key={fact}>{fact}</li>
-        ))}
-      </ul>
-    )}
-    <p>
-      Dichte {new Intl.NumberFormat('de-DE', { maximumFractionDigits: 3 }).format(material.densityGPerCm3)} g/cm³
-      {material.densitySource === 'price-group'
-        ? ` (Richtwert Werkstoffgruppe ${material.priceGroupName}${
-            material.origin === 'datasheet' ? ', Datenblatt ohne Angabe' : ''
-          })`
-        : ' (Herstellerdatenblatt)'}
-      {material.origin === 'datasheet' && material.priceGroupName !== material.polymer
-        ? ` · Preisgruppe ${material.priceGroupName}`
-        : ''}
-    </p>
-    {material.datasheetUrl && (
+const MaterialFacts = ({ material }: { material: MaterialSpec }) => {
+  const family = familyForCatalogMaterial(material);
+  return (
+    <div className="mt-2 space-y-1 text-xs text-gray-600">
+      {material.description && <p>{material.description}</p>}
+      {material.keyFacts.length > 0 && (
+        <ul className="space-y-0.5">
+          {material.keyFacts.map((fact) => (
+            <li key={fact}>{fact}</li>
+          ))}
+        </ul>
+      )}
       <p>
-        <a
-          href={material.datasheetUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-primary-700 underline hover:text-primary-800"
-        >
-          Technisches Datenblatt{material.datasheetIsMirror ? ' (Händler-Kopie des Herstellerdokuments)' : ''}
-        </a>
+        Dichte {new Intl.NumberFormat('de-DE', { maximumFractionDigits: 3 }).format(material.densityGPerCm3)} g/cm³
+        {material.densitySource === 'price-group'
+          ? ` (Richtwert Werkstoffgruppe ${material.priceGroupName}${
+              material.origin === 'datasheet' ? ', Datenblatt ohne Angabe' : ''
+            })`
+          : ' (Herstellerdatenblatt)'}
+        {material.origin === 'datasheet' && material.priceGroupName !== material.polymer
+          ? ` · Preisgruppe ${material.priceGroupName}`
+          : ''}
       </p>
-    )}
-    {material.origin === 'datasheet' && (
-      <p className="text-gray-500">Kennwerte des Rohmaterials laut Hersteller, nicht des gedruckten Bauteils.</p>
-    )}
-  </div>
-);
+      {material.datasheetUrl && (
+        <p>
+          <a
+            href={material.datasheetUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary-700 underline hover:text-primary-800"
+          >
+            Technisches Datenblatt{material.datasheetIsMirror ? ' (Händler-Kopie des Herstellerdokuments)' : ''}
+          </a>
+        </p>
+      )}
+      {material.origin === 'datasheet' && (
+        <p className="text-gray-500">Kennwerte des Rohmaterials laut Hersteller, nicht des gedruckten Bauteils.</p>
+      )}
+      {family && (
+        <p>
+          <Link
+            to={`${werkstoffPath(family.slug)}${material.origin === 'datasheet' ? `#${material.id}` : ''}`}
+            className="text-primary-700 underline hover:text-primary-800"
+          >
+            Datenblatt & Eigenschaften: {family.name} in der Werkstoff-Bibliothek
+          </Link>
+        </p>
+      )}
+    </div>
+  );
+};
 
 interface QuoteDetailsProps {
   catalog?: MaterialCatalog;

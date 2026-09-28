@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { knowledgePageBySlug } from '../lib/knowledgePages';
+import { WERKSTOFFE_PATH, WERKSTOFF_FAMILY_BY_SLUG, werkstoffPath } from '../lib/werkstoffe/families';
 
 const WissenDetail = () => {
   const { slug = '' } = useParams();
@@ -60,6 +61,34 @@ const WissenDetail = () => {
               </div>
             ))}
           </section>
+
+          {page.relatedMaterials && page.relatedMaterials.length > 0 && (
+            <section className="mt-10 border-t border-gray-200 pt-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-3">Werkstoffe zum Thema</h2>
+              <p className="text-gray-700 mb-4">
+                Eigenschaften, Grenzen und Kennwerte aus Herstellerdatenblättern in unserer{' '}
+                <Link to={WERKSTOFFE_PATH} className="text-primary-700 underline hover:text-primary-800">
+                  Werkstoff-Bibliothek
+                </Link>
+                :
+              </p>
+              <ul className="flex flex-wrap gap-2">
+                {page.relatedMaterials.map((materialSlug) => {
+                  const family = WERKSTOFF_FAMILY_BY_SLUG[materialSlug];
+                  return family ? (
+                    <li key={materialSlug}>
+                      <Link
+                        to={werkstoffPath(materialSlug)}
+                        className="inline-flex rounded-lg border border-primary-200 bg-primary-50 px-3 py-1.5 text-sm font-semibold text-primary-800 hover:bg-primary-100"
+                      >
+                        {family.name}
+                      </Link>
+                    </li>
+                  ) : null;
+                })}
+              </ul>
+            </section>
+          )}
 
           <section className="mt-10 border-t border-gray-200 pt-8">
             <h2 className="text-2xl font-semibold text-gray-900 mb-3">

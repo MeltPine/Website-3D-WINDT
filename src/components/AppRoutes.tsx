@@ -18,6 +18,7 @@ import ThankYouContact from '../pages/ThankYouContact';
 import Wissen from '../pages/Wissen';
 import WissenDetail from '../pages/WissenDetail';
 import NotFound from '../pages/NotFound';
+import { WerkstoffDetailRoute, WerkstoffeOverviewRoute } from './werkstoffe/WerkstoffRoutes';
 
 const AppRoutes = () => {
   return (
@@ -40,6 +41,8 @@ const AppRoutes = () => {
       <Route path="/danke-kontakt/" element={<ThankYouContact />} />
       <Route path="/wissen/" element={<Wissen />} />
       <Route path="/wissen/:slug/" element={<WissenDetail />} />
+      <Route path="/werkstoffe/" element={<WerkstoffeOverviewRoute />} />
+      <Route path="/werkstoffe/:slug/" element={<WerkstoffDetailRoute />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

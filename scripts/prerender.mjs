@@ -62,7 +62,24 @@ const knowledgeRoutes = [
   '/wissen/industrie-3d-druck-checkliste-fuer-einkauf/',
 ];
 
-const routes = [...coreRoutes, ...knowledgeRoutes];
+// Keep in sync with WERKSTOFF_FAMILIES (src/lib/werkstoffe/families.ts);
+// tests/werkstoffe.test.ts fails if a family page is missing here.
+const werkstoffRoutes = [
+  '/werkstoffe/',
+  '/werkstoffe/pla/',
+  '/werkstoffe/pla-tough/',
+  '/werkstoffe/petg-pctg/',
+  '/werkstoffe/abs/',
+  '/werkstoffe/asa/',
+  '/werkstoffe/hips/',
+  '/werkstoffe/pc/',
+  '/werkstoffe/pa/',
+  '/werkstoffe/pa6-cf/',
+  '/werkstoffe/pet-cf/',
+  '/werkstoffe/tpu/',
+];
+
+const routes = [...coreRoutes, ...knowledgeRoutes, ...werkstoffRoutes];
 
 const bundleCandidates = ['entry-server.js', 'entry-server.mjs'];
 

@@ -20,6 +20,7 @@ const Header = () => {
     { name: 'Nachhaltigkeit', href: '/nachhaltigkeit/' },
     { name: 'Galerie', href: '/galerie/' },
     { name: 'Wissen', href: '/wissen/' },
+    { name: 'Werkstoffe', href: '/werkstoffe/' },
     { name: 'Über uns', href: '/ueber-uns/' },
     { name: 'Kontakt', href: '/kontakt/' },
   ];
@@ -28,10 +29,10 @@ const Header = () => {
   const normalizedCurrentPath = normalizePathname(location.pathname);
   const isActive = (path: string) => {
     const normalizedNavPath = normalizePathname(path);
-    if (normalizedNavPath === '/wissen') {
+    if (normalizedNavPath === '/wissen' || normalizedNavPath === '/werkstoffe') {
       return (
         normalizedCurrentPath === normalizedNavPath ||
-        normalizedCurrentPath.startsWith('/wissen/')
+        normalizedCurrentPath.startsWith(`${normalizedNavPath}/`)
       );
     }
     return normalizedCurrentPath === normalizedNavPath;

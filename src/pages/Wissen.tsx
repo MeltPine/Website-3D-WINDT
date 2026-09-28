@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { knowledgePages, knowledgePath } from '../lib/knowledgePages';
+import { WERKSTOFFE_PATH } from '../lib/werkstoffe/families';
 
 const Wissen = () => {
   return (
@@ -16,11 +17,27 @@ const Wissen = () => {
           </p>
         </section>
 
-        <section className="bg-white border border-gray-200 rounded-xl p-6 mb-12">
+        <section className="bg-white border border-gray-200 rounded-xl p-6 mb-6">
           <p className="text-gray-700 leading-relaxed">
             Alle Inhalte sind auf industrielle Anwendungsfaelle ausgerichtet und auf belastbare
             Projektklaerung ausgelegt. Kein Marketing-Sprech, sondern konkrete Entscheidungsgrundlagen.
           </p>
+        </section>
+
+        <section className="border border-primary-200 bg-primary-50 rounded-xl p-6 mb-12 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-1">Werkstoff-Bibliothek</h2>
+            <p className="text-gray-700">
+              PLA bis PA6-CF: Einsatz, Grenzen und Kennwerte aus Herstellerdatenblättern – mit Prüfnorm und Quelle.
+            </p>
+          </div>
+          <Link
+            to={WERKSTOFFE_PATH}
+            className="shrink-0 text-primary-700 font-medium hover:text-primary-800 inline-flex items-center gap-2"
+          >
+            Zur Werkstoff-Bibliothek
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </section>
 
         <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">

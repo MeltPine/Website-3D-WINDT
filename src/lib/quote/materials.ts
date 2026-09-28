@@ -1,4 +1,5 @@
 import materialDatabase from '../../data/fdm-inspect-materials.json';
+import { resolveProperties, reviewFor, type LibraryField } from '../werkstoffe/datasheetValues';
 
 /*
  * Material catalog for the price estimator.
@@ -129,32 +130,37 @@ export interface MaterialDatabase {
 
 export const SUPPORTED_MATERIAL_SCHEMA = '1.0';
 
-const UNIT_LABEL: Readonly<Record<string, string>> = {
-  MPa: 'MPa',
-  degC: '°C',
-  'kJ/m2': 'kJ/m²',
-  'g/cm3': 'g/cm³',
-};
-
-const KEY_FACT_FIELDS: ReadonlyArray<{ field: string; label: string }> = [
+/*
+ * Key facts use the reviewed datasheet values of the material library
+ * (werkstoffe/datasheetValues.ts): suspect, flagged and mis-parsed values are
+ * withheld there, and values are labelled with the property the datasheet
+ * actually names (e.g. Izod instead of Charpy).
+ */
+const KEY_FACT_FIELDS: ReadonlyArray<{ field: LibraryField; label: string }> = [
   { field: 'tensile_strength', label: 'Zugfestigkeit' },
+  { field: 'tensile_yield', label: 'Streckspannung' },
   { field: 'hdt_b', label: 'Wärmeformbeständigkeit HDT/B' },
   { field: 'hdt_a', label: 'Wärmeformbeständigkeit HDT/A' },
+  { field: 'hdt_unspecified', label: 'Wärmeformbeständigkeit HDT (Prüflast nicht angegeben)' },
   { field: 'vicat', label: 'Vicat-Erweichungstemperatur' },
   { field: 'impact_charpy_notched', label: 'Kerbschlagzähigkeit' },
+  { field: 'impact_izod_notched', label: 'Kerbschlagzähigkeit (Izod)' },
 ];
 const MAX_KEY_FACTS = 3;
-
-const decimal = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 2 });
+const HEAT_FIELDS: ReadonlySet<LibraryField> = new Set(['hdt_a', 'hdt_b', 'hdt_unspecified', 'vicat']);
+const STRENGTH_FIELDS: ReadonlySet<LibraryField> = new Set(['tensile_strength', 'tensile_yield']);
 
 function isFlagged(material: DbMaterial, field: string): boolean {
   return (material.flags ?? []).some((flag) => flag.field === field);
 }
 
-/** Returns the property only if it is present, unflagged and not suspect. */
+/** Returns the property only if it is present, unflagged, not suspect and not withheld by review. */
 function trustedProperty(material: DbMaterial, field: string): DbProperty | null {
   const property = material.properties[field];
   if (!property || property.suspect || isFlagged(material, field)) {
+    return null;
+  }
+  if (reviewFor(material.id, field)?.kind === 'withhold') {
     return null;
   }
   if (property.value === null && (property.min === null || property.max === null)) {
@@ -163,26 +169,20 @@ function trustedProperty(material: DbMaterial, field: string): DbProperty | null
   return property;
 }
 
-function formatProperty(property: DbProperty): string {
-  const unit = property.unit ? ` ${UNIT_LABEL[property.unit] ?? property.unit}` : '';
-  const value =
-    property.value !== null
-      ? decimal.format(property.value)
-      : `${decimal.format(property.min as number)}–${decimal.format(property.max as number)}`;
-  const standard = property.standard ? ` (${property.standard})` : '';
-  return `${value}${unit}${standard}`;
-}
-
 function keyFactsFor(material: DbMaterial): string[] {
+  const { values } = resolveProperties(material);
   const facts: string[] = [];
-  let hdtShown = false;
+  let heatShown = false;
+  let strengthShown = false;
   for (const { field, label } of KEY_FACT_FIELDS) {
     if (facts.length >= MAX_KEY_FACTS) break;
-    if ((field === 'hdt_a' && hdtShown) || (field === 'vicat' && hdtShown)) continue;
-    const property = trustedProperty(material, field);
-    if (!property) continue;
-    if (field === 'hdt_a' || field === 'hdt_b') hdtShown = true;
-    facts.push(`${label} ${formatProperty(property)}`);
+    if (HEAT_FIELDS.has(field) && heatShown) continue;
+    if (STRENGTH_FIELDS.has(field) && strengthShown) continue;
+    const value = values.find((entry) => entry.field === field);
+    if (!value) continue;
+    if (HEAT_FIELDS.has(field)) heatShown = true;
+    if (STRENGTH_FIELDS.has(field)) strengthShown = true;
+    facts.push(`${label} ${value.display}${value.standard ? ` (${value.standard})` : ''}`);
   }
   return facts;
 }

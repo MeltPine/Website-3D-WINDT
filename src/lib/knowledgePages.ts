@@ -10,6 +10,8 @@ export type KnowledgePage = {
   intro: string;
   checklist: string[];
   sections: KnowledgeSection[];
+  /** Material library families (slugs, see src/lib/werkstoffe/families.ts) linked from this guide. */
+  relatedMaterials?: string[];
 };
 
 export function knowledgeRouteKey(slug: string): string {
@@ -62,6 +64,7 @@ export const knowledgePages: KnowledgePage[] = [
           'Schnelle Testschleifen mit kleinen Anpassungen sind meist wirksamer als ein einmaliger Grosswurf.',
       },
     ],
+    relatedMaterials: ['pa6-cf', 'pla', 'pet-cf'],
   },
   {
     slug: 'prototyping-iterationen-in-5-tagen',
@@ -83,6 +86,7 @@ export const knowledgePages: KnowledgePage[] = [
           'Jede Iteration braucht eine kurze Ergebnisnotiz, damit Folgeschritte reproduzierbar bleiben.',
       },
     ],
+    relatedMaterials: ['pla', 'pla-tough', 'petg-pctg'],
   },
   {
     slug: 'materialwahl-abs-asa-pc-pa',
@@ -104,6 +108,7 @@ export const knowledgePages: KnowledgePage[] = [
           'Eine belastbare Freigabe dokumentiert Grenzbedingungen und Ausschlusskriterien fuer den Betrieb.',
       },
     ],
+    relatedMaterials: ['abs', 'asa', 'pc', 'pa'],
   },
   {
     slug: 'tpu-funktionsbauteile-belastbar-auslegen',
@@ -125,6 +130,7 @@ export const knowledgePages: KnowledgePage[] = [
           'Mindestens ein Praxisversuch im echten Takt reduziert Reklamationsrisiko erheblich.',
       },
     ],
+    relatedMaterials: ['tpu'],
   },
   {
     slug: 'fdm-toleranzen-im-industriealltag',
@@ -293,6 +299,7 @@ export const knowledgePages: KnowledgePage[] = [
           'Fuer langfristige Anwendungen sollten Wartungs- und Austauschzyklen frueh geplant werden.',
       },
     ],
+    relatedMaterials: ['asa', 'petg-pctg'],
   },
   {
     slug: 'temperaturbestaendige-bauteile-richtig-auslegen',
@@ -314,6 +321,7 @@ export const knowledgePages: KnowledgePage[] = [
           'Bei kritischen Anwendungen sollten Sicherheitsreserven und Wartungsintervalle dokumentiert werden.',
       },
     ],
+    relatedMaterials: ['pa6-cf', 'pc', 'asa', 'abs'],
   },
   {
     slug: 'chemische-bestaendigkeit-im-praktischen-einsatz',
@@ -335,6 +343,7 @@ export const knowledgePages: KnowledgePage[] = [
           'Bei Unsicherheit helfen kleine Vorserien-Tests unter realen Bedingungen mehr als theoretische Annahmen.',
       },
     ],
+    relatedMaterials: ['pa', 'petg-pctg'],
   },
   {
     slug: 'montagehilfe-ergonomie-und-prozesssicherheit',
@@ -482,6 +491,7 @@ export const knowledgePages: KnowledgePage[] = [
           'Eine saubere Dokumentation verhindert Fehlmischungen und sichert Folgeauftraege.',
       },
     ],
+    relatedMaterials: ['petg-pctg', 'abs', 'asa', 'pa'],
   },
   {
     slug: 'lieferantenwechsel-additive-fertigung',

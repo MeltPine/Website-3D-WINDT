@@ -1,5 +1,12 @@
 import { BRAND, CONTACT, SITE } from './brand';
 import { knowledgePages, knowledgePath, knowledgeRouteKey } from './knowledgePages';
+import {
+  WERKSTOFFE_PATH,
+  WERKSTOFFE_ROUTE_KEY,
+  WERKSTOFF_FAMILIES,
+  werkstoffPath,
+  werkstoffRouteKey,
+} from './werkstoffe/families';
 
 export const SITE_URL = SITE.url;
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/logo/3dw-logo-full.webp`;
@@ -324,7 +331,87 @@ const knowledgeRouteSeo: Record<string, RouteSeoConfig> = Object.fromEntries(
   }),
 );
 
+/*
+ * Material library. Detail pages are described as WebPage (not Product): we
+ * reference third-party datasheets and publish no offers, prices or reviews.
+ */
+function breadcrumbSchema(items: ReadonlyArray<{ name: string; path: string }>): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: `${SITE_URL}${item.path}`,
+    })),
+  };
+}
+
+const publisherSchema = {
+  '@type': 'Organization',
+  name: BRAND.publicName,
+  url: SITE_URL,
+};
+
+const werkstoffRouteSeo: Record<string, RouteSeoConfig> = {
+  [WERKSTOFFE_ROUTE_KEY]: {
+    title: `Werkstoff-Bibliothek: 3D-Druck Materialien mit Datenblattwerten | ${BRAND.publicName}`,
+    description:
+      'PLA, PETG, ABS, ASA, PA, PA6-CF, TPU und mehr: Einsatz, Grenzen und Kennwerte aus Herstellerdatenblättern mit Prüfnorm, Quelle und Abrufdatum.',
+    path: WERKSTOFFE_PATH,
+    schema: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: `Werkstoff-Bibliothek ${BRAND.publicName}`,
+        url: `${SITE_URL}${WERKSTOFFE_PATH}`,
+        inLanguage: 'de',
+        publisher: publisherSchema,
+        hasPart: WERKSTOFF_FAMILIES.map((family) => ({
+          '@type': 'WebPage',
+          name: family.name,
+          url: `${SITE_URL}${werkstoffPath(family.slug)}`,
+        })),
+      },
+      breadcrumbSchema([
+        { name: 'Start', path: '/' },
+        { name: 'Werkstoffe', path: WERKSTOFFE_PATH },
+      ]),
+    ],
+  },
+  ...Object.fromEntries(
+    WERKSTOFF_FAMILIES.map((family) => [
+      werkstoffRouteKey(family.slug),
+      {
+        title: family.seoTitle,
+        description: family.seoDescription,
+        path: werkstoffPath(family.slug),
+        schema: [
+          {
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            name: family.seoTitle,
+            description: family.seoDescription,
+            url: `${SITE_URL}${werkstoffPath(family.slug)}`,
+            inLanguage: 'de',
+            about: { '@type': 'Thing', name: family.name },
+            isPartOf: { '@type': 'CollectionPage', url: `${SITE_URL}${WERKSTOFFE_PATH}` },
+            publisher: publisherSchema,
+          },
+          breadcrumbSchema([
+            { name: 'Start', path: '/' },
+            { name: 'Werkstoffe', path: WERKSTOFFE_PATH },
+            { name: family.name, path: werkstoffPath(family.slug) },
+          ]),
+        ],
+      } satisfies RouteSeoConfig,
+    ]),
+  ),
+};
+
 export const routeSeo: Record<string, RouteSeoConfig> = {
   ...baseRouteSeo,
   ...knowledgeRouteSeo,
+  ...werkstoffRouteSeo,
 };
