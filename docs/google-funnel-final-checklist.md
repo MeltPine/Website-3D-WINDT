@@ -19,7 +19,6 @@ Diese Liste trennt sauber zwischen Dingen, die im Code erledigt sind, und Dingen
 - Netlify-Forms-Funnel ist aktiv:
   - `contact-request`
   - `project-request`
-  - `lead-metric`
 - Lead-Qualifizierung ist aktiv:
   - Unternehmen ist Pflichtfeld
   - Rolle im Unternehmen ist Pflichtfeld
@@ -85,7 +84,6 @@ Jeden Freitag 15 Minuten:
 1. Netlify Forms:
    - Anzahl `contact-request`
    - Anzahl `project-request`
-   - Anzahl `lead-metric`
 2. GA4:
    - `lead_form_started`
    - `lead_form_submitted`

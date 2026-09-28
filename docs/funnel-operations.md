@@ -8,7 +8,6 @@
 
 ## Erforderliche Netlify-Umgebungsvariablen
 - `VITE_GA_MEASUREMENT_ID` (z. B. `G-XXXXXXXXXX`)
-- `VITE_INTERNAL_TRACKING_ENABLED` (optional, Standard `1`; mit `0` deaktivieren)
 - `RESEND_API_KEY`
 - `LEAD_REPLY_FROM` (z. B. `3D-WINDT <noreply@3d-windt.de>`)
 - `LEAD_SALES_EMAIL` (z. B. `support@3d-windt.de`)
@@ -18,7 +17,7 @@ Hinweis: `VITE_*` Variablen sind Build-Variablen und erfordern ein neues Deploy.
 
 ## Technischer Ablauf
 1. Nutzer kommt über Startseite/Landingpage in den Funnel.
-2. Interne Event-Messung schreibt Lead-Events als `lead-metric` in Netlify Forms (GA-unabhängig).
+2. Event-Messung läuft ausschließlich über GA4. Netlify Forms nimmt nur echte Anfragen an (kein `lead-metric` mehr: jedes Event war eine Formularübermittlung, hat Benachrichtigungs-Mails und Forms-Kontingent verbraucht).
 3. Primär-CTA führt zu `/projekt-starten`.
 4. Formular wird über Netlify Forms übermittelt.
 5. Nach Erfolg Weiterleitung auf `/danke-projekt` oder `/danke-kontakt`.
@@ -73,9 +72,6 @@ Hinweis: `VITE_*` Variablen sind Build-Variablen und erfordern ein neues Deploy.
 8. Fehler-Monitoring prüfen:
    - Testweise Netlify-Form-Erkennung deaktivieren (nur kurz in Staging) oder absichtlich 500 simulieren
    - Prüfen, dass Alert-Mail `"[ALERT] Formularfehler ..."` ankommt
-9. GA-unabhängiges Tracking prüfen:
-   - Netlify -> Forms -> `lead-metric`
-   - Neue Einträge für `cta_clicked`, `lead_form_started`, `lead_form_submitted`, `generate_lead` prüfen
 
 ## Release-Standard (verbindlich)
 - Vor jedem Push `npm run release:check` ausfuehren.
