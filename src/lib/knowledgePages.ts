@@ -1,10 +1,22 @@
+import type { ServicePageKey } from './servicePages';
+
 export type KnowledgeSection = {
   title: string;
   content: string;
 };
 
+export type KnowledgeTopic =
+  | 'ersatzteile'
+  | 'vorrichtungen'
+  | 'prototyping'
+  | 'material'
+  | 'qualitaet'
+  | 'planung';
+
 export type KnowledgePage = {
   slug: string;
+  topic: KnowledgeTopic;
+  service?: ServicePageKey;
   title: string;
   description: string;
   intro: string;
@@ -25,33 +37,37 @@ export function knowledgePath(slug: string): string {
 export const knowledgePages: KnowledgePage[] = [
   {
     slug: 'ersatzteil-nachfertigung-maschinenstillstand',
+    topic: 'ersatzteile',
+    service: 'ersatzteile',
     title: 'Ersatzteil-Nachfertigung bei Maschinenstillstand',
     description:
-      'Leitfaden fuer Instandhaltungsteams, wenn Originalteile fehlen und ein belastbares Lieferfenster benoetigt wird.',
+      'Leitfaden für Instandhaltungsteams, wenn Originalteile fehlen und ein belastbares Lieferfenster benötigt wird.',
     intro:
-      'Wenn eine Anlage steht, sind klare Entscheidungen wichtiger als ein Schnellpreis ohne Kontext. Dieser Leitfaden zeigt, welche Daten fuer eine sichere Nachfertigung notwendig sind.',
-    checklist: ['Bauteilfunktion und Lastfall', 'Stueckzahl und Wiederholbedarf', 'Terminfenster der Anlage'],
+      'Wenn eine Anlage steht, sind klare Entscheidungen wichtiger als ein Schnellpreis ohne Kontext. Dieser Leitfaden zeigt, welche Daten für eine sichere Nachfertigung notwendig sind.',
+    checklist: ['Bauteilfunktion und Lastfall', 'Stückzahl und Wiederholbedarf', 'Terminfenster der Anlage'],
     sections: [
       {
         title: 'Technische Startdaten',
         content:
-          'Uebergeben Sie Geometrie, Einsatzbedingungen und kritische Masse. Ohne diese drei Punkte steigt das Risiko fuer Nacharbeit.',
+          'Übergeben Sie Geometrie, Einsatzbedingungen und kritische Maße. Ohne diese drei Punkte steigt das Risiko für Nacharbeit.',
       },
       {
         title: 'Material- und Freigabeentscheidung',
         content:
-          'Das Material wird nicht nach Name, sondern nach Temperatur, Medienkontakt und mechanischer Belastung gewaehlt.',
+          'Das Material wird nicht nach Name, sondern nach Temperatur, Medienkontakt und mechanischer Belastung gewählt.',
       },
     ],
   },
   {
     slug: 'vorrichtungen-fuer-montagequalitaet',
-    title: 'Vorrichtungen fuer stabile Montagequalitaet',
+    topic: 'vorrichtungen',
+    service: 'montagehilfen',
+    title: 'Vorrichtungen für stabile Montagequalität',
     description:
-      'Wie passgenaue Montagehilfen Nacharbeit reduzieren und Taktstabilitaet in der Linie verbessern.',
+      'Wie passgenaue Montagehilfen Nacharbeit reduzieren und Taktstabilität in der Linie verbessern.',
     intro:
       'Vorrichtungen sind dann wirtschaftlich, wenn sie wiederkehrende Fehlerquellen eliminieren und Bedienung vereinfachen.',
-    checklist: ['Ist-Zustand am Arbeitsplatz', 'Fehlerbild pro Schicht', 'Gewuenschtes Zielbild'],
+    checklist: ['Ist-Zustand am Arbeitsplatz', 'Fehlerbild pro Schicht', 'Gewünschtes Zielbild'],
     sections: [
       {
         title: 'Arbeitsplatznah entwickeln',
@@ -61,27 +77,29 @@ export const knowledgePages: KnowledgePage[] = [
       {
         title: 'Iterationen kurz halten',
         content:
-          'Schnelle Testschleifen mit kleinen Anpassungen sind meist wirksamer als ein einmaliger Grosswurf.',
+          'Schnelle Testschleifen mit kleinen Anpassungen sind meist wirksamer als ein einmaliger Großwurf.',
       },
     ],
     relatedMaterials: ['pa6-cf', 'pla', 'pet-cf'],
   },
   {
     slug: 'prototyping-iterationen-in-5-tagen',
+    topic: 'prototyping',
+    service: 'prototypen',
     title: 'Prototyping-Iterationen in kurzen Testfenstern',
     description:
-      'Praxismodell fuer Entwicklungsteams, die Varianten schnell pruefen und Entscheidungen frueher absichern wollen.',
+      'Praxismodell für Entwicklungsteams, die Varianten schnell prüfen und Entscheidungen früher absichern wollen.',
     intro:
-      'Kurze Iterationen reduzieren Unsicherheit in Konstruktion, Einkauf und Fertigung. Entscheidend ist eine klare Priorisierung der Pruefkriterien.',
+      'Kurze Iterationen reduzieren Unsicherheit in Konstruktion, Einkauf und Fertigung. Entscheidend ist eine klare Priorisierung der Prüfkriterien.',
     checklist: ['Welche Funktion wird getestet', 'Welche Toleranz ist relevant', 'Welche Variante ist Entscheidungstreiber'],
     sections: [
       {
         title: 'Variante vor Perfektion',
         content:
-          'In fruehen Phasen sollte die Testfrage zuerst beantwortet werden. Oberflaechenfinish kommt spaeter.',
+          'In frühen Phasen sollte die Testfrage zuerst beantwortet werden. Oberflächenfinish kommt später.',
       },
       {
-        title: 'Rueckkopplung dokumentieren',
+        title: 'Rückkopplung dokumentieren',
         content:
           'Jede Iteration braucht eine kurze Ergebnisnotiz, damit Folgeschritte reproduzierbar bleiben.',
       },
@@ -90,9 +108,10 @@ export const knowledgePages: KnowledgePage[] = [
   },
   {
     slug: 'materialwahl-abs-asa-pc-pa',
+    topic: 'material',
     title: 'Materialwahl: ABS, ASA, PC, PA im Industrieeinsatz',
     description:
-      'Vergleich typischer Werkstoffklassen fuer funktionale 3D-Druckbauteile in Produktion und Instandhaltung.',
+      'Vergleich typischer Werkstoffklassen für funktionale 3D-Druckbauteile in Produktion und Instandhaltung.',
     intro:
       'Materialauswahl ist ein Risikohebel. Ohne Lastprofil, Temperaturbereich und Umgebungsdaten bleibt jede Empfehlung unscharf.',
     checklist: ['Temperaturbereich', 'UV- und Medienkontakt', 'Mechanische Lastspitzen'],
@@ -100,29 +119,30 @@ export const knowledgePages: KnowledgePage[] = [
       {
         title: 'Werkstoffvergleich nach Einsatzprofil',
         content:
-          'Bewerten Sie zuerst den realen Einsatz, danach den Werkstoff. So vermeiden Sie Ueber- und Unterdimensionierung.',
+          'Bewerten Sie zuerst den realen Einsatz, danach den Werkstoff. So vermeiden Sie Über- und Unterdimensionierung.',
       },
       {
         title: 'Freigabe mit Einsatzkriterien',
         content:
-          'Eine belastbare Freigabe dokumentiert Grenzbedingungen und Ausschlusskriterien fuer den Betrieb.',
+          'Eine belastbare Freigabe dokumentiert Grenzbedingungen und Ausschlusskriterien für den Betrieb.',
       },
     ],
     relatedMaterials: ['abs', 'asa', 'pc', 'pa'],
   },
   {
     slug: 'tpu-funktionsbauteile-belastbar-auslegen',
+    topic: 'material',
     title: 'TPU-Funktionsbauteile belastbar auslegen',
     description:
       'Wann flexible Werkstoffe sinnvoll sind und welche Grenzen bei Geometrie und Dauerlast zu beachten sind.',
     intro:
-      'TPU ist stark bei Daempfung, Griff und Verformung, aber nicht fuer jeden Lastfall geeignet.',
-    checklist: ['Verformungsweg', 'Rueckstellverhalten', 'Kontaktflaeche'],
+      'TPU ist stark bei Dämpfung, Griff und Verformung, aber nicht für jeden Lastfall geeignet.',
+    checklist: ['Verformungsweg', 'Rückstellverhalten', 'Kontaktfläche'],
     sections: [
       {
-        title: 'Geometrie fuer Elastizitaet',
+        title: 'Geometrie für Elastizität',
         content:
-          'Wandstaerken, Rippen und Uebergaenge steuern die Funktion. Kleine Geometrieaenderungen haben grosse Wirkung.',
+          'Wandstärken, Rippen und Übergänge steuern die Funktion. Kleine Geometrieänderungen haben große Wirkung.',
       },
       {
         title: 'Testen vor Serienfreigabe',
@@ -134,33 +154,35 @@ export const knowledgePages: KnowledgePage[] = [
   },
   {
     slug: 'fdm-toleranzen-im-industriealltag',
+    topic: 'qualitaet',
     title: 'FDM-Toleranzen im Industriealltag',
     description:
-      'Wie Toleranzen realistisch bewertet werden und welche Masse vor Produktionsstart abgestimmt werden muessen.',
+      'Wie Toleranzen realistisch bewertet werden und welche Maße vor Produktionsstart abgestimmt werden müssen.',
     intro:
-      'Toleranzdiskussionen sollten bauteilbezogen gefuehrt werden. Kritische Masse brauchen eine Prioritaetsliste.',
-    checklist: ['Funktionsmasse markieren', 'Bezugsflaechen definieren', 'Pruefmittel abstimmen'],
+      'Toleranzdiskussionen sollten bauteilbezogen geführt werden. Kritische Maße brauchen eine Prioritätsliste.',
+    checklist: ['Funktionsmaße markieren', 'Bezugsflächen definieren', 'Prüfmittel abstimmen'],
     sections: [
       {
-        title: 'Kritische Masse zuerst',
+        title: 'Kritische Maße zuerst',
         content:
-          'Nicht jede Abweichung ist funktionskritisch. Fokus auf Passflaechen und Anschlaege bringt die beste Wirkung.',
+          'Nicht jede Abweichung ist funktionskritisch. Fokus auf Passflächen und Anschläge bringt die beste Wirkung.',
       },
       {
         title: 'Abnahme transparent machen',
         content:
-          'Definieren Sie vorab, wie gemessen wird und welche Toleranzklasse fuer den Einsatzzweck ausreichend ist.',
+          'Definieren Sie vorab, wie gemessen wird und welche Toleranzklasse für den Einsatzzweck ausreichend ist.',
       },
     ],
   },
   {
     slug: 'lieferfenster-statt-unrealistischer-expressversprechen',
+    topic: 'planung',
     title: 'Lieferfenster statt unrealistischer Expressversprechen',
     description:
-      'Planungssichere Lieferaussagen fuer Instandhaltung und Produktion ohne Marketingversprechen.',
+      'Planungssichere Lieferaussagen für Instandhaltung und Produktion ohne Marketingversprechen.',
     intro:
-      'Verlaessliche Lieferfenster sind im Betrieb wertvoller als aggressive Werbeaussagen ohne technische Pruefung.',
-    checklist: ['Technische Klardaten', 'Stueckzahl je Abruf', 'Freigabezeitpunkt'],
+      'Verlässliche Lieferfenster sind im Betrieb wertvoller als aggressive Werbeaussagen ohne technische Prüfung.',
+    checklist: ['Technische Klardaten', 'Stückzahl je Abruf', 'Freigabezeitpunkt'],
     sections: [
       {
         title: 'Machbarkeit vor Terminzusage',
@@ -176,33 +198,35 @@ export const knowledgePages: KnowledgePage[] = [
   },
   {
     slug: 'kleinserie-ohne-werkzeug-vorbereiten',
+    topic: 'prototyping',
     title: 'Kleinserie ohne Werkzeug sauber vorbereiten',
     description:
-      'Anforderungen fuer reproduzierbare Kleinserien mit additiver Fertigung im industriellen Umfeld.',
+      'Anforderungen für reproduzierbare Kleinserien mit additiver Fertigung im industriellen Umfeld.',
     intro:
       'Kleinserie funktioniert dann gut, wenn Prozessgrenzen klar sind und die Bauteilgeometrie auf Wiederholbarkeit ausgelegt ist.',
-    checklist: ['Mengenbandbreite', 'Nacharbeitsbedarf', 'Qualitaetskriterien'],
+    checklist: ['Mengenbandbreite', 'Nacharbeitsbedarf', 'Qualitätskriterien'],
     sections: [
       {
-        title: 'Serienfaehigkeit frueh pruefen',
+        title: 'Serienfähigkeit früh prüfen',
         content:
-          'Schon ab den ersten Losen sollten Pruefkriterien fuer Funktion und Masse konsequent angewendet werden.',
+          'Schon ab den ersten Losen sollten Prüfkriterien für Funktion und Maße konsequent angewendet werden.',
       },
       {
-        title: 'Aenderungsmanagement festlegen',
+        title: 'Änderungsmanagement festlegen',
         content:
-          'Bei Varianten oder Revisionen braucht es klare Versionsstaende, damit keine Mischlose entstehen.',
+          'Bei Varianten oder Revisionen braucht es klare Versionsstände, damit keine Mischlose entstehen.',
       },
     ],
   },
   {
     slug: 'bauteiloptimierung-fuer-funktionssicherheit',
-    title: 'Bauteiloptimierung fuer Funktionssicherheit',
+    topic: 'qualitaet',
+    title: 'Bauteiloptimierung für Funktionssicherheit',
     description:
       'Konstruktive Anpassungen, die Standzeit und Belastbarkeit additiv gefertigter Teile verbessern.',
     intro:
-      'Viele Bauteile lassen sich mit kleinen Geometrieanpassungen robuster machen, ohne den Einsatzzweck zu veraendern.',
-    checklist: ['Kerbwirkung vermeiden', 'Kraftfluss beruecksichtigen', 'Montagezugang pruefen'],
+      'Viele Bauteile lassen sich mit kleinen Geometrieanpassungen robuster machen, ohne den Einsatzzweck zu verändern.',
+    checklist: ['Kerbwirkung vermeiden', 'Kraftfluss berücksichtigen', 'Montagezugang prüfen'],
     sections: [
       {
         title: 'Funktion priorisieren',
@@ -212,47 +236,50 @@ export const knowledgePages: KnowledgePage[] = [
       {
         title: 'Anpassung dokumentieren',
         content:
-          'Jede Geometrieaenderung wird mit Ziel und Nutzen dokumentiert, um spaetere Revisionen nachvollziehbar zu halten.',
+          'Jede Geometrieänderung wird mit Ziel und Nutzen dokumentiert, um spätere Revisionen nachvollziehbar zu halten.',
       },
     ],
   },
   {
     slug: 'cad-checkliste-fuer-anfrage',
-    title: 'CAD-Checkliste fuer belastbare Projektanfragen',
+    topic: 'planung',
+    title: 'CAD-Checkliste für belastbare Projektanfragen',
     description:
       'Welche Angaben in einer B2B-Anfrage enthalten sein sollten, damit die technische Bewertung sofort starten kann.',
     intro:
-      'Gute Datenqualitaet beschleunigt die Angebotserstellung und reduziert Rueckfragen in kritischen Zeitfenstern.',
-    checklist: ['Dateiformat und Revision', 'Einsatzbedingungen', 'Stueckzahl und Termin'],
+      'Gute Datenqualität beschleunigt die Angebotserstellung und reduziert Rückfragen in kritischen Zeitfenstern.',
+    checklist: ['Dateiformat und Revision', 'Einsatzbedingungen', 'Stückzahl und Termin'],
     sections: [
       {
-        title: 'Pflichtangaben fuer den Start',
+        title: 'Pflichtangaben für den Start',
         content:
           'Mindestens Geometrie, Einsatzfall und Lieferbedarf sind erforderlich, um eine belastbare Aussage zu treffen.',
       },
       {
-        title: 'Rueckfragen vermeiden',
+        title: 'Rückfragen vermeiden',
         content:
-          'Unklare Funktionsbeschreibungen und fehlende Termine sind die haeufigsten Ursachen fuer Verzogerungen.',
+          'Unklare Funktionsbeschreibungen und fehlende Termine sind die häufigsten Ursachen für Verzögerungen.',
       },
     ],
   },
   {
     slug: 'scan-basierte-ersatzteilversorgung',
+    topic: 'ersatzteile',
+    service: 'kunststoffteile',
     title: 'Scan-basierte Ersatzteilversorgung',
     description:
-      'Vorgehen bei fehlenden CAD-Daten: von der Bestandsaufnahme bis zur einsatzfaehigen Nachfertigung.',
+      'Vorgehen bei fehlenden CAD-Daten: von der Bestandsaufnahme bis zur einsatzfähigen Nachfertigung.',
     intro:
       'Wenn keine Konstruktionsdaten vorliegen, ist ein strukturierter Reverse-Engineering-Prozess entscheidend.',
-    checklist: ['Referenzteil verfuegbar', 'Funktionsflaechen bekannt', 'Abgleich im Einbau'],
+    checklist: ['Referenzteil verfügbar', 'Funktionsflächen bekannt', 'Abgleich im Einbau'],
     sections: [
       {
         title: 'Datenbasis sichern',
         content:
-          'Scan, Referenzmasse und Einbaubezug muessen zueinander passen, damit keine systematischen Fehler entstehen.',
+          'Scan, Referenzmaße und Einbaubezug müssen zueinander passen, damit keine systematischen Fehler entstehen.',
       },
       {
-        title: 'Funktionspruefung vor Freigabe',
+        title: 'Funktionsprüfung vor Freigabe',
         content:
           'Ein kurzer Praxischeck im echten Einsatzfeld verhindert teure Mehrfachschleifen.',
       },
@@ -260,15 +287,17 @@ export const knowledgePages: KnowledgePage[] = [
   },
   {
     slug: 'wartungsfenster-mit-3d-druck-absichern',
+    topic: 'ersatzteile',
+    service: 'ersatzteile',
     title: 'Wartungsfenster mit 3D-Druck absichern',
     description:
-      'Wie Instandhaltungsteams Wartungsstopps besser planen, wenn Ersatzteile nicht regulaer verfuegbar sind.',
+      'Wie Instandhaltungsteams Wartungsstopps besser planen, wenn Ersatzteile nicht regulär verfügbar sind.',
     intro:
-      'Wartungsfenster sind eng getaktet. Ein klarer Ersatzteilprozess reduziert Unsicherheit fuer Team und Produktion.',
-    checklist: ['Teil priorisieren', 'Abhaengigkeiten erfassen', 'Lieferfenster abstimmen'],
+      'Wartungsfenster sind eng getaktet. Ein klarer Ersatzteilprozess reduziert Unsicherheit für Team und Produktion.',
+    checklist: ['Teil priorisieren', 'Abhängigkeiten erfassen', 'Lieferfenster abstimmen'],
     sections: [
       {
-        title: 'Kritikalitaet klassifizieren',
+        title: 'Kritikalität klassifizieren',
         content:
           'Nicht jedes Teil ist gleich wichtig. Priorisieren Sie nach Ausfallfolge und Wiederanlaufzeit.',
       },
@@ -281,11 +310,12 @@ export const knowledgePages: KnowledgePage[] = [
   },
   {
     slug: 'uv-und-witterungsbestaendigkeit-kunststoffteile',
-    title: 'UV- und Witterungsbestaendigkeit bei Kunststoffteilen',
+    topic: 'material',
+    title: 'UV- und Witterungsbeständigkeit bei Kunststoffteilen',
     description:
-      'Entscheidungshilfe fuer Bauteile in Aussenanwendungen mit UV- und Temperaturbelastung.',
+      'Entscheidungshilfe für Bauteile in Außenanwendungen mit UV- und Temperaturbelastung.',
     intro:
-      'Aussenanwendungen brauchen ein anderes Materialprofil als reine Innenanwendungen.',
+      'Außenanwendungen brauchen ein anderes Materialprofil als reine Innenanwendungen.',
     checklist: ['UV-Exposition', 'Temperaturschwankung', 'Mechanische Last im Betrieb'],
     sections: [
       {
@@ -294,26 +324,27 @@ export const knowledgePages: KnowledgePage[] = [
           'Werkstoffdaten sollten auf den realen Einsatz bezogen werden, nicht nur auf Katalogwerte.',
       },
       {
-        title: 'Einsatzdauer abschaetzen',
+        title: 'Einsatzdauer abschätzen',
         content:
-          'Fuer langfristige Anwendungen sollten Wartungs- und Austauschzyklen frueh geplant werden.',
+          'Für langfristige Anwendungen sollten Wartungs- und Austauschzyklen früh geplant werden.',
       },
     ],
     relatedMaterials: ['asa', 'petg-pctg'],
   },
   {
     slug: 'temperaturbestaendige-bauteile-richtig-auslegen',
-    title: 'Temperaturbestaendige Bauteile richtig auslegen',
+    topic: 'material',
+    title: 'Temperaturbeständige Bauteile richtig auslegen',
     description:
-      'Leitfaden fuer Anwendungen mit thermischer Dauerlast oder kurzzeitigen Temperaturspitzen.',
+      'Leitfaden für Anwendungen mit thermischer Dauerlast oder kurzzeitigen Temperaturspitzen.',
     intro:
-      'Temperatur ist oft der entscheidende Ausfalltreiber. Schon moderate Dauerlast kann Materialeigenschaften deutlich veraendern.',
+      'Temperatur ist oft der entscheidende Ausfalltreiber. Schon moderate Dauerlast kann Materialeigenschaften deutlich verändern.',
     checklist: ['Dauer- und Spitzentemperatur', 'Einwirkdauer', 'Nachbarbauteile und Montage'],
     sections: [
       {
         title: 'Thermisches Lastprofil erfassen',
         content:
-          'Die Kombination aus Temperatur und Zeit bestimmt die Eignung deutlich staerker als ein einzelner Grenzwert.',
+          'Die Kombination aus Temperatur und Zeit bestimmt die Eignung deutlich stärker als ein einzelner Grenzwert.',
       },
       {
         title: 'Designreserve einplanen',
@@ -325,20 +356,21 @@ export const knowledgePages: KnowledgePage[] = [
   },
   {
     slug: 'chemische-bestaendigkeit-im-praktischen-einsatz',
-    title: 'Chemische Bestaendigkeit im praktischen Einsatz',
+    topic: 'material',
+    title: 'Chemische Beständigkeit im praktischen Einsatz',
     description:
-      'Bewertung von Medienkontakt fuer 3D-gedruckte Funktionsbauteile im Produktionsumfeld.',
+      'Bewertung von Medienkontakt für 3D-gedruckte Funktionsbauteile im Produktionsumfeld.',
     intro:
-      'Chemischer Kontakt fuehrt oft nicht sofort zum Ausfall, kann aber die Standzeit deutlich reduzieren.',
+      'Chemischer Kontakt führt oft nicht sofort zum Ausfall, kann aber die Standzeit deutlich reduzieren.',
     checklist: ['Welche Medien', 'Kontaktzeit', 'Reinigung und Wartung'],
     sections: [
       {
         title: 'Medienprofil definieren',
         content:
-          'Ohne konkrete Angaben zu Medium und Konzentration ist keine belastbare Werkstoffauswahl moeglich.',
+          'Ohne konkrete Angaben zu Medium und Konzentration ist keine belastbare Werkstoffauswahl möglich.',
       },
       {
-        title: 'Pruefstrategie festlegen',
+        title: 'Prüfstrategie festlegen',
         content:
           'Bei Unsicherheit helfen kleine Vorserien-Tests unter realen Bedingungen mehr als theoretische Annahmen.',
       },
@@ -347,30 +379,34 @@ export const knowledgePages: KnowledgePage[] = [
   },
   {
     slug: 'montagehilfe-ergonomie-und-prozesssicherheit',
+    topic: 'vorrichtungen',
+    service: 'montagehilfen',
     title: 'Montagehilfe: Ergonomie und Prozesssicherheit',
     description:
-      'Wie Vorrichtungen gleichzeitig Bedienaufwand reduzieren und Qualitaetsstreuung minimieren.',
+      'Wie Vorrichtungen gleichzeitig Bedienaufwand reduzieren und Qualitätsstreuung minimieren.',
     intro:
-      'Ergonomie und Qualitaet haengen zusammen. Gute Hilfsmittel reduzieren Fehlhandlungen unter Zeitdruck.',
+      'Ergonomie und Qualität hängen zusammen. Gute Hilfsmittel reduzieren Fehlhandlungen unter Zeitdruck.',
     checklist: ['Greifwege', 'Sichtbarkeit', 'Fehlerquellen'],
     sections: [
       {
         title: 'Bedienlogik vereinfachen',
         content:
-          'Je klarer der Prozess gefuehrt wird, desto stabiler bleibt die Qualitaet auch bei Schichtwechseln.',
+          'Je klarer der Prozess geführt wird, desto stabiler bleibt die Qualität auch bei Schichtwechseln.',
       },
       {
-        title: 'Rueckmeldung aus der Linie nutzen',
+        title: 'Rückmeldung aus der Linie nutzen',
         content:
-          'Feedback aus dem Betrieb sollte in kurze Verbesserungszyklen einfliessen.',
+          'Feedback aus dem Betrieb sollte in kurze Verbesserungszyklen einfließen.',
       },
     ],
   },
   {
     slug: 'ersatzteil-dokumentation-und-versionierung',
+    topic: 'ersatzteile',
+    service: 'ersatzteile',
     title: 'Ersatzteil-Dokumentation und Versionierung',
     description:
-      'Best Practices fuer wiederholbare Nachfertigung ohne Versionschaos.',
+      'Best Practices für wiederholbare Nachfertigung ohne Versionschaos.',
     intro:
       'Nachfertigung skaliert nur mit sauberer Dokumentation von Stand, Material und Einsatzfreigabe.',
     checklist: ['Revisionsstand', 'Materialfreigabe', 'Einsatzhinweis'],
@@ -378,28 +414,29 @@ export const knowledgePages: KnowledgePage[] = [
       {
         title: 'Versionen eindeutig halten',
         content:
-          'Eindeutige IDs und Aenderungshinweise verhindern Verwechslungen in Beschaffung und Produktion.',
+          'Eindeutige IDs und Änderungshinweise verhindern Verwechslungen in Beschaffung und Produktion.',
       },
       {
         title: 'Freigabekriterien erfassen',
         content:
-          'Dokumentieren Sie, woran die Einsatzfaehigkeit bewertet wurde, damit Folgeauftraege schneller laufen.',
+          'Dokumentieren Sie, woran die Einsatzfähigkeit bewertet wurde, damit Folgeaufträge schneller laufen.',
       },
     ],
   },
   {
     slug: 'qualitaetspruefung-von-funktionsbauteilen',
-    title: 'Qualitaetspruefung von Funktionsbauteilen',
+    topic: 'qualitaet',
+    title: 'Qualitätsprüfung von Funktionsbauteilen',
     description:
-      'Pragmatische Qualitaetssicherung fuer industrielle 3D-Druckteile mit funktionskritischen Merkmalen.',
+      'Pragmatische Qualitätssicherung für industrielle 3D-Druckteile mit funktionskritischen Merkmalen.',
     intro:
-      'Pruefung muss zum Risiko passen. Kritische Merkmale sollten priorisiert und wiederholbar gemessen werden.',
-    checklist: ['Kritische Merkmale', 'Pruefmethode', 'Abnahmekriterium'],
+      'Prüfung muss zum Risiko passen. Kritische Merkmale sollten priorisiert und wiederholbar gemessen werden.',
+    checklist: ['Kritische Merkmale', 'Prüfmethode', 'Abnahmekriterium'],
     sections: [
       {
-        title: 'Pruefplan vor Produktionsstart',
+        title: 'Prüfplan vor Produktionsstart',
         content:
-          'Ein kurzer Pruefplan vorab spart Zeit im Abschluss und verhindert Diskussionen bei der Uebergabe.',
+          'Ein kurzer Prüfplan vorab spart Zeit im Abschluss und verhindert Diskussionen bei der Übergabe.',
       },
       {
         title: 'Abweichungen klar bewerten',
@@ -410,12 +447,13 @@ export const knowledgePages: KnowledgePage[] = [
   },
   {
     slug: 'kosten-treiber-im-industrie-3d-druck',
+    topic: 'planung',
     title: 'Kosten-Treiber im Industrie-3D-Druck',
     description:
       'Welche Faktoren den Preis wirklich beeinflussen und wie Projekte wirtschaftlich gesteuert werden.',
     intro:
-      'Preisvergleich ohne technische Daten fuehrt oft zu Fehlentscheidungen. Die wichtigsten Kostentreiber sind klar beeinflussbar.',
-    checklist: ['Bauteilvolumen', 'Nachbearbeitung', 'Stueckzahl und Wiederholbedarf'],
+      'Preisvergleich ohne technische Daten führt oft zu Fehlentscheidungen. Die wichtigsten Kostentreiber sind klar beeinflussbar.',
+    checklist: ['Bauteilvolumen', 'Nachbearbeitung', 'Stückzahl und Wiederholbedarf'],
     sections: [
       {
         title: 'Kosten transparent machen',
@@ -423,25 +461,26 @@ export const knowledgePages: KnowledgePage[] = [
           'Wenn Druck, Nacharbeit und Lieferfenster getrennt bewertet werden, entstehen belastbare Entscheidungen.',
       },
       {
-        title: 'Wirtschaftlichkeit ueber Lebenszyklus',
+        title: 'Wirtschaftlichkeit über Lebenszyklus',
         content:
-          'Nicht nur der Stueckpreis zaehlt, sondern auch Ausfallkosten, Lieferzeit und Prozesssicherheit.',
+          'Nicht nur der Stückpreis zählt, sondern auch Ausfallkosten, Lieferzeit und Prozesssicherheit.',
       },
     ],
   },
   {
     slug: 'express-anfragen-realistisch-bewerten',
+    topic: 'planung',
     title: 'Express-Anfragen realistisch bewerten',
     description:
-      'Wann Express sinnvoll ist und welche technischen Voraussetzungen fuer verlaessliche Zusagen erforderlich sind.',
+      'Wann Express sinnvoll ist und welche technischen Voraussetzungen für verlässliche Zusagen erforderlich sind.',
     intro:
-      'Express ist ein Sonderfall, kein Standard. Realistische Zusagen schuetzen vor Folgekosten und Frust.',
-    checklist: ['Vollstaendige Datenlage', 'Materialverfuegbarkeit', 'Nachbearbeitungsbedarf'],
+      'Express ist ein Sonderfall, kein Standard. Realistische Zusagen schützen vor Folgekosten und Frust.',
+    checklist: ['Vollständige Datenlage', 'Materialverfügbarkeit', 'Nachbearbeitungsbedarf'],
     sections: [
       {
         title: 'Express nur mit Machbarkeitscheck',
         content:
-          'Ohne technischen Check steigt das Risiko fuer Terminbruch und Funktionsabweichung deutlich.',
+          'Ohne technischen Check steigt das Risiko für Terminbruch und Funktionsabweichung deutlich.',
       },
       {
         title: 'Priorisierung transparent steuern',
@@ -452,11 +491,12 @@ export const knowledgePages: KnowledgePage[] = [
   },
   {
     slug: 'risikoanalyse-fuer-funktionskritische-teile',
-    title: 'Risikoanalyse fuer funktionskritische Teile',
+    topic: 'qualitaet',
+    title: 'Risikoanalyse für funktionskritische Teile',
     description:
       'Strukturierte Bewertung von Ausfallfolgen, Materialrisiken und Prozessgrenzen vor Fertigungsfreigabe.',
     intro:
-      'Risikomanagement ist besonders wichtig, wenn ein Teil direkten Einfluss auf Anlagenverfuegbarkeit hat.',
+      'Risikomanagement ist besonders wichtig, wenn ein Teil direkten Einfluss auf Anlagenverfügbarkeit hat.',
     checklist: ['Ausfallfolge', 'Einsatzgrenzen', 'Fallback-Szenario'],
     sections: [
       {
@@ -465,47 +505,49 @@ export const knowledgePages: KnowledgePage[] = [
           'Bewerten Sie zuerst Ausfallwirkung und Eintrittswahrscheinlichkeit, erst dann Detailfragen.',
       },
       {
-        title: 'Massnahmen vorab definieren',
+        title: 'Maßnahmen vorab definieren',
         content:
-          'Mit klaren Gegenmassnahmen bleiben auch anspruchsvolle Projekte steuerbar.',
+          'Mit klaren Gegenmaßnahmen bleiben auch anspruchsvolle Projekte steuerbar.',
       },
     ],
   },
   {
     slug: 'materialwechsel-ohne-qualitaetsverlust',
-    title: 'Materialwechsel ohne Qualitaetsverlust',
+    topic: 'material',
+    title: 'Materialwechsel ohne Qualitätsverlust',
     description:
-      'Vorgehen fuer Materialwechsel bei geaenderten Anforderungen oder Verfuegbarkeitsengpaessen.',
+      'Vorgehen für Materialwechsel bei geänderten Anforderungen oder Verfügbarkeitsengpässen.',
     intro:
-      'Materialwechsel braucht eine strukturierte Validierung, damit Funktions- und Prozessqualitaet erhalten bleiben.',
-    checklist: ['Aenderungsgrund', 'Vergleichskriterium', 'Validierungsplan'],
+      'Materialwechsel braucht eine strukturierte Validierung, damit Funktions- und Prozessqualität erhalten bleiben.',
+    checklist: ['Änderungsgrund', 'Vergleichskriterium', 'Validierungsplan'],
     sections: [
       {
-        title: 'Gleichwertigkeit pruefen',
+        title: 'Gleichwertigkeit prüfen',
         content:
-          'Nicht nur Festigkeit, sondern auch Temperatur, Medienkontakt und Montageverhalten muessen bewertet werden.',
+          'Nicht nur Festigkeit, sondern auch Temperatur, Medienkontakt und Montageverhalten müssen bewertet werden.',
       },
       {
         title: 'Umstellung dokumentieren',
         content:
-          'Eine saubere Dokumentation verhindert Fehlmischungen und sichert Folgeauftraege.',
+          'Eine saubere Dokumentation verhindert Fehlmischungen und sichert Folgeaufträge.',
       },
     ],
     relatedMaterials: ['petg-pctg', 'abs', 'asa', 'pa'],
   },
   {
     slug: 'lieferantenwechsel-additive-fertigung',
+    topic: 'planung',
     title: 'Lieferantenwechsel in der additiven Fertigung',
     description:
-      'Wie Unternehmen den Wechsel strukturieren, ohne laufende Produktion zu gefaehrden.',
+      'Wie Unternehmen den Wechsel strukturieren, ohne laufende Produktion zu gefährden.',
     intro:
-      'Ein Lieferantenwechsel ist ein Prozessprojekt. Klare Kriterien reduzieren Reibung bei Uebergabe und Freigabe.',
-    checklist: ['Technische Kriterien', 'Kommunikationsplan', 'Uebergabe von Revisionsstaenden'],
+      'Ein Lieferantenwechsel ist ein Prozessprojekt. Klare Kriterien reduzieren Reibung bei Übergabe und Freigabe.',
+    checklist: ['Technische Kriterien', 'Kommunikationsplan', 'Übergabe von Revisionsständen'],
     sections: [
       {
         title: 'Onboarding mit Pflichtkriterien',
         content:
-          'Definieren Sie Mindestanforderungen fuer Datenqualitaet, Reaktionszeit und Qualitaetsnachweise.',
+          'Definieren Sie Mindestanforderungen für Datenqualität, Reaktionszeit und Qualitätsnachweise.',
       },
       {
         title: 'Parallelphase nutzen',
@@ -516,12 +558,14 @@ export const knowledgePages: KnowledgePage[] = [
   },
   {
     slug: 'digitales-ersatzteillager-mit-3d-druck',
+    topic: 'ersatzteile',
+    service: 'ersatzteile',
     title: 'Digitales Ersatzteillager mit 3D-Druck',
     description:
-      'Ansatz fuer Unternehmen, die Ersatzteile digital vorhalten und bei Bedarf reproduzierbar fertigen wollen.',
+      'Ansatz für Unternehmen, die Ersatzteile digital vorhalten und bei Bedarf reproduzierbar fertigen wollen.',
     intro:
-      'Digitale Ersatzteillager reduzieren physische Lagerkosten und verkuerzen Reaktionszeiten bei Ausfaellen.',
-    checklist: ['Teilportfolio priorisieren', 'Datenqualitaet sichern', 'Freigaberegeln definieren'],
+      'Digitale Ersatzteillager reduzieren physische Lagerkosten und verkürzen Reaktionszeiten bei Ausfällen.',
+    checklist: ['Teilportfolio priorisieren', 'Datenqualität sichern', 'Freigaberegeln definieren'],
     sections: [
       {
         title: 'Portfolio schrittweise aufbauen',
@@ -531,26 +575,27 @@ export const knowledgePages: KnowledgePage[] = [
       {
         title: 'Betriebsroutine etablieren',
         content:
-          'Regelmaessige Reviews fuer Datenstand, Revisionslogik und Lieferfaehigkeit sichern die langfristige Wirkung.',
+          'Regelmäßige Reviews für Datenstand, Revisionslogik und Lieferfähigkeit sichern die langfristige Wirkung.',
       },
     ],
   },
   {
     slug: 'industrie-3d-druck-checkliste-fuer-einkauf',
-    title: 'Einkaufs-Checkliste fuer Industrie-3D-Druck',
+    topic: 'planung',
+    title: 'Einkaufs-Checkliste für Industrie-3D-Druck',
     description:
-      'Praxisorientierte Kriterien fuer Einkaufsteams, um Anbieter strukturiert und technisch belastbar zu vergleichen.',
+      'Praxisorientierte Kriterien für Einkaufsteams, um Anbieter strukturiert und technisch belastbar zu vergleichen.',
     intro:
-      'Ein guter Einkauf vergleicht nicht nur Preis, sondern auch technische Rueckmeldung, Lieferaussage und Prozessreife.',
-    checklist: ['Reaktionszeit', 'Technische Pruefung', 'Nachweisbare Prozessqualitaet'],
+      'Ein guter Einkauf vergleicht nicht nur Preis, sondern auch technische Rückmeldung, Lieferaussage und Prozessreife.',
+    checklist: ['Reaktionszeit', 'Technische Prüfung', 'Nachweisbare Prozessqualität'],
     sections: [
       {
         title: 'Vergleichskriterien standardisieren',
         content:
-          'Definieren Sie einheitliche Kriterien fuer Angebote, damit Entscheidungen reproduzierbar bleiben.',
+          'Definieren Sie einheitliche Kriterien für Angebote, damit Entscheidungen reproduzierbar bleiben.',
       },
       {
-        title: 'Liefer- und Qualitaetsrisiko bewerten',
+        title: 'Liefer- und Qualitätsrisiko bewerten',
         content:
           'Bewerten Sie Risiken vor der Beauftragung, nicht erst nach dem ersten Problem im Betrieb.',
       },
@@ -561,3 +606,39 @@ export const knowledgePages: KnowledgePage[] = [
 export const knowledgePageBySlug: Record<string, KnowledgePage> = Object.fromEntries(
   knowledgePages.map((page) => [page.slug, page]),
 );
+
+/**
+ * Deterministic "related articles" selection: pages sharing the topic come first,
+ * ordered by their position after the current page (wrapping around the list);
+ * remaining slots are filled with the nearest list neighbours.
+ */
+export function relatedKnowledgePages(slug: string, limit = 3): KnowledgePage[] {
+  const index = knowledgePages.findIndex((page) => page.slug === slug);
+  if (index === -1) {
+    return [];
+  }
+  const current = knowledgePages[index];
+  const total = knowledgePages.length;
+  const byCircularOrder = Array.from(
+    { length: total - 1 },
+    (_, offset) => knowledgePages[(index + offset + 1) % total],
+  );
+
+  const selected = byCircularOrder
+    .filter((page) => page.topic === current.topic)
+    .slice(0, limit);
+
+  for (let distance = 1; selected.length < limit && distance < total; distance += 1) {
+    for (const candidateIndex of [index + distance, index - distance]) {
+      if (selected.length >= limit || candidateIndex < 0 || candidateIndex >= total) {
+        continue;
+      }
+      const candidate = knowledgePages[candidateIndex];
+      if (!selected.includes(candidate)) {
+        selected.push(candidate);
+      }
+    }
+  }
+
+  return selected;
+}

@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { knowledgePageBySlug } from '../lib/knowledgePages';
+import { knowledgePageBySlug, knowledgePath, relatedKnowledgePages } from '../lib/knowledgePages';
+import { servicePageByKey } from '../lib/servicePages';
 import { WERKSTOFFE_PATH, WERKSTOFF_FAMILY_BY_SLUG, werkstoffPath } from '../lib/werkstoffe/families';
 
 const WissenDetail = () => {
@@ -14,20 +15,23 @@ const WissenDetail = () => {
           <div className="bg-white border border-gray-200 rounded-xl p-8 text-center">
             <h1 className="text-3xl font-bold text-gray-900 mb-4">Leitfaden nicht gefunden</h1>
             <p className="text-gray-700 mb-6">
-              Die angefragte Wissensseite ist nicht verfuegbar oder wurde verschoben.
+              Die angefragte Wissensseite ist nicht verfügbar oder wurde verschoben.
             </p>
             <Link
               to="/wissen/"
               className="text-primary-700 font-medium hover:text-primary-800 inline-flex items-center gap-2"
             >
               <ArrowLeft className="h-4 w-4" />
-              Zurueck zum Wissenscenter
+              Zurück zum Wissenscenter
             </Link>
           </div>
         </div>
       </div>
     );
   }
+
+  const relatedPages = relatedKnowledgePages(page.slug);
+  const matchingService = page.service ? servicePageByKey[page.service] : undefined;
 
   return (
     <div className="py-16 animate-fade-in">
@@ -37,7 +41,7 @@ const WissenDetail = () => {
           className="text-primary-700 font-medium hover:text-primary-800 inline-flex items-center gap-2 mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
-          Zurueck zum Wissenscenter
+          Zurück zum Wissenscenter
         </Link>
 
         <article className="bg-white border border-gray-200 rounded-xl p-8">
@@ -90,12 +94,26 @@ const WissenDetail = () => {
             </section>
           )}
 
+          {matchingService && (
+            <section className="mt-8 border border-primary-100 rounded-lg p-5 bg-primary-50">
+              <h2 className="text-lg font-semibold text-gray-900 mb-1">Passende Leistung</h2>
+              <p className="text-gray-700 mb-3">{matchingService.summary}</p>
+              <Link
+                to={matchingService.href}
+                className="text-primary-700 font-medium hover:text-primary-800 inline-flex items-center gap-2"
+              >
+                {matchingService.name}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </section>
+          )}
+
           <section className="mt-10 border-t border-gray-200 pt-8">
             <h2 className="text-2xl font-semibold text-gray-900 mb-3">
-              Naechster Schritt fuer Ihr Projekt
+              Nächster Schritt für Ihr Projekt
             </h2>
             <p className="text-gray-700 mb-6">
-              Wenn Ihr Anwendungsfall konkret ist, starten wir mit technischer Pruefung und einem
+              Wenn Ihr Anwendungsfall konkret ist, starten wir mit technischer Prüfung und einem
               belastbaren Angebotsrahmen.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -115,6 +133,29 @@ const WissenDetail = () => {
             </div>
           </section>
         </article>
+
+        {relatedPages.length > 0 && (
+          <section aria-labelledby="verwandte-artikel" className="mt-10">
+            <h2 id="verwandte-artikel" className="text-2xl font-semibold text-gray-900 mb-4">
+              Verwandte Artikel
+            </h2>
+            <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {relatedPages.map((related) => (
+                <li key={related.slug} className="bg-white border border-gray-200 rounded-xl p-5 flex flex-col">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{related.title}</h3>
+                  <p className="text-sm text-gray-700 mb-4">{related.description}</p>
+                  <Link
+                    to={knowledgePath(related.slug)}
+                    className="mt-auto text-primary-700 font-medium hover:text-primary-800 inline-flex items-center gap-2"
+                  >
+                    Leitfaden lesen
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
     </div>
   );

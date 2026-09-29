@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { MailIcon, MapPinIcon, PhoneIcon } from './icons';
 import { BRAND, BRAND_SIGNATURE, CONTACT } from '../lib/brand';
+import { servicePages } from '../lib/servicePages';
 import BrandLogo from './BrandLogo';
 
 const Footer = () => {
@@ -14,8 +15,8 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="col-span-1 md:col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
+          <div className="col-span-1 md:col-span-3 lg:col-span-2">
             <div className="mb-4">
               <BrandLogo theme="dark" size="md" showTagline />
             </div>
@@ -37,6 +38,24 @@ const Footer = () => {
                 <span className="text-gray-300">{CONTACT.country}</span>
               </div>
             </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Leistungen</h3>
+            <ul className="space-y-2">
+              {servicePages.map((service) => (
+                <li key={service.href}>
+                  <Link to={service.href} className="text-gray-300 hover:text-primary-400 transition-colors">
+                    {service.name}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link to="/leistungen/" className="text-gray-300 hover:text-primary-400 transition-colors">
+                  Alle Leistungen
+                </Link>
+              </li>
+            </ul>
           </div>
 
           <div>

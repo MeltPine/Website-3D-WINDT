@@ -184,6 +184,15 @@
     box-shadow: 0 16px 36px -22px rgba(2, 6, 23, 0.8);
   }
 
+  /* The header hosts a dropdown that must extend past the surface edge. */
+  .glass-surface.glass-nav-dropdown-host {
+    overflow: visible;
+  }
+
+  .glass-surface.glass-nav-dropdown-host::before {
+    border-radius: inherit;
+  }
+
   .glass-hero {
     background: var(--glass-bg);
     border-color: var(--glass-border);

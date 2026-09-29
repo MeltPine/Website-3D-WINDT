@@ -111,7 +111,7 @@ const Datenschutz = () => {
                   <p>
                     <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. a DSGVO (Einwilligung)
                     <br />
-                    <strong>Widerruf:</strong> jederzeit ueber Cookie-Einstellungen im Footer
+                    <strong>Widerruf:</strong> jederzeit über Cookie-Einstellungen im Footer
                   </p>
                 </div>
               </div>
@@ -121,7 +121,7 @@ const Datenschutz = () => {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center space-x-2">
               <Database className="h-6 w-6 text-primary-600" />
-              <span>Empfaenger und Auftragsverarbeiter</span>
+              <span>Empfänger und Auftragsverarbeiter</span>
             </h2>
             <div className="space-y-4 text-gray-700">
               <p>
@@ -142,17 +142,17 @@ const Datenschutz = () => {
             </h2>
             <div className="space-y-3 text-gray-700">
               <p>
-                Wir speichern personenbezogene Daten nur so lange, wie es fuer den jeweiligen Zweck
+                Wir speichern personenbezogene Daten nur so lange, wie es für den jeweiligen Zweck
                 erforderlich ist oder gesetzliche Aufbewahrungspflichten bestehen.
               </p>
               <ul className="list-disc list-inside space-y-1">
                 <li>Projekt- und Kontaktdaten: in der Regel bis zu 24 Monate nach Abschluss</li>
                 <li>Technische Server-Logs: in der Regel bis zu 30 Tage</li>
-                <li>Analytics-Daten (GA4): gemaess Google-Konfiguration, Statistik-Cookies nur nach Einwilligung</li>
+                <li>Analytics-Daten (GA4): gemäß Google-Konfiguration, Statistik-Cookies nur nach Einwilligung</li>
               </ul>
               <p>
-                Anfrage- und Projektdaten werden regelmaessig ueberprueft und bei Wegfall des
-                Verarbeitungszwecks geloescht.
+                Anfrage- und Projektdaten werden regelmäßig überprüft und bei Wegfall des
+                Verarbeitungszwecks gelöscht.
               </p>
             </div>
           </section>
