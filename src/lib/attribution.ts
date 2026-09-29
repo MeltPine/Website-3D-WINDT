@@ -1,3 +1,5 @@
+import { hasSensitiveQuery } from './routes';
+
 const STORAGE_KEY = '3dw_attribution_v1';
 
 export const ATTRIBUTION_FIELD_NAMES = [
@@ -87,7 +89,8 @@ export function captureAttribution(): void {
   const currentUrl = new URL(window.location.href);
 
   if (!fields.landing_page) {
-    fields.landing_page = `${currentUrl.pathname}${currentUrl.search}`;
+    const search = hasSensitiveQuery(currentUrl.pathname) ? '' : currentUrl.search;
+    fields.landing_page = `${currentUrl.pathname}${search}`;
   }
 
   if (!fields.initial_referrer) {

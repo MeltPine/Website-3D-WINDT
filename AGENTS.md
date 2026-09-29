@@ -31,10 +31,27 @@ the structure actually changes, don't let it drift like the old top-level SSoT d
   `linkedin-post-templates.md`, and more. **Read these before writing new
   marketing/funnel docs — don't duplicate what's already tracked here.**
 
+## Payments (Stripe, added 2026-09-29)
+- Hosted Stripe Checkout only (top-level redirect to checkout.stripe.com, no
+  Stripe.js, site CSP unchanged). Setup, env vars and owner decisions:
+  `docs/stripe-setup.md` (German).
+- `netlify/functions/create-checkout.mts` (`POST /api/checkout`): same-origin
+  JSON only, B2B declaration required, product allowlist in
+  `src/lib/payment/catalog.ts` (SSoT for key, name, net price; the Stripe price
+  is cross-checked against it), or a signed quote link. Never takes an amount
+  from the client. `TAX_MODE` unset/invalid = fail closed.
+- Signed quote links: `netlify/shared/paymentLink.mjs` is plain ESM so the same
+  code signs (`scripts/payment-link.mjs`, `PAYMENT_LINK_SECRET`) and verifies
+  (Functions). `GET /api/payment-link` backs the `/bezahlen/` page. The query of
+  `/bezahlen/` is kept out of analytics/attribution (`hasSensitiveQuery`).
+- `stripe-webhook.mts` (`POST /api/stripe/webhook`): signature over the raw body,
+  idempotency ledger in Netlify Blobs (`stripe-events`, eu-central-1, event
+  id/type only), internal Resend mail to `LEAD_SALES_EMAIL`.
+
 ## Working here
 - Follow the owner's cross-project rules (language split, subagent
   roster) and `01_Industrial_3DW/AGENTS.md` for the Dual-Branding split — this
   site is the 3D-Windt.de brand, keep Agentic-Gateway.de content out of it.
-- No test suite exists yet (`package.json` has `lint` + `release:check` =
-  `lint && build`) — run `npm run release:check` before calling frontend work
-  done here.
+- Tests: vitest (`npm test`, `tests/`), typecheck `npm run typecheck` (`tsc -b`,
+  covers `src/`, `netlify/`, `tests/`). Run `npm run release:check`
+  (lint + typecheck + test + build) before calling work done here.

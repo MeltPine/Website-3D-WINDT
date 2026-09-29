@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Factory } from 'lucide-react';
 import GlassSurface from './GlassSurface';
@@ -8,6 +9,8 @@ interface IndustryLandingPageProps {
   problem: string;
   solution: string;
   benefits: string[];
+  /** Optional page-specific section rendered between benefits and the final CTA. */
+  children?: ReactNode;
 }
 
 const IndustryLandingPage = ({
@@ -16,6 +19,7 @@ const IndustryLandingPage = ({
   problem,
   solution,
   benefits,
+  children,
 }: IndustryLandingPageProps) => {
   return (
     <div className="py-16 animate-fade-in">
@@ -67,6 +71,8 @@ const IndustryLandingPage = ({
             ))}
           </ul>
         </GlassSurface>
+
+        {children}
 
         <GlassSurface as="section" variant="cta" density="normal" className="p-8 text-center">
           <h2 className="font-display text-2xl font-bold text-white mb-3">
