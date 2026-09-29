@@ -65,7 +65,7 @@ const Datenschutz = () => {
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Datei-Uploads</h3>
                 <p>
-                  Hochgeladene Dateien (z. B. STL, OBJ, 3MF, SVG) werden ausschließlich zur
+                  Hochgeladene Dateien (z. B. STEP, STL, 3MF, OBJ, SVG) werden ausschließlich zur
                   technischen Prüfung und zur Bearbeitung Ihres Projekts genutzt.
                 </p>
               </div>

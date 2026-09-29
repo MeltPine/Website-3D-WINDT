@@ -12,10 +12,13 @@ import { appendAttributionToFormData, getAttributionFields } from '../lib/attrib
 
 type FinishingOption = 'none' | 'basic' | 'premium';
 
-const acceptedFileTypes = ['.stl', '.obj', '.3mf', '.svg'];
-const maxFileSizeMb = 50;
+const acceptedFileTypes = ['.step', '.stp', '.stl', '.3mf', '.obj', '.svg'];
+// Netlify Forms rejects submissions above ~8 MB in total, so the direct
+// upload is capped below that. Larger files are listed in `oversized_files`
+// and the customer gets a secure upload link by e-mail.
+const maxFileSizeMb = 7;
 const maxFileCount = 8;
-const maxTotalUploadSizeMb = 200;
+const maxTotalUploadSizeMb = 7;
 
 const toMb = (bytes: number) => bytes / 1024 / 1024;
 const formatMb = (bytes: number) => `${toMb(bytes).toFixed(2)} MB`;
@@ -26,6 +29,7 @@ const ProjectStart = () => {
   const navigate = useNavigate();
   const [files, setFiles] = useState<File[]>([]);
   const [uploadError, setUploadError] = useState('');
+  const [oversizedFiles, setOversizedFiles] = useState<string[]>([]);
   const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
   const [submitError, setSubmitError] = useState('');
   const [hasTrackedStart, setHasTrackedStart] = useState(false);
@@ -64,6 +68,7 @@ const ProjectStart = () => {
     const selectedFiles = Array.from(event.target.files || []);
     const validFiles: File[] = [];
     const errors: string[] = [];
+    const oversized: string[] = [];
     const existingSizeBytes = files.reduce((sum, file) => sum + file.size, 0);
     const maxTotalUploadSizeBytes = maxTotalUploadSizeMb * 1024 * 1024;
     const remainingSlots = maxFileCount - files.length;
@@ -91,19 +96,23 @@ const ProjectStart = () => {
         errors.push(`${file.name}: Dateityp nicht unterstützt`);
         return;
       }
-      if (file.size > maxFileSizeMb * 1024 * 1024) {
-        errors.push(`${file.name}: größer als ${maxFileSizeMb} MB`);
-        return;
-      }
-      if (projectedSizeBytes + file.size > maxTotalUploadSizeBytes) {
-        errors.push(
-          `${file.name}: Gesamtlimit von ${maxTotalUploadSizeMb} MB würde überschritten`,
-        );
+      if (
+        file.size > maxFileSizeMb * 1024 * 1024 ||
+        projectedSizeBytes + file.size > maxTotalUploadSizeBytes
+      ) {
+        oversized.push(file.name);
         return;
       }
       projectedSizeBytes += file.size;
       validFiles.push(file);
     });
+
+    if (oversized.length > 0) {
+      setOversizedFiles((current) => Array.from(new Set([...current, ...oversized])));
+      errors.push(
+        `${oversized.join(', ')}: zu groß für den direkten Upload. Senden Sie die Anfrage trotzdem ab – wir schicken Ihnen umgehend einen sicheren Upload-Link für diese Datei(en).`,
+      );
+    }
 
     setUploadError(errors.join(' • '));
 
@@ -126,6 +135,7 @@ const ProjectStart = () => {
   const resetForm = () => {
     setFiles([]);
     setUploadError('');
+    setOversizedFiles([]);
     setSubmitError('');
     setHasTrackedStart(false);
 
@@ -161,6 +171,7 @@ const ProjectStart = () => {
     const attributionFields = getAttributionFields();
     payload.delete('project_files');
     files.forEach((file) => payload.append('project_files', file));
+    payload.set('oversized_files', oversizedFiles.join(', '));
     payload.set('estimated_price', 'individuelles_angebot');
 
     if (isLikelyApplicationLead([roleInCompany, useCase, company, message, name])) {
@@ -206,7 +217,10 @@ const ProjectStart = () => {
         budget_band: budgetBand,
         message,
         source_path: '/projekt-starten/',
-        file_names: files.map((file) => file.name),
+        file_names: [
+          ...files.map((file) => file.name),
+          ...oversizedFiles.map((fileName) => `${fileName} (zu groß – Upload-Link senden)`),
+        ],
         ...attributionFields,
       });
 
@@ -313,7 +327,7 @@ const ProjectStart = () => {
               <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h2 className="text-lg font-semibold text-gray-900 mb-2">Dateien hochladen</h2>
               <p className="text-gray-600 mb-4">
-                Unterstützte Formate: STL, OBJ, 3MF, SVG (max. {maxFileSizeMb} MB pro Datei)
+                Unterstützte Formate: STEP/STP, STL, 3MF, OBJ und SVG. Direkt hochladen bis {maxTotalUploadSizeMb} MB je Anfrage – größere CAD-Dateien senden wir Ihnen per sicherem Upload-Link.
               </p>
               <p className="text-sm text-gray-500 mb-4">
                 Maximal {maxFileCount} Dateien und insgesamt {maxTotalUploadSizeMb} MB pro Anfrage.
@@ -341,7 +355,7 @@ const ProjectStart = () => {
                 type="file"
                 name="project_files"
                 multiple
-                accept=".stl,.obj,.3mf,.svg"
+                accept=".step,.stp,.stl,.3mf,.obj,.svg"
                 onChange={handleFileUpload}
                 className="hidden"
               />
