@@ -32,12 +32,12 @@
 - Warum wichtig: Zeigt die Qualitaet von Vertrieb + Angebot.
 
 ## Woher kommen die Zahlen?
-- Netlify Forms: Leads, Firmenname, Formularfelder
+- Lead-Datensätze in R2 (`3dw-uploads` → `leads/`) bzw. interne Lead-Mails: Leads, Firmenname, Formularfelder
 - GA4: `lead_form_started`, `lead_form_submitted`, `lead_form_error`, `file_upload_added`
 - Vertrieb/CRM/Sheet: Antwortzeit, Angebote, gewonnene Auftraege
 
 ## 15-Minuten-Wochenroutine (jeden Freitag)
-1. Netlify -> Site -> Forms
+1. Cloudflare -> R2 -> `3dw-uploads` -> `leads/<Jahr>/<Monat>/` (oder Lead-Mails der Woche)
 - Anzahl neuer Submissions dieser Woche notieren.
 - Qualifizierte Leads zaehlen (Firma + Anwendungsfall + Stueckzahl + Deadline).
 - B2B-Leads zaehlen (Firma ausgefuellt).

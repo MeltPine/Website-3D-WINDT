@@ -32,6 +32,10 @@ output/
 .tmp_skill_backups/
 .netlify/
 
+# Cloudflare Wrangler local state and local secrets
+.wrangler/
+.dev.vars
+
 
 # TypeScript incremental build info (tsc -b)
 *.tsbuildinfo

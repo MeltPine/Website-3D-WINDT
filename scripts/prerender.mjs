@@ -1,4 +1,4 @@
-import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { access, mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -203,6 +203,16 @@ async function run() {
     await writeFile(outputPath, htmlWithSeo, 'utf-8');
     console.log(`Prerendered ${route} -> ${path.relative(rootDir, outputPath)}`);
   }
+
+  // Cloudflare Pages serves a top-level 404.html with status 404 for every
+  // path without a matching asset (without it, Pages would fall back to SPA
+  // mode and answer unknown paths with index.html and 200). The /404/ route
+  // itself is removed so it does not exist as a 200 page.
+  const notFoundDir = path.join(distDir, '404');
+  const notFoundPage = path.join(distDir, '404.html');
+  await rename(path.join(notFoundDir, 'index.html'), notFoundPage);
+  await rm(notFoundDir, { recursive: true });
+  console.log(`Moved /404/ -> ${path.relative(rootDir, notFoundPage)}`);
 }
 
 run().catch((error) => {

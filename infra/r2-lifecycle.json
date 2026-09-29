@@ -1,0 +1,23 @@
+{
+  "rules": [
+    {
+      "id": "uploads-files-retention",
+      "enabled": true,
+      "conditions": { "prefix": "uploads/files/" },
+      "deleteObjectsTransition": { "condition": { "type": "Age", "maxAge": 7776000 } },
+      "abortMultipartUploadsTransition": { "condition": { "type": "Age", "maxAge": 172800 } }
+    },
+    {
+      "id": "uploads-part-receipts",
+      "enabled": true,
+      "conditions": { "prefix": "uploads/parts/" },
+      "deleteObjectsTransition": { "condition": { "type": "Age", "maxAge": 172800 } }
+    },
+    {
+      "id": "Default Multipart Abort Rule",
+      "enabled": true,
+      "conditions": { "prefix": "" },
+      "abortMultipartUploadsTransition": { "condition": { "type": "Age", "maxAge": 604800 } }
+    }
+  ]
+}

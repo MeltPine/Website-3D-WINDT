@@ -1,0 +1,35 @@
+# Cloudflare Pages project "3d-windt" (static site from dist/ + Pages Functions
+# from functions/). With pages_build_output_dir set, this file is the source of
+# truth for bindings and [vars]; the dashboard shows them read-only.
+# Secrets are NOT stored here: set them in the dashboard (Settings ->
+# Variables and Secrets, type "Secret") or with `wrangler pages secret put`.
+# Setup and cutover: docs/cloudflare-migration.md.
+name = "3d-windt"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-09-01"
+# node:crypto / node:buffer in server/ (HMAC signing shared with the Node CLI
+# scripts/payment-link.mjs) and the Stripe SDK need the Node.js compatibility layer.
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+# Public origin: Stripe success/cancel URLs and absolute file links in lead mails.
+SITE_URL = "https://3d-windt.de"
+# Secrets (set per environment, never commit values):
+#   RESEND_API_KEY, LEAD_SALES_EMAIL, LEAD_REPLY_FROM, LEAD_ALERT_FROM,
+#   UPLOAD_SIGNING_SECRET, PAYMENT_LINK_SECRET, TAX_MODE,
+#   STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_PRICE_ERSATZTEIL_CHECK,
+#   STRIPE_TAX_RATE_19 (only with TAX_MODE=regelbesteuerung)
+
+# Customer uploads (uploads/), lead records (leads/). Lifecycle rules:
+# infra/r2-lifecycle.json. Create the bucket in the EU jurisdiction.
+[[r2_buckets]]
+binding = "UPLOADS"
+bucket_name = "3dw-uploads"
+jurisdiction = "eu"
+
+# Stripe webhook idempotency markers and rate-limit counters.
+# Replace the id with the namespace id shown after
+# `wrangler kv namespace create 3dw-state` (not a secret, commit it).
+[[kv_namespaces]]
+binding = "STATE"
+id = "00000000000000000000000000000000"

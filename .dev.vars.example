@@ -1,0 +1,14 @@
+# Local secrets for `npx wrangler pages dev dist` (copy to .dev.vars, never commit).
+# In production these are Cloudflare Pages secrets; see docs/cloudflare-migration.md.
+SITE_URL=http://localhost:8788
+UPLOAD_SIGNING_SECRET=change-me-to-a-random-secret-of-at-least-32-chars
+RESEND_API_KEY=
+LEAD_SALES_EMAIL=
+LEAD_REPLY_FROM=
+LEAD_ALERT_FROM=
+TAX_MODE=
+STRIPE_SECRET_KEY=
+STRIPE_PRICE_ERSATZTEIL_CHECK=
+STRIPE_TAX_RATE_19=
+STRIPE_WEBHOOK_SECRET=
+PAYMENT_LINK_SECRET=change-me-to-a-random-secret-of-at-least-32-chars

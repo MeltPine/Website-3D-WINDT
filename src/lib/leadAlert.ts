@@ -27,7 +27,7 @@ function cleanFormData(
 
 export async function reportLeadError(payload: LeadAlertPayload): Promise<void> {
   try {
-    const response = await fetch('/.netlify/functions/lead-alert', {
+    const response = await fetch('/api/lead-alert', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

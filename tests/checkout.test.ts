@@ -5,9 +5,9 @@ import {
   handleCreateCheckout,
   type CheckoutDeps,
   type CheckoutStripeClient,
-} from '../netlify/shared/checkout';
-import { handleVerifyPaymentLink } from '../netlify/shared/verifyLink';
-import { createPaymentLinkQuery } from '../netlify/shared/paymentLink.mjs';
+} from '../server/checkout';
+import { handleVerifyPaymentLink } from '../server/verifyLink';
+import { createPaymentLinkQuery } from '../server/paymentLink.mjs';
 import { FIXED_PRICE_PRODUCTS, KLEINUNTERNEHMER_NOTICE } from '../src/lib/payment/catalog';
 
 const SITE = 'https://3d-windt.de';
@@ -15,7 +15,7 @@ const NOW = 1_790_000_000;
 const LINK_SECRET = 'link-secret-with-at-least-32-characters';
 
 const BASE_ENV = {
-  URL: SITE,
+  SITE_URL: SITE,
   STRIPE_SECRET_KEY: 'sk_test_abc123',
   STRIPE_PRICE_ERSATZTEIL_CHECK: 'price_check490',
   PAYMENT_LINK_SECRET: LINK_SECRET,

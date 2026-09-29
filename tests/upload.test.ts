@@ -5,28 +5,42 @@ import {
   expectedChunkLength,
   validateUploadSelection,
 } from '../src/lib/upload/policy';
+import { readFileSync } from 'node:fs';
 import {
+  FILES_PREFIX,
+  PARTS_PREFIX,
   bearerToken,
-  chunkKey,
-  createSession,
+  chunkRange,
   downloadExpiry,
   downloadPath,
+  fileKey,
   isSameOriginRequest,
-  lastSegment,
+  manifestKey,
+  partReceiptKey,
+  planSession,
   readSecret,
-  retentionActionForDay,
   sanitizeFileName,
   signSession,
   verifyDownload,
   verifySession,
-} from '../netlify/shared/uploadCore';
+  withMultipartIds,
+} from '../server/uploadCore';
+import { toFileLinks } from '../server/lead';
 
 const SECRET = 'x'.repeat(48);
 const MIB = 1024 * 1024;
 
+function createSession(files: Array<{ name: string; size: number }>, now: Date) {
+  const plan = planSession(files, now);
+  return withMultipartIds(
+    plan,
+    plan.files.map((_, index) => `mpu-${index}`),
+  );
+}
+
 describe('upload policy', () => {
   it('splits files into fixed-size chunks with a short tail', () => {
-    const size = 7 * MIB + 5;
+    const size = 2 * UPLOAD_POLICY.chunkBytes + 5;
     expect(chunkCountFor(size)).toBe(3);
     expect(expectedChunkLength(size, 0)).toBe(UPLOAD_POLICY.chunkBytes);
     expect(expectedChunkLength(size, 2)).toBe(size - 2 * UPLOAD_POLICY.chunkBytes);
@@ -34,8 +48,9 @@ describe('upload policy', () => {
     expect(expectedChunkLength(size, -1)).toBe(-1);
   });
 
-  it('keeps chunks below the effective 4.5 MB Function payload limit', () => {
-    expect(UPLOAD_POLICY.chunkBytes).toBeLessThan(4.5 * 1000 * 1000);
+  it('uses chunks that are valid R2 multipart parts and fit a Workers request', () => {
+    expect(UPLOAD_POLICY.chunkBytes).toBeGreaterThanOrEqual(5 * MIB);
+    expect(UPLOAD_POLICY.chunkBytes).toBeLessThan(100 * 1000 * 1000);
   });
 
   it('validates the selection', () => {
@@ -58,11 +73,18 @@ describe('session tokens', () => {
   const nowSeconds = Math.floor(now.getTime() / 1000);
 
   it('round-trips a signed session', () => {
-    const session = createSession([{ name: 'bracket.step', size: 7 * MIB }], now);
+    const session = createSession([{ name: 'bracket.step', size: 2 * UPLOAD_POLICY.chunkBytes + 1 }], now);
     const verified = verifySession(signSession(session, SECRET), SECRET, nowSeconds);
     expect(verified).toEqual(session);
     expect(verified?.day).toBe('2026-09-24');
     expect(verified?.files[0].chunks).toBe(3);
+    expect(verified?.files[0].mpu).toBe('mpu-0');
+  });
+
+  it('requires exactly one multipart upload id per file', () => {
+    const plan = planSession([{ name: 'a.stl', size: 1 }, { name: 'b.stl', size: 1 }], now);
+    expect(() => withMultipartIds(plan, ['only-one'])).toThrow();
+    expect(() => withMultipartIds(plan, ['x', ''])).toThrow();
   });
 
   it('rejects tampered, foreign-key and expired tokens', () => {
@@ -126,8 +148,18 @@ describe('helpers', () => {
     expect(sanitizeFileName('a\u0000b.stl')).toBe('a_b.stl');
   });
 
-  it('builds sortable chunk keys', () => {
-    expect(chunkKey('2026-09-24', 'u', 'f', 7)).toBe('2026-09-24/u/f/chunk-00007');
+  it('keeps files and part receipts under the lifecycle prefixes', () => {
+    expect(fileKey('2026-09-24', 'u', 'f')).toBe('uploads/files/2026-09-24/u/f');
+    expect(manifestKey('2026-09-24', 'u')).toBe('uploads/files/2026-09-24/u/manifest.json');
+    expect(partReceiptKey('2026-09-24', 'u', 'f', 7)).toBe('uploads/parts/2026-09-24/u/f/00007');
+  });
+
+  it('computes chunk byte ranges of an assembled file', () => {
+    const file = { size: 20, chunks: 3, chunkBytes: 8 };
+    expect(chunkRange(file, 0)).toEqual({ offset: 0, length: 8 });
+    expect(chunkRange(file, 2)).toEqual({ offset: 16, length: 4 });
+    expect(chunkRange(file, 3)).toBeNull();
+    expect(chunkRange(file, -1)).toBeNull();
   });
 
   it('enforces same-origin POSTs', () => {
@@ -136,27 +168,48 @@ describe('helpers', () => {
     expect(isSameOriginRequest('https://3d-windt.de/api/uploads/init', null)).toBe(false);
   });
 
-  it('decides retention per day prefix', () => {
-    const today = new Date('2026-12-31T12:00:00Z');
-    expect(retentionActionForDay('2026-12-30', today)).toBe('keep');
-    expect(retentionActionForDay('2026-12-27', today)).toBe('delete-incomplete');
-    expect(retentionActionForDay('2026-09-01', today)).toBe('delete-all');
-    expect(retentionActionForDay('not-a-day', today)).toBe('keep');
+});
+
+describe('R2 lifecycle rules (infra/r2-lifecycle.json)', () => {
+  type Rule = {
+    id: string;
+    enabled: boolean;
+    conditions: { prefix: string };
+    deleteObjectsTransition?: { condition: { type: string; maxAge: number } };
+    abortMultipartUploadsTransition?: { condition: { type: string; maxAge: number } };
+  };
+  const { rules } = JSON.parse(readFileSync(new URL('../infra/r2-lifecycle.json', import.meta.url), 'utf8')) as {
+    rules: Rule[];
+  };
+  const byPrefix = (prefix: string) => rules.find((rule) => rule.conditions.prefix === prefix);
+  const days = (value: number) => value * 86_400;
+
+  it('deletes completed uploads after retentionDays and aborts incomplete ones after incompleteRetentionDays', () => {
+    const files = byPrefix(FILES_PREFIX);
+    expect(files?.enabled).toBe(true);
+    expect(files?.deleteObjectsTransition?.condition).toEqual({ type: 'Age', maxAge: days(UPLOAD_POLICY.retentionDays) });
+    expect(files?.abortMultipartUploadsTransition?.condition).toEqual({
+      type: 'Age',
+      maxAge: days(UPLOAD_POLICY.incompleteRetentionDays),
+    });
   });
 
-  it('extracts the last directory segment', () => {
-    expect(lastSegment('2026-09-24/abc/')).toBe('abc');
-    expect(lastSegment('2026-09-24')).toBe('2026-09-24');
+  it('deletes part receipts after incompleteRetentionDays', () => {
+    const parts = byPrefix(PARTS_PREFIX);
+    expect(parts?.enabled).toBe(true);
+    expect(parts?.deleteObjectsTransition?.condition).toEqual({
+      type: 'Age',
+      maxAge: days(UPLOAD_POLICY.incompleteRetentionDays),
+    });
+  });
+
+  it('never expires lead records automatically', () => {
+    expect(rules.some((rule) => rule.deleteObjectsTransition && 'leads/'.startsWith(rule.conditions.prefix))).toBe(false);
   });
 });
 
 describe('lead e-mail file links', () => {
-  it('accepts exactly the links produced by upload-complete and rejects anything else', async () => {
-    const { createRequire } = await import('node:module');
-    const require = createRequire(import.meta.url);
-    const { toFileLinks } = require('../netlify/functions/lead-followup.cjs') as {
-      toFileLinks: (value: unknown) => Array<{ name: string; href: string | null; path: string }>;
-    };
+  it('accepts exactly the links produced by upload-complete and rejects anything else', () => {
     const path = downloadPath(
       {
         day: '2026-09-24',
@@ -166,19 +219,11 @@ describe('lead e-mail file links', () => {
       },
       SECRET,
     );
-    const previousUrl = process.env.URL;
-    process.env.URL = 'https://3d-windt.de';
-    try {
-      const links = toFileLinks([
-        { name: 'halter.step', size: 1024, path },
-        { name: 'phish', size: 1, path: 'https://evil.example/datei-abruf/?x' },
-        { name: 'other', size: 1, path: '/datei-abruf/?u=x' },
-      ]);
-      expect(links).toHaveLength(1);
-      expect(links[0].href).toBe(`https://3d-windt.de${path}`);
-    } finally {
-      if (previousUrl === undefined) delete process.env.URL;
-      else process.env.URL = previousUrl;
-    }
+    const links = toFileLinks([
+      { name: 'halter.step', size: 1024, path },
+      { name: 'phish', size: 1, path: 'https://evil.example/datei-abruf/?x' },
+      { name: 'other', size: 1, path: '/datei-abruf/?u=x' },
+    ]);
+    expect(links).toEqual([{ name: 'halter.step', size: 1024, path }]);
   });
 });

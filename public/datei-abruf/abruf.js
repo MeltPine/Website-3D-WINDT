@@ -2,7 +2,7 @@
  * Internal retrieval page for customer uploads. The signed link parameters
  * (d, u, f, e, s) authorise access; chunks are fetched one by one from
  * /api/uploads/file, verified against their SHA-256 and joined locally,
- * because Function responses are size-capped.
+ * so every part is verified before the file is assembled in the browser.
  */
 (function () {
   'use strict';

@@ -1,7 +1,7 @@
 # Operating Rhythm (B2B-Auftragsfunnel)
 
 ## Taeglich (10-15 Minuten)
-1. Netlify Forms pruefen und neue Leads in `docs/lead-board.csv` eintragen.
+1. Lead-Mails (bzw. R2 `leads/`) pruefen und neue Leads in `docs/lead-board.csv` eintragen.
 2. Fuer jeden neuen Lead `response_due_at` auf Eingang + 24h setzen.
 3. Interne Lead-Mail priorisieren: zuerst `Neu`, dann `Qualifiziert`.
 4. Test-Mails markieren/archivieren, produktive Leads im Posteingang sichtbar halten.

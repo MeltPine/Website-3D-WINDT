@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import Stripe from 'stripe';
-import { STALE_CLAIM_MS, createBlobEventStore, type BlobStoreLike } from '../netlify/shared/stripeEventStore';
-import { handleStripeWebhook, type MailMessage, type WebhookDeps } from '../netlify/shared/stripeWebhook';
+import { EVENT_MARKER_TTL_SECONDS, STALE_CLAIM_MS, createKvEventStore } from '../server/stripeEventStore';
+import { handleStripeWebhook, type MailMessage, type WebhookDeps } from '../server/stripeWebhook';
+import { MemoryKV } from './helpers/cloudflare';
 
 const WEBHOOK_SECRET = 'whsec_test_secret_value';
 const ENV = {
@@ -10,34 +11,7 @@ const ENV = {
   LEAD_ALERT_FROM: '3D-WINDT Alert <alerts@3d-windt.de>',
   LEAD_SALES_EMAIL: 'support@3d-windt.de',
 };
-
-/** In-memory stand-in for Netlify Blobs with the same conditional-write semantics. */
-class MemoryBlobStore implements BlobStoreLike {
-  entries = new Map<string, { data: unknown; etag: string }>();
-  private counter = 0;
-
-  async setJSON(key: string, data: unknown, options: { onlyIfNew: true } | { onlyIfMatch: string }) {
-    const existing = this.entries.get(key);
-    if ('onlyIfNew' in options && existing) {
-      return { modified: false };
-    }
-    if ('onlyIfMatch' in options && existing?.etag !== options.onlyIfMatch) {
-      return { modified: false };
-    }
-    this.counter += 1;
-    this.entries.set(key, { data: JSON.parse(JSON.stringify(data)), etag: `"${this.counter}"` });
-    return { modified: true };
-  }
-
-  async getWithMetadata(key: string) {
-    const existing = this.entries.get(key);
-    return existing ? { data: existing.data, etag: existing.etag } : null;
-  }
-
-  async delete(key: string) {
-    this.entries.delete(key);
-  }
-}
+const cryptoProvider = Stripe.createSubtleCryptoProvider();
 
 function sessionEvent(id: string, type = 'checkout.session.completed', paymentStatus = 'paid') {
   return {
@@ -80,15 +54,16 @@ function signedRequest(payload: string, secret = WEBHOOK_SECRET): Request {
   });
 }
 
-let blobs: MemoryBlobStore;
+let blobs: MemoryKV;
 let sendMail: ReturnType<typeof vi.fn<(message: MailMessage, apiKey: string, key: string) => Promise<void>>>;
 let now: number;
 
 function deps(overrides: Partial<WebhookDeps> = {}): WebhookDeps {
   return {
     env: ENV,
-    store: createBlobEventStore(blobs),
-    constructEvent: (raw, signature, secret) => Stripe.webhooks.constructEvent(raw, signature, secret),
+    store: createKvEventStore(blobs),
+    constructEvent: (raw, signature, secret) =>
+      Stripe.webhooks.constructEventAsync(raw, signature, secret, undefined, cryptoProvider),
     sendMail,
     nowMs: () => now,
     ...overrides,
@@ -96,7 +71,7 @@ function deps(overrides: Partial<WebhookDeps> = {}): WebhookDeps {
 }
 
 beforeEach(() => {
-  blobs = new MemoryBlobStore();
+  blobs = new MemoryKV();
   sendMail = vi.fn(async () => undefined);
   now = Date.now();
   vi.spyOn(console, 'warn').mockImplementation(() => undefined);
@@ -223,7 +198,7 @@ describe('stripe-webhook processing and idempotency', () => {
   });
 
   it('answers 409 while another delivery holds a fresh claim, takes over a stale one', async () => {
-    const store = createBlobEventStore(blobs);
+    const store = createKvEventStore(blobs);
     expect(await store.claim('evt_race', 'checkout.session.completed', now)).toBe('claimed');
 
     const payload = JSON.stringify(sessionEvent('evt_race'));
@@ -242,5 +217,27 @@ describe('stripe-webhook processing and idempotency', () => {
     );
     expect(response.status).toBe(500);
     expect(blobs.entries.size).toBe(0);
+  });
+});
+
+describe('KV event markers', () => {
+  it('stores only id, type and timestamps with a TTL beyond Stripe retries', async () => {
+    await handleStripeWebhook(signedRequest(JSON.stringify(sessionEvent('evt_ttl'))), deps());
+    const entry = blobs.entries.get('stripe-event:evt_ttl');
+    expect(entry?.expirationTtl).toBe(EVENT_MARKER_TTL_SECONDS);
+    expect(EVENT_MARKER_TTL_SECONDS).toBeGreaterThan(3 * 86_400);
+    expect(JSON.parse(entry!.value)).toEqual({ status: 'done', type: 'checkout.session.completed', updatedAt: now });
+  });
+
+  it('answers 500 (Stripe retries) when KV is unavailable', async () => {
+    blobs.failAll = true;
+    const response = await handleStripeWebhook(signedRequest(JSON.stringify(sessionEvent('evt_kv'))), deps());
+    expect(response.status).toBe(500);
+    expect(sendMail).not.toHaveBeenCalled();
+  });
+
+  it('rejects malformed event ids before touching KV', async () => {
+    const store = createKvEventStore(blobs);
+    await expect(store.claim('evt_../x', 'checkout.session.completed', now)).rejects.toThrow();
   });
 });

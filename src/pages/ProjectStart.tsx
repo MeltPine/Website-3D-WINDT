@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MailIcon, PhoneIcon } from '../components/icons';
 import { trackEvent } from '../lib/tracking';
 import GlassSurface from '../components/GlassSurface';
-import { triggerLeadFollowup } from '../lib/leadFollowup';
+import { submitLead } from '../lib/leadSubmit';
 import { reportLeadError } from '../lib/leadAlert';
 import { CONTACT } from '../lib/brand';
 import { isLikelyApplicationLead } from '../lib/leadIntent';
@@ -195,23 +195,15 @@ const ProjectStart = () => {
     formData.set('calc_quantity', hasFiles ? String(summary.quantity) : '');
     formData.set('estimated_price', summary.hasPriceRange ? 'richtpreis_spanne' : 'individuelles_angebot');
 
-    const body = new URLSearchParams();
-    formData.forEach((value, key) => {
-      if (typeof value === 'string') {
-        body.append(key, value);
-      }
-    });
-
     try {
-      const response = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: body.toString(),
-      });
-
-      if (!response.ok) {
-        throw new Error('Übermittlung fehlgeschlagen');
-      }
+      await submitLead(
+        'project-request',
+        formData,
+        (outcome?.files ?? []).map((file) => {
+          const url = new URL(file.url);
+          return { name: file.name, size: file.size, path: `${url.pathname}${url.search}` };
+        }),
+      );
 
       trackEvent('lead_form_submitted', {
         form: 'project',
@@ -220,30 +212,6 @@ const ProjectStart = () => {
         utm_source: attributionFields.utm_source || 'direct',
         file_count: outcome?.files.length ?? 0,
         has_price_range: summary.hasPriceRange,
-      });
-
-      void triggerLeadFollowup({
-        form_name: 'project-request',
-        name,
-        email,
-        phone,
-        company,
-        role_in_company: roleInCompany,
-        use_case: useCase || 'nicht_angegeben',
-        quantity,
-        deadline,
-        material_pref: materialPref,
-        budget_band: budgetBand,
-        message,
-        source_path: '/projekt-starten/',
-        file_names: files.map((file) => file.name),
-        file_links: (outcome?.files ?? []).map((file) => {
-          const url = new URL(file.url);
-          return { name: file.name, size: file.size, path: `${url.pathname}${url.search}` };
-        }),
-        price_range: hasFiles ? summary.priceRange : '',
-        model_summary: summary.modelSummary,
-        ...attributionFields,
       });
 
       form.reset();
@@ -360,15 +328,14 @@ const ProjectStart = () => {
             ref={formRef}
             name="project-request"
             method="POST"
-            data-netlify="true"
-            data-netlify-honeypot="bot-field"
+            action="/api/lead"
             onSubmit={handleSubmit}
             className="space-y-8"
           >
             <input type="hidden" name="form-name" value="project-request" />
             <input type="hidden" name="estimated_price" value="individuelles_angebot" />
             <input type="hidden" name="source_path" value="/projekt-starten/" />
-            {/* Filled on submit; declared here so Netlify registers the fields. */}
+            {/* Filled on submit (see sendRequest); defaults for a submission without JS. */}
             <input type="hidden" name="uploaded_files" value="" />
             <input type="hidden" name="upload_status" value="none" />
             <input type="hidden" name="model_summary" value="" />

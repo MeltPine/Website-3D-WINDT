@@ -1,7 +1,8 @@
 # Stripe-Zahlungen einrichten (3D-WINDT)
 
-Stand: September 2026. Gilt für die Functions `create-checkout`, `payment-link` und
-`stripe-webhook` sowie die Seiten `/ersatzteile-3d-drucken/#check`, `/bezahlen/`,
+Stand: September 2026 (Hosting: Cloudflare Pages, siehe `docs/cloudflare-migration.md`).
+Gilt für die Pages Functions `/api/checkout`, `/api/payment-link` und
+`/api/stripe/webhook` sowie die Seiten `/ersatzteile-3d-drucken/#check`, `/bezahlen/`,
 `/zahlung-erfolgreich/` und `/zahlung-abgebrochen/`.
 
 ## Was gebaut ist
@@ -23,7 +24,8 @@ Stand: September 2026. Gilt für die Functions `create-checkout`, `payment-link`
   Unternehmer (§ 14 BGB)“ anhaken. Die Function lehnt Anfragen ohne diese Erklärung
   ab und speichert sie als `b2b_declared=true` in den Metadaten der Zahlung.
 - **Webhook:** Signatur geprüft, jedes Stripe-Event wird genau einmal verarbeitet
-  (Ledger in Netlify Blobs, Store `stripe-events`, nur Event-ID/Typ/Zeitstempel).
+  (Markierung in Workers KV, Binding `STATE`, nur Event-ID/Typ/Zeitstempel, 30 Tage;
+  zusätzlich Resend-Idempotenzschlüssel pro Event, siehe `server/stripeEventStore.ts`).
   Ergebnis: eine interne Mail an `LEAD_SALES_EMAIL` mit Firma, Kontakt, Produkt bzw.
   Angebotsnummer, Betrag und Link ins Stripe-Dashboard. Der Kunde bekommt von uns
   **keine** zusätzliche Mail, nur Stripes Beleg und Rechnung.
@@ -72,7 +74,7 @@ und Live **getrennt** und müssen für Live erneut angelegt werden.
 3. Preis: **Einmalig**, `490,00 EUR`. Steuerverhalten „exklusive Steuer“ bzw. nicht
    in den Preis eingeschlossen (490 € sind der Nettopreis).
 4. Speichern, dann beim Preis die **Preis-ID** (`price_...`) kopieren →
-   Netlify-Variable `STRIPE_PRICE_ERSATZTEIL_CHECK`.
+   Secret `STRIPE_PRICE_ERSATZTEIL_CHECK` im Cloudflare-Pages-Projekt.
 
 Soll der Preis sich ändern, muss auch `netAmountCents` in
 `src/lib/payment/catalog.ts` angepasst werden, sonst verweigert die Function den
@@ -139,10 +141,11 @@ Ist Resend oder die Konfiguration kaputt, antwortet der Webhook mit 5xx. Stripe
 wiederholt die Zustellung dann bis zu drei Tage lang; es geht kein Zahlungseingang
 verloren. Fehlgeschlagene Zustellungen zeigt Stripe unter Webhooks → Endpunkt.
 
-## 8. Netlify-Umgebungsvariablen
+## 8. Secrets im Cloudflare-Pages-Projekt
 
-**Netlify → Site configuration → Environment variables** (Scope mindestens
-„Functions“). Nach jeder Änderung neu deployen.
+**Cloudflare Dashboard → Workers & Pages → 3d-windt → Settings → Variables and
+Secrets**, Typ „Secret“, für *Production* (und ggf. *Preview*). Nach jeder Änderung
+neu deployen (Deployments → „Retry deployment“).
 
 | Variable | Wert | Pflicht |
 |---|---|---|
@@ -156,13 +159,14 @@ verloren. Fehlgeschlagene Zustellungen zeigt Stripe unter Webhooks → Endpunkt.
 | `LEAD_ALERT_FROM` | vorhanden, z. B. `3D-WINDT Alert <alerts@3d-windt.de>` | ja (oder `LEAD_REPLY_FROM`) |
 | `LEAD_SALES_EMAIL` | Empfänger der Zahlungsmeldungen | ja |
 
-`URL` setzt Netlify selbst. Die Vorlage steht in `.env.example`.
+`SITE_URL` steht fest in `wrangler.toml` (`https://3d-windt.de`). Lokale Vorlage:
+`.dev.vars.example`.
 
 ## 9. Testlauf im Testmodus
 
-1. Testschlüssel, Test-Preis-ID, Test-Webhook-Geheimnis und `TAX_MODE` in Netlify
-   setzen, deployen.
-2. Routing prüfen (die Functions müssen vor der 404-Regel greifen):
+1. Testschlüssel, Test-Preis-ID, Test-Webhook-Geheimnis und `TAX_MODE` als Secrets
+   im Pages-Projekt setzen, deployen.
+2. Routing prüfen (die Pages Functions unter `/api/*` müssen antworten, nicht die 404-Seite):
 
    ```sh
    curl -sS -o /dev/null -w '%{http_code}\n' "https://3d-windt.de/api/payment-link" || exit 1
@@ -181,16 +185,16 @@ verloren. Fehlgeschlagene Zustellungen zeigt Stripe unter Webhooks → Endpunkt.
    Es darf **keine** zweite Mail kommen.
 7. Angebotslink testen (Abschnitt 11) mit einem kleinen Betrag.
 
-Lokal geht das auch mit `netlify dev` und der Stripe CLI:
-`stripe listen --forward-to localhost:8888/api/stripe/webhook` (das dort angezeigte
-`whsec_...` als lokales `STRIPE_WEBHOOK_SECRET` verwenden).
+Lokal geht das auch mit `npm run build && npx wrangler pages dev dist` und der
+Stripe CLI: `stripe listen --forward-to localhost:8788/api/stripe/webhook` (das dort
+angezeigte `whsec_...` als `STRIPE_WEBHOOK_SECRET` in `.dev.vars` eintragen).
 
 ## 10. Live schalten
 
 1. Abschnitt 0 ist mit dem Steuerberater geklärt, Datenschutz und AGB (Abschnitt
    12) sind freigegeben.
 2. Im **Live-Modus** Produkt/Preis, ggf. Steuersatz und Webhook-Endpunkt neu anlegen.
-3. In Netlify die Live-Werte eintragen (`sk_live_...`, Live-`price_...`, Live-`txr_...`,
+3. Im Pages-Projekt die Live-Werte als Secrets eintragen (`sk_live_...`, Live-`price_...`, Live-`txr_...`,
    Live-`whsec_...`), deployen.
 4. Eine echte Zahlung über einen Angebotslink mit 1,00 € durchführen und im
    Dashboard erstatten.
@@ -198,7 +202,7 @@ Lokal geht das auch mit `netlify dev` und der Stripe CLI:
 ## 11. Angebotslink erzeugen („Angebot annehmen & bezahlen“)
 
 ```sh
-export PAYMENT_LINK_SECRET='...'   # identisch mit Netlify
+export PAYMENT_LINK_SECRET='...'   # identisch mit dem Secret im Pages-Projekt
 node scripts/payment-link.mjs --quote AB-2026-001 --amount 1234,50 --valid-days 14 --base-url https://3d-windt.de
 ```
 

@@ -23,7 +23,7 @@ export class ModelAnalysisError extends Error {
 /**
  * In production the worker is started through /api/geometry-worker, which
  * wraps the hashed bundle with a worker-only CSP that permits the STEP
- * kernel's code generation (netlify/shared/workerEntry.ts). The Vite dev
+ * kernel's code generation (server/workerEntry.ts). The Vite dev
  * server has no CSP and no Functions, so it loads the bundle directly.
  */
 function workerScriptUrl(): string {

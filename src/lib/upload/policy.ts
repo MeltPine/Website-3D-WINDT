@@ -1,12 +1,16 @@
 /*
- * Upload policy shared by the browser client and the Netlify Functions
- * (netlify/functions/upload-*.mts import this file), so limits cannot drift
- * between what the UI promises and what the server accepts.
+ * Upload policy shared by the browser client and the Pages Functions
+ * (server/uploads.ts imports this file), so limits cannot drift between what
+ * the UI promises and what the server accepts.
  *
- * Why chunks: Netlify Forms caps a whole submission at 8 MB, and a buffered
- * Function request at 6 MB (≈4.5 MB of binary after base64). Files are
- * therefore sent in 3 MiB chunks to Functions, stored in Netlify Blobs
- * (region eu-central-1) and referenced from the form submission by link.
+ * Why chunks: files are sent in fixed-size chunks, each stored as one part of
+ * an R2 multipart upload (bucket in the EU jurisdiction). Chunks keep single
+ * requests small and retryable on flaky connections. R2 requires every part
+ * except the last to have the same size and to be at least 5 MiB.
+ *
+ * Retention is enforced by R2 lifecycle rules generated from these numbers
+ * (infra/r2-lifecycle.json, checked by tests/upload.test.ts); the privacy
+ * page renders the same values.
  */
 
 const MIB = 1024 * 1024;
@@ -15,8 +19,8 @@ export const UPLOAD_POLICY = {
   maxFiles: 8,
   maxFileBytes: 100 * MIB,
   maxTotalBytes: 200 * MIB,
-  /** Must stay well below the 4.5 MB effective binary limit of Functions. */
-  chunkBytes: 3 * MIB,
+  /** R2 multipart part size: >= 5 MiB, far below the 100 MB request body limit. */
+  chunkBytes: 8 * MIB,
   /** Completed uploads are deleted after this many days. */
   retentionDays: 90,
   /** Uploads that were never completed are deleted after this many days. */

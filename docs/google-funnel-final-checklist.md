@@ -2,7 +2,7 @@
 
 Stand: 2026-05-05
 
-Diese Liste trennt sauber zwischen Dingen, die im Code erledigt sind, und Dingen, die nur im Google- oder Netlify-Konto bestaetigt werden koennen.
+Diese Liste trennt sauber zwischen Dingen, die im Code erledigt sind, und Dingen, die nur im Google- oder Cloudflare-Konto bestaetigt werden koennen.
 
 ## Im Code erledigt
 
@@ -16,7 +16,7 @@ Diese Liste trennt sauber zwischen Dingen, die im Code erledigt sind, und Dingen
   - `generate_lead`
   - `lead_form_error`
   - `lead_form_filtered`
-- Netlify-Forms-Funnel ist aktiv:
+- Lead-Funnel `/api/lead` (Speicherung in R2 `leads/`) ist aktiv:
   - `contact-request`
   - `project-request`
 - Lead-Qualifizierung ist aktiv:
@@ -81,7 +81,7 @@ Diese Liste trennt sauber zwischen Dingen, die im Code erledigt sind, und Dingen
 
 Jeden Freitag 15 Minuten:
 
-1. Netlify Forms:
+1. Leads (R2 `3dw-uploads` → `leads/JJJJ/MM/`, bzw. Lead-Mails):
    - Anzahl `contact-request`
    - Anzahl `project-request`
 2. GA4:

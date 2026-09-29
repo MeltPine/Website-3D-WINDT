@@ -3,7 +3,7 @@ import type { MeshAnalysis, ModelFormat } from '../geometry/types';
 import type { ProjectEstimate } from './pricing';
 
 /*
- * Human-readable summaries that travel with the request (Netlify form fields
+ * Human-readable summaries that travel with the request (lead record fields
  * and lead e-mail). Pure functions, German output.
  */
 

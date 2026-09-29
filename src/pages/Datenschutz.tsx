@@ -53,6 +53,16 @@ const Datenschutz = () => {
                   verarbeiten wir Ihre Angaben zur Bearbeitung Ihrer Anfrage und zur
                   Angebotserstellung.
                 </p>
+                <p className="mt-2">
+                  Die Angaben werden verschlüsselt (HTTPS) an unseren Hosting-Anbieter Cloudflare
+                  übertragen, als Datensatz im Speicherdienst Cloudflare R2 mit Speicherort in der EU
+                  abgelegt und per E-Mail (Versanddienst Resend) an unser Vertriebspostfach
+                  weitergeleitet. Sie erhalten eine automatische Eingangsbestätigung an die
+                  angegebene E-Mail-Adresse. Zur Abwehr massenhafter Formular-Einsendungen wird für
+                  höchstens 15 Minuten ein gekürzter Hashwert Ihrer IP-Adresse gespeichert, um
+                  Anfragen pro Absender zu zählen (Art. 6 Abs. 1 lit. f DSGVO); die IP-Adresse selbst
+                  wird dabei nicht gespeichert.
+                </p>
                 <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mt-3 text-sm text-blue-800">
                   <p>
                     <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO
@@ -72,8 +82,8 @@ const Datenschutz = () => {
                   3D-Vorschau, Maße und Richtpreis im Preisrechner und im Projektformular werden
                   vollständig in Ihrem Browser berechnet; dabei werden keine Dateien übertragen. Erst
                   wenn Sie die Projektanfrage absenden, werden die Dateien verschlüsselt (HTTPS) an
-                  unseren Hosting-Anbieter Netlify übertragen und im Speicherdienst Netlify Blobs in
-                  der Region Frankfurt am Main (EU) abgelegt. Zugriff erhält nur 3D-WINDT über
+                  unseren Hosting-Anbieter Cloudflare übertragen und im Speicherdienst Cloudflare R2
+                  mit Speicherort in der EU abgelegt. Zugriff erhält nur 3D-WINDT über
                   signierte, zeitlich begrenzte Links. Die Dateien werden{' '}
                   {UPLOAD_POLICY.retentionDays} Tage nach dem Hochladen automatisch gelöscht, nicht
                   abgeschlossene Uploads nach {UPLOAD_POLICY.incompleteRetentionDays} Tagen. Wird aus
@@ -141,8 +151,11 @@ const Datenschutz = () => {
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Server-Log-Dateien</h3>
                 <p>
                   Beim Besuch der Website werden technisch notwendige Zugriffsdaten durch den
-                  Hosting-Anbieter verarbeitet (z. B. IP-Adresse, Zeitstempel, aufgerufene Seite,
-                  Browserinformationen), um Betrieb und Sicherheit der Website zu gewährleisten.
+                  Hosting-Anbieter Cloudflare verarbeitet (z. B. IP-Adresse, Zeitstempel, aufgerufene
+                  Seite, Browserinformationen), um Betrieb und Sicherheit der Website zu
+                  gewährleisten (Art. 6 Abs. 1 lit. f DSGVO). Cloudflare stellt die Website über ein
+                  weltweites Servernetz bereit; Anfragen werden in der Regel an einem Standort in
+                  Ihrer Nähe bearbeitet.
                 </p>
               </div>
 
@@ -175,7 +188,13 @@ const Datenschutz = () => {
                 Wir arbeiten mit technisch erforderlichen Dienstleistern zusammen, insbesondere:
               </p>
               <ul className="list-disc list-inside space-y-1">
-                <li>Netlify (Hosting, Form-Verarbeitung, Datei-Speicher Netlify Blobs in Frankfurt, technische Logs)</li>
+                <li>
+                  Cloudflare (Hosting und Auslieferung der Website, Verarbeitung von Formularen und
+                  Datei-Uploads, Speicher Cloudflare R2 mit Speicherort in der EU, technische Logs);
+                  Cloudflare, Inc., 101 Townsend St., San Francisco, CA 94107, USA, ist nach dem
+                  EU-US Data Privacy Framework zertifiziert (Art. 45 DSGVO), ergänzend gelten
+                  EU-Standardvertragsklauseln
+                </li>
                 <li>Resend (Versand von Eingangs-, Alert- und internen Zahlungsbenachrichtigungen)</li>
                 <li>Stripe (Zahlungsabwicklung, Rechnungs- und Belegversand)</li>
                 <li>Google (GA4, Statistik-Cookies nur nach Einwilligung)</li>

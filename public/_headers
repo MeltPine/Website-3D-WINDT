@@ -1,0 +1,75 @@
+# Cloudflare Pages response headers (static assets only; Pages Functions under
+# /api/* set their own headers, see server/http.ts and server/workerEntry.ts).
+# Rules are merged: a header set by several matching rules is joined with ", ".
+# Path rules that replace a site-wide header therefore detach it first ("! Name").
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; worker-src 'self'; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; object-src 'none'; upgrade-insecure-requests
+
+# worker-src 'self': model analysis runs in a same-origin Web Worker. The STEP
+# kernel inside it needs WebAssembly + code generation; that worker gets its
+# own narrow CSP from the /api/geometry-worker Function, so this document
+# policy stays unchanged. Never add 'unsafe-eval' here.
+
+# Internal retrieval page for customer uploads (signed links only).
+/datei-abruf/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+  ! Referrer-Policy
+  Referrer-Policy: no-referrer
+
+# Payment pages (noindex). The pay page's query string holds a signed link:
+# never send it as Referer. Checkout itself is a top-level navigation to
+# checkout.stripe.com, so the site CSP above needs no Stripe origins.
+/bezahlen/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+  ! Referrer-Policy
+  Referrer-Policy: no-referrer
+
+/zahlung-erfolgreich/*
+  X-Robots-Tag: noindex, nofollow
+
+/zahlung-abgebrochen/*
+  X-Robots-Tag: noindex, nofollow
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/favicon.ico
+  Cache-Control: public, max-age=31536000, immutable
+
+/favicon-16x16.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/favicon-32x32.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/apple-touch-icon.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/android-chrome-192x192.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/android-chrome-512x512.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/site.webmanifest
+  Cache-Control: public, max-age=86400
+
+/robots.txt
+  Cache-Control: public, max-age=3600
+
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+
+/sitemap_index.xml
+  Cache-Control: public, max-age=3600
+
+# The 404 page is also reachable as /404 (from dist/404.html); keep it out of indexes.
+/404
+  X-Robots-Tag: noindex, nofollow

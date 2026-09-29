@@ -6,7 +6,7 @@
 //
 // --amount is the NET amount in euros (Regelbesteuerung adds 19 % on top at
 // checkout; in Kleinunternehmer mode it is the final amount). The secret must
-// be identical to PAYMENT_LINK_SECRET in the Netlify environment.
+// be identical to the PAYMENT_LINK_SECRET secret of the Cloudflare Pages project.
 
 import { parseArgs } from 'node:util';
 import {
@@ -14,7 +14,7 @@ import {
   createPaymentLinkQuery,
   isValidSecret,
   parseEuroAmountToCents,
-} from '../netlify/shared/paymentLink.mjs';
+} from '../server/paymentLink.mjs';
 
 const USAGE =
   'Usage: PAYMENT_LINK_SECRET=... node scripts/payment-link.mjs --quote <AB-2026-001> --amount <1234.50> --valid-days <1-180> --base-url <https://3d-windt.de>';

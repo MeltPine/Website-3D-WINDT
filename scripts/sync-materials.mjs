@@ -1,7 +1,7 @@
 /*
  * Copies the FDM-INSPECT material database into this repo.
  *
- * The Netlify build cannot reach the sibling FDM-INSPECT repository, so the
+ * The Cloudflare Pages build cannot reach the sibling FDM-INSPECT repository, so the
  * JSON is vendored as src/data/fdm-inspect-materials.json and committed.
  * Run after the material DB changes:
  *

@@ -15,7 +15,7 @@ Datei: `docs/lead-board.csv`
 - `Gewonnen` oder `Verloren`: Abschluss.
 
 ## So nutzt du das Board taeglich (5 Minuten)
-1. Netlify Forms und Lead-Mails pruefen.
+1. Lead-Mails (bzw. R2 `leads/`) pruefen.
 2. Neue Leads in `docs/lead-board.csv` eintragen.
 3. `response_due_at` auf Eingang + 24h setzen.
 4. Nach Erstantwort `first_response_at` und `response_hours` eintragen.

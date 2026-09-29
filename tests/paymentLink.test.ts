@@ -4,7 +4,7 @@ import {
   createPaymentLinkQuery,
   parseEuroAmountToCents,
   verifyPaymentLink,
-} from '../netlify/shared/paymentLink.mjs';
+} from '../server/paymentLink.mjs';
 
 const SECRET = 'test-secret-with-at-least-32-characters!!';
 const NOW = 1_790_000_000;

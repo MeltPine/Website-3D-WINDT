@@ -1,4 +1,4 @@
-# Funnel Operations (Netlify)
+# Funnel Operations (Cloudflare Pages)
 
 ## Zielbild
 - Ein einheitlicher B2B-Funnel mit Conversion-Zielen auf `/danke-projekt` und `/danke-kontakt`
@@ -6,26 +6,31 @@
 - Automatische Follow-up-E-Mails an Interessenten plus interne Lead-Benachrichtigung
 - Keine Ad-Netzwerke oder Bannerwerbung auf der Website
 
-## Erforderliche Netlify-Umgebungsvariablen
-- `VITE_GA_MEASUREMENT_ID` (z. B. `G-XXXXXXXXXX`)
-- `RESEND_API_KEY`
-- `LEAD_REPLY_FROM` (z. B. `3D-WINDT <noreply@3d-windt.de>`)
-- `LEAD_SALES_EMAIL` (z. B. `support@3d-windt.de`)
-- `LEAD_ALERT_FROM` (optional, z. B. `3D-WINDT Alert <alerts@3d-windt.de>`)
+## Erforderliche Variablen im Cloudflare-Pages-Projekt
+- Build-Variable `VITE_GA_MEASUREMENT_ID` (z. B. `G-XXXXXXXXXX`)
+- Secret `RESEND_API_KEY`
+- Secret `LEAD_REPLY_FROM` (z. B. `3D-WINDT <noreply@3d-windt.de>`)
+- Secret `LEAD_SALES_EMAIL` (z. B. `support@3d-windt.de`)
+- Secret `LEAD_ALERT_FROM` (optional, z. B. `3D-WINDT Alert <alerts@3d-windt.de>`)
 
 Hinweis: `VITE_*` Variablen sind Build-Variablen und erfordern ein neues Deploy.
+Vollständige Liste und Einrichtung: `docs/cloudflare-migration.md`.
 
 ## Technischer Ablauf
 1. Nutzer kommt über Startseite/Landingpage in den Funnel.
-2. Event-Messung läuft ausschließlich über GA4. Netlify Forms nimmt nur echte Anfragen an (kein `lead-metric` mehr: jedes Event war eine Formularübermittlung, hat Benachrichtigungs-Mails und Forms-Kontingent verbraucht).
+2. Event-Messung läuft ausschließlich über GA4. `/api/lead` nimmt nur echte Anfragen an.
 3. Primär-CTA führt zu `/projekt-starten`.
-4. Formular wird über Netlify Forms übermittelt.
-5. Nach Erfolg Weiterleitung auf `/danke-projekt` oder `/danke-kontakt`.
-6. Frontend triggert `/.netlify/functions/lead-followup`.
-7. Funktion versendet:
+4. Formular wird an `POST /api/lead` übermittelt (Pages Function, `server/lead.ts`).
+5. Die Function speichert die Anfrage zuerst als JSON im R2-Bucket `3dw-uploads`
+   unter `leads/JJJJ/MM/<id>.json` (maßgeblicher Datensatz) und versendet danach:
+   - Interne Lead-Mail an Vertrieb (mit Lead-ID und R2-Pfad)
    - Auto-Eingangsbestätigung an den Lead
-   - Interne Lead-Mail an Vertrieb
-8. Bei Submit-Fehlern triggert Frontend `/.netlify/functions/lead-alert`:
+   Erfolg meldet sie nur, wenn das Speichern geklappt hat. Scheitert nur der
+   Mailversand, bleibt der Lead gespeichert (Log-Eintrag `[lead]` in den Functions-Logs).
+6. Nach Erfolg Weiterleitung auf `/danke-projekt` oder `/danke-kontakt`.
+7. Schutz: Honeypot `bot-field`, Same-Origin-Pflicht, Größenlimit 64 KB,
+   Rate-Limit 5 Anfragen je 10 Minuten und IP (KV, ungefähr).
+8. Bei Submit-Fehlern triggert Frontend `/api/lead-alert`:
    - Alert-Mail an Vertrieb mit Fehlerdetails und Formular-Kontext
 
 ## Vertriebsprozess (SLA)
@@ -59,7 +64,7 @@ Hinweis: `VITE_*` Variablen sind Build-Variablen und erfordern ein neues Deploy.
 ## Test-Checkliste nach Deploy
 1. Formular auf `/projekt-starten` mit Testdaten absenden.
 2. Redirect auf `/danke-projekt` prüfen.
-3. Netlify Forms Submission prüfen.
+3. Datensatz im R2-Bucket prüfen (Dashboard → R2 → `3dw-uploads` → `leads/`).
 4. Auto-Mail an Testadresse prüfen.
 5. Interne Lead-Mail prüfen.
 6. In GA4 Realtime prüfen:
@@ -70,7 +75,7 @@ Hinweis: `VITE_*` Variablen sind Build-Variablen und erfordern ein neues Deploy.
    - Panel auf `Consent`, `GA-ID gesetzt`, `gtag bereit`, `Script geladen` prüfen
    - Optional `Testevent senden` klicken und in GA4 Realtime auf `tracking_healthcheck_ping` prüfen
 8. Fehler-Monitoring prüfen:
-   - Testweise Netlify-Form-Erkennung deaktivieren (nur kurz in Staging) oder absichtlich 500 simulieren
+   - In einer Preview-Umgebung absichtlich einen Fehler provozieren (z. B. Binding `UPLOADS` fehlt → 500)
    - Prüfen, dass Alert-Mail `"[ALERT] Formularfehler ..."` ankommt
 
 ## Release-Standard (verbindlich)

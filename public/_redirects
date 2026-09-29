@@ -6,6 +6,6 @@
 /tag/*    /wissen/   301
 /author/*    /ueber-uns/   301
 
-# Every real route is prerendered; unknown paths get the prerendered 404 page
-# with a real 404 status instead of the home page with 200 (soft 404).
-/*    /404/index.html   404
+# No catch-all here: every real route is prerendered, and Cloudflare Pages
+# answers unknown paths with the top-level 404.html (written by
+# scripts/prerender.mjs) and a real 404 status.

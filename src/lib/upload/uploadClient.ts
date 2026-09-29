@@ -1,7 +1,7 @@
 import { validateUploadSelection } from './policy';
 
 /*
- * Browser side of the chunked upload (see netlify/functions/upload-*.mts).
+ * Browser side of the chunked upload (see server/uploads.ts).
  * Flow: init (signed session) -> chunks (parallel, retried, SHA-256 checked
  * by the server) -> complete (manifest + signed retrieval links).
  */
