@@ -19,7 +19,13 @@ export const ArrowRightIcon = ({ className = 'h-5 w-5' }: IconProps) => (
   </svg>
 );
 
-export const MenuIcon = ({ className = 'h-6 w-6' }: IconProps) => (
+export const ChevronDownIcon = ({ className = 'h-4 w-4' }: IconProps) => (
+  <svg viewBox="0 0 24 24" className={className} aria-hidden="true" {...base}>
+    <path d="m6 9 6 6 6-6" />
+  </svg>
+);
+
+export const MenuIcon =({ className = 'h-6 w-6' }: IconProps) => (
   <svg viewBox="0 0 24 24" className={className} {...base}>
     <path d="M4 6h16" />
     <path d="M4 12h16" />

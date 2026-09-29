@@ -382,7 +382,7 @@ const Home = () => {
           </h2>
           <p className="text-center text-gray-600 mb-10 max-w-3xl mx-auto">
             Aktuell zeigen wir anonymisierte Ansichten plus verifizierte Ergebnisnachweise. Bei
-            Kundenfreigabe werden diese Cases schrittweise um reale Projektbilder ergaenzt.
+            Kundenfreigabe werden diese Cases schrittweise um reale Projektbilder ergänzt.
           </p>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {industryCaseStudies.map((study) => (

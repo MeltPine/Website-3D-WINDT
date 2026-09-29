@@ -9,18 +9,18 @@ const Wissen = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <section className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Wissenscenter fuer industriellen 3D-Druck
+            Wissenscenter für industriellen 3D-Druck
           </h1>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto">
-            Technische Leitfaeden fuer Ersatzteile, Prototyping, Vorrichtungen und
+            Technische Leitfäden für Ersatzteile, Prototyping, Vorrichtungen und
             materialbezogene Entscheidungen im B2B-Umfeld.
           </p>
         </section>
 
         <section className="bg-white border border-gray-200 rounded-xl p-6 mb-12">
           <p className="text-gray-700 leading-relaxed">
-            Alle Inhalte sind auf industrielle Anwendungsfaelle ausgerichtet und auf belastbare
-            Projektklaerung ausgelegt. Kein Marketing-Sprech, sondern konkrete Entscheidungsgrundlagen.
+            Alle Inhalte sind auf industrielle Anwendungsfälle ausgerichtet und auf belastbare
+            Projektklärung ausgelegt. Kein Marketing-Sprech, sondern konkrete Entscheidungsgrundlagen.
           </p>
         </section>
 
@@ -46,10 +46,10 @@ const Wissen = () => {
         </section>
 
         <section className="mt-16 bg-primary-600 rounded-xl p-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">Projekt technisch klaeren</h2>
+          <h2 className="text-3xl font-bold text-white mb-4">Projekt technisch klären</h2>
           <p className="text-primary-100 mb-6 max-w-3xl mx-auto">
-            Wenn Sie bereits Daten haben, pruefen wir Ihren Anwendungsfall und geben eine belastbare
-            Rueckmeldung mit Lieferfenster.
+            Wenn Sie bereits Daten haben, prüfen wir Ihren Anwendungsfall und geben eine belastbare
+            Rückmeldung mit Lieferfenster.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
