@@ -1,4 +1,5 @@
 import IndustryLandingPage from '../components/IndustryLandingPage';
+import ErsatzteilCheckOffer from '../components/ErsatzteilCheckOffer';
 
 const Ersatzteile3DDrucken = () => {
   return (
@@ -13,7 +14,9 @@ const Ersatzteile3DDrucken = () => {
         'Technische Prüfung vor Fertigungsstart',
         'Individuelles Angebot innerhalb von 24 Stunden',
       ]}
-    />
+    >
+      <ErsatzteilCheckOffer />
+    </IndustryLandingPage>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ChevronDownIcon, CloseIcon, MenuIcon, PhoneIcon } from './icons';
 import BrandLogo from './BrandLogo';
@@ -252,7 +252,7 @@ const Header = () => {
                   Anfrage senden
                 </Link>
                 {navigation.map((item) => (
-                  <React.Fragment key={item.name}>
+                  <Fragment key={item.name}>
                     <Link
                       to={item.href}
                       className={`px-3 py-2 rounded-md text-sm font-semibold transition-colors ${
@@ -283,7 +283,7 @@ const Header = () => {
                         ))}
                       </ul>
                     )}
-                  </React.Fragment>
+                  </Fragment>
                 ))}
               </nav>
             </div>

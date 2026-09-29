@@ -8,7 +8,7 @@ import AppRoutes from './components/AppRoutes';
 import { routeSeo } from './lib/seo';
 import { initAnalytics, trackPageView } from './lib/analytics';
 import ConsentBanner from './components/ConsentBanner';
-import { normalizePathname, toTrailingSlashPath } from './lib/routes';
+import { hasSensitiveQuery, normalizePathname, toTrailingSlashPath } from './lib/routes';
 import { ThemeProvider } from './lib/theme';
 import TrackingHealthPanel from './components/TrackingHealthPanel';
 import { captureAttribution } from './lib/attribution';
@@ -28,7 +28,8 @@ const AppContent = () => {
   }, [normalizedPath, location.search]);
 
   useEffect(() => {
-    const analyticsPath = `${toTrailingSlashPath(normalizedPath)}${location.search}`;
+    const search = hasSensitiveQuery(normalizedPath) ? '' : location.search;
+    const analyticsPath = `${toTrailingSlashPath(normalizedPath)}${search}`;
     trackPageView(analyticsPath);
   }, [normalizedPath, location.search]);
 

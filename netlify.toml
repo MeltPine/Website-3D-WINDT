@@ -31,6 +31,26 @@
     Cache-Control = "no-store"
     Referrer-Policy = "no-referrer"
 
+# Payment pages (noindex). The pay page's query string holds a signed link:
+# never send it as Referer. Checkout itself is a top-level navigation to
+# checkout.stripe.com, so the site CSP above needs no Stripe origins.
+[[headers]]
+  for = "/bezahlen/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Referrer-Policy = "no-referrer"
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/zahlung-erfolgreich/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/zahlung-abgebrochen/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
 [[headers]]
   for = "/assets/*"
   [headers.values]

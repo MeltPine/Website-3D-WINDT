@@ -91,6 +91,53 @@ const Datenschutz = () => {
               </div>
 
               <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Online-Zahlungen über Stripe
+                </h3>
+                <p>
+                  Für Online-Zahlungen (z. B. Buchung des Ersatzteil-Checks oder Bezahlung eines
+                  angenommenen Angebots) nutzen wir den Zahlungsdienst Stripe. Anbieter für Kunden
+                  im Europäischen Wirtschaftsraum ist die Stripe Payments Europe, Limited, 1 Grand
+                  Canal Street Lower, Grand Canal Dock, Dublin, D02 H210, Irland.
+                </p>
+                <p className="mt-3">
+                  Nach Klick auf die Zahlungsschaltfläche werden Sie auf eine Zahlungsseite von
+                  Stripe weitergeleitet. Dort geben Sie Zahlungsdaten, Firmenname, Name,
+                  Rechnungsadresse, E-Mail-Adresse und optional Ihre USt-IdNr. direkt bei Stripe
+                  ein. Vollständige Karten- oder Kontodaten erhalten wir nicht. Wir erhalten die
+                  für Auftragsabwicklung und Buchhaltung erforderlichen Angaben (Firma, Name,
+                  Anschrift, E-Mail-Adresse, USt-IdNr., Betrag, Zahlungsart und -status). Stripe
+                  erstellt Rechnung und Zahlungsbeleg und sendet diese an Ihre E-Mail-Adresse.
+                  Stripe verarbeitet Daten teilweise auch in eigener Verantwortung, etwa zur
+                  Betrugsprävention und zur Erfüllung gesetzlicher Pflichten.
+                </p>
+                <p className="mt-3">
+                  Stripe kann Daten an die Stripe, Inc. in den USA übermitteln. Die Stripe, Inc.
+                  ist nach dem EU-US Data Privacy Framework zertifiziert (Angemessenheitsbeschluss
+                  der EU-Kommission, Art. 45 DSGVO); ergänzend setzt Stripe
+                  EU-Standardvertragsklauseln ein. Weitere Informationen:{' '}
+                  <a
+                    href="https://stripe.com/de/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary-700 underline"
+                  >
+                    Datenschutzerklärung von Stripe
+                  </a>
+                  .
+                </p>
+                <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mt-3 text-sm text-blue-800">
+                  <p>
+                    <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO
+                    (Vertragserfüllung); Aufbewahrung von Rechnungs- und Zahlungsdaten: Art. 6
+                    Abs. 1 lit. c DSGVO i. V. m. § 147 AO und § 257 HGB
+                    <br />
+                    <strong>Zweck:</strong> Zahlungsabwicklung, Rechnungsstellung, Buchhaltung
+                  </p>
+                </div>
+              </div>
+
+              <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Server-Log-Dateien</h3>
                 <p>
                   Beim Besuch der Website werden technisch notwendige Zugriffsdaten durch den
@@ -129,7 +176,8 @@ const Datenschutz = () => {
               </p>
               <ul className="list-disc list-inside space-y-1">
                 <li>Netlify (Hosting, Form-Verarbeitung, Datei-Speicher Netlify Blobs in Frankfurt, technische Logs)</li>
-                <li>Resend (Versand von Eingangs- und Alert-E-Mails)</li>
+                <li>Resend (Versand von Eingangs-, Alert- und internen Zahlungsbenachrichtigungen)</li>
+                <li>Stripe (Zahlungsabwicklung, Rechnungs- und Belegversand)</li>
                 <li>Google (GA4, Statistik-Cookies nur nach Einwilligung)</li>
               </ul>
             </div>
@@ -148,6 +196,10 @@ const Datenschutz = () => {
               <ul className="list-disc list-inside space-y-1">
                 <li>Projekt- und Kontaktdaten: in der Regel bis zu 24 Monate nach Abschluss</li>
                 <li>Technische Server-Logs: in der Regel bis zu 30 Tage</li>
+                <li>
+                  Rechnungs- und Zahlungsdaten: gemäß den handels- und steuerrechtlichen
+                  Aufbewahrungspflichten (§ 147 AO, § 257 HGB)
+                </li>
                 <li>Analytics-Daten (GA4): gemäß Google-Konfiguration, Statistik-Cookies nur nach Einwilligung</li>
               </ul>
               <p>
@@ -207,7 +259,7 @@ const Datenschutz = () => {
 
           <section className="border-t border-gray-200 pt-6 space-y-2">
             <p className="text-sm text-gray-500">
-              <strong>Stand dieser Datenschutzerklärung:</strong> März 2026
+              <strong>Stand dieser Datenschutzerklärung:</strong> September 2026
             </p>
             <p className="text-sm text-gray-500">
               Wir passen diese Datenschutzerklärung an, sobald sich rechtliche Anforderungen oder

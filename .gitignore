@@ -32,4 +32,6 @@ output/
 .tmp_skill_backups/
 .netlify/
 
+
+# TypeScript incremental build info (tsc -b)
 *.tsbuildinfo

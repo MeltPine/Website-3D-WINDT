@@ -19,6 +19,9 @@ import Wissen from '../pages/Wissen';
 import WissenDetail from '../pages/WissenDetail';
 import NotFound from '../pages/NotFound';
 import { WerkstoffDetailRoute, WerkstoffeOverviewRoute } from './werkstoffe/WerkstoffRoutes';
+import Bezahlen from '../pages/Bezahlen';
+import ZahlungErfolgreich from '../pages/ZahlungErfolgreich';
+import ZahlungAbgebrochen from '../pages/ZahlungAbgebrochen';
 
 const AppRoutes = () => {
   return (
@@ -39,6 +42,9 @@ const AppRoutes = () => {
       <Route path="/datenschutz/" element={<Datenschutz />} />
       <Route path="/danke-projekt/" element={<ThankYouProject />} />
       <Route path="/danke-kontakt/" element={<ThankYouContact />} />
+      <Route path="/bezahlen/" element={<Bezahlen />} />
+      <Route path="/zahlung-erfolgreich/" element={<ZahlungErfolgreich />} />
+      <Route path="/zahlung-abgebrochen/" element={<ZahlungAbgebrochen />} />
       <Route path="/wissen/" element={<Wissen />} />
       <Route path="/wissen/:slug/" element={<WissenDetail />} />
       <Route path="/werkstoffe/" element={<WerkstoffeOverviewRoute />} />

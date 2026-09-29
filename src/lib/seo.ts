@@ -241,6 +241,24 @@ const baseRouteSeo: Record<string, RouteSeoConfig> = {
       url: `${SITE_URL}/danke-projekt/`,
     },
   },
+  '/bezahlen': {
+    title: `Angebot annehmen & bezahlen | ${BRAND.publicName}`,
+    description: 'Sichere Zahlung eines angenommenen Angebots über Stripe.',
+    path: '/bezahlen/',
+    robots: 'noindex,nofollow',
+  },
+  '/zahlung-erfolgreich': {
+    title: `Zahlung erfolgreich | ${BRAND.publicName}`,
+    description: 'Ihre Bestellung ist eingegangen. Zahlungsbeleg und Rechnung kommen per E-Mail.',
+    path: '/zahlung-erfolgreich/',
+    robots: 'noindex,nofollow',
+  },
+  '/zahlung-abgebrochen': {
+    title: `Zahlung abgebrochen | ${BRAND.publicName}`,
+    description: 'Die Zahlung wurde nicht abgeschlossen. Es wurde nichts belastet.',
+    path: '/zahlung-abgebrochen/',
+    robots: 'noindex,nofollow',
+  },
   '/danke-kontakt': {
     title: `Danke für Ihre Kontaktanfrage | ${BRAND.publicName}`,
     description:
