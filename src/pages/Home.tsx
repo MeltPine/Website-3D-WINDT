@@ -41,7 +41,7 @@ const Home = () => {
     },
     {
       label: 'Datei-Upload',
-      value: '4 Formate (STL, OBJ, 3MF, SVG) bis 50 MB je Datei',
+      value: 'STEP, STL, 3MF, OBJ und SVG bis 100 MB je Datei – direkt im Browser hochladen',
     },
   ];
 
