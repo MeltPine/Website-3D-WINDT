@@ -62,7 +62,7 @@ const QuoteWorkbench = ({ catalog, stepLabel, footer, onInteract }: QuoteWorkben
         <Upload className="h-10 w-10 text-gray-400 mx-auto mb-3" aria-hidden="true" />
         <h2 className="font-display text-lg font-semibold text-gray-900 mb-1">3D-Modell hochladen</h2>
         <p className="text-gray-600 mb-1">
-          STL, OBJ, 3MF oder STEP – mit 3D-Vorschau, Maßen und Richtpreis. SVG wird ohne Vorschau übermittelt.
+          STEP, STL, 3MF oder OBJ – mit 3D-Vorschau, Maßen und Richtpreis. SVG wird ohne Vorschau übermittelt.
         </p>
         <p className="text-sm text-gray-500 mb-4">
           Bis {QUOTE_UPLOAD_LIMITS.maxFiles} Dateien, je max. {QUOTE_UPLOAD_LIMITS.maxFileMb} MB, zusammen max.{' '}
