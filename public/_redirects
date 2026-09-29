@@ -6,4 +6,6 @@
 /tag/*    /wissen/   301
 /author/*    /ueber-uns/   301
 
-/*    /index.html   200
+# Every real route is prerendered; unknown paths get the prerendered 404 page
+# with a real 404 status instead of the home page with 200 (soft 404).
+/*    /404/index.html   404
