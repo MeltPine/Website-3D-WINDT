@@ -37,7 +37,7 @@ describe('printability landing page and SEO', () => {
     const html = render(PRINTCHECK_PATH, DruckbarkeitPruefen);
     expect(html).toContain('<h1');
     expect(html).toContain('3D-Druck-Datei prüfen');
-    expect(html).toContain('Dateien auswählen');
+    expect(html).toContain('Datei auswählen');
     for (const check of PRINTCHECK_CHECKS) expect(html).toContain(check.title.replace('&', '&amp;'));
     for (const entry of PRINTCHECK_FAQ) expect(html).toContain(entry.question);
   });

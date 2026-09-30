@@ -392,7 +392,7 @@ const ProjectStart = () => {
               </div>
             )}
 
-            <div>
+            <div className="tech rounded-md bg-transparent">
               <QuoteWorkbench stepLabel="Schritt 1 von 4 (optional)" onInteract={handleFormStart} printCheckMode="request" />
               {quoteSession.entries.length === 0 && (
                 <p className="mt-3 text-sm text-gray-600 text-center">

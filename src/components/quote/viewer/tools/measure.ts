@@ -82,10 +82,35 @@ export function pointSegmentDistance(p: Vec2, a: Vec2, b: Vec2): number {
  * segment, as in EdgesGeometry). Returns the end points of the chain that
  * contains `startIndex`. Points closer than `epsilon` count as shared.
  */
+export interface EndpointIndex {
+  epsilon: number;
+  byPoint: Map<string, number[]>;
+}
+
+function pointKey(p: readonly number[], epsilon: number): string {
+  return `${Math.round(p[0] / epsilon)},${Math.round(p[1] / epsilon)},${Math.round(p[2] / epsilon)}`;
+}
+
+/** Segments by quantised end point; build once per edge set and reuse for every click. */
+export function buildEndpointIndex(segments: ArrayLike<number>, epsilon = 1e-3): EndpointIndex {
+  const byPoint = new Map<string, number[]>();
+  const count = Math.floor(segments.length / 6);
+  for (let s = 0; s < count; s += 1) {
+    for (const end of [0, 1]) {
+      const o = s * 6 + end * 3;
+      const k = pointKey([segments[o], segments[o + 1], segments[o + 2]], epsilon);
+      const list = byPoint.get(k);
+      if (list) list.push(s);
+      else byPoint.set(k, [s]);
+    }
+  }
+  return { epsilon, byPoint };
+}
+
 export function chainCollinear(
   segments: ArrayLike<number>,
   startIndex: number,
-  epsilon = 1e-3,
+  endpoints: EndpointIndex = buildEndpointIndex(segments),
   toleranceDeg = COLLINEAR_TOLERANCE_DEG,
 ): { a: Vec3; b: Vec3; segmentCount: number } {
   const count = Math.floor(segments.length / 6);
@@ -96,16 +121,8 @@ export function chainCollinear(
     const o = segment * 6 + end * 3;
     return [segments[o], segments[o + 1], segments[o + 2]];
   };
-  const key = (p: Vec3) => `${Math.round(p[0] / epsilon)},${Math.round(p[1] / epsilon)},${Math.round(p[2] / epsilon)}`;
-  const byPoint = new Map<string, number[]>();
-  for (let s = 0; s < count; s += 1) {
-    for (const end of [0, 1] as const) {
-      const k = key(point(s, end));
-      const list = byPoint.get(k);
-      if (list) list.push(s);
-      else byPoint.set(k, [s]);
-    }
-  }
+  const key = (p: Vec3) => pointKey(p, endpoints.epsilon);
+  const byPoint = endpoints.byPoint;
   const a0 = point(startIndex, 0);
   const b0 = point(startIndex, 1);
   const length = Math.hypot(b0[0] - a0[0], b0[1] - a0[1], b0[2] - a0[2]);

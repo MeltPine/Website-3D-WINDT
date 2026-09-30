@@ -1,31 +1,44 @@
-import React, { Suspense, lazy, useRef, useState } from 'react';
-import { AlertCircle, Loader2, ShieldCheck, Upload } from 'lucide-react';
+import { Suspense, lazy, useRef, useState } from 'react';
+import { AlertCircle, Loader2, Lock, Upload } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { MaterialCatalog } from '../../lib/quote/materials';
 import { QUOTE_UPLOAD_LIMITS, addQuoteFiles, useQuoteSession } from '../../lib/quote/quoteSession';
 import { ACCEPT_ATTRIBUTE, UPLOAD_POLICY } from '../../lib/upload/policy';
 
 /*
- * File drop zone (server-rendered, part of the main bundle) plus the lazily
- * loaded QuoteDetails (viewer, calculator, price range) once files exist.
+ * Empty state (server-rendered, main bundle): the drop zone on a blueprint
+ * grid. As soon as a file is selected the page turns into the workspace
+ * (lazy QuoteWorkspace: viewer, tabs, summary); further files are added from
+ * its parts bar or by dropping onto it.
  */
 
-const QuoteDetails = lazy(() => import('./QuoteDetails'));
+const QuoteWorkspace = lazy(() => import('./QuoteWorkspace'));
 
 interface QuoteWorkbenchProps {
   /** Pluggable material source; defaults to FDM-INSPECT products + 3D-WINDT price groups. */
   catalog?: MaterialCatalog;
   /** Small step label above the drop zone (e.g. inside the request form). */
   stepLabel?: string;
-  /** Rendered below the price range (e.g. CTA to the request form). */
-  footer?: React.ReactNode;
   /** Called on the first user interaction (file added or parameter changed). */
   onInteract?: () => void;
-  /** Where the workbench is embedded; the calculator shows the printability CTAs. */
+  /** Where the workbench is embedded: the calculator has the primary CTA, the request form not. */
   printCheckMode: 'calculator' | 'request';
+  /** Primary CTA of the calculator ("Verbindliches Angebot anfordern"). */
+  onRequest?: () => void;
 }
 
-const QuoteWorkbench = ({ catalog, stepLabel, footer, onInteract, printCheckMode }: QuoteWorkbenchProps) => {
+/** Status element "file stays local" (spec: permanent, not prose). */
+export const LocalStatus = ({ className = '' }: { className?: string }) => (
+  <p className={`inline-flex items-center gap-2 text-sm text-ink-soft ${className}`}>
+    <span className="inline-block h-2.5 w-2.5 bg-ok" aria-hidden="true" />
+    <span>
+      <span className="font-medium text-ink">Lokal · nichts übertragen.</span> Ihre Datei verlässt den Rechner erst, wenn Sie die Anfrage
+      abschicken.
+    </span>
+  </p>
+);
+
+const QuoteWorkbench = ({ catalog, stepLabel, onInteract, printCheckMode, onRequest }: QuoteWorkbenchProps) => {
   const session = useQuoteSession();
   const [addErrors, setAddErrors] = useState<string[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -37,11 +50,35 @@ const QuoteWorkbench = ({ catalog, stepLabel, footer, onInteract, printCheckMode
     setAddErrors(addQuoteFiles(Array.from(fileList)));
   };
 
+  const errors = addErrors.length > 0 && (
+    <div className="flex items-start gap-2 rounded border border-line bg-crit-bg px-3 py-2 text-sm text-ink" role="alert">
+      <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-crit" aria-hidden="true" />
+      <span>{addErrors.join(' · ')}</span>
+    </div>
+  );
+
+  if (session.entries.length > 0) {
+    return (
+      <div className="space-y-3">
+        {errors}
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center gap-2 py-10 text-sm text-ink-soft">
+              <Loader2 className="h-5 w-5 animate-spin motion-reduce:animate-none" aria-hidden="true" /> Arbeitsfläche wird geladen …
+            </div>
+          }
+        >
+          <QuoteWorkspace catalog={catalog} mode={printCheckMode} onInteract={onInteract} onRequest={onRequest} onAddFiles={handleFiles} />
+        </Suspense>
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-3">
       <div
-        className={`rounded-xl border-2 border-dashed p-6 md:p-8 text-center shadow-sm transition-colors bg-white ${
-          isDragging ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/40' : 'border-gray-300 hover:border-primary-400'
+        className={`blueprint rounded-md border-2 border-dashed p-6 text-center transition-colors duration-100 md:p-10 ${
+          isDragging ? 'border-accent bg-accent-soft' : 'border-line-strong bg-panel'
         }`}
         onDragEnter={(event) => {
           event.preventDefault();
@@ -58,24 +95,16 @@ const QuoteWorkbench = ({ catalog, stepLabel, footer, onInteract, printCheckMode
           handleFiles(event.dataTransfer.files);
         }}
       >
-        {stepLabel && (
-          <p className="text-xs uppercase tracking-wide text-primary-700 font-semibold mb-2">{stepLabel}</p>
-        )}
-        <Upload className="h-10 w-10 text-gray-400 mx-auto mb-3" aria-hidden="true" />
-        <h2 className="font-display text-lg font-semibold text-gray-900 mb-1">3D-Modell hochladen</h2>
-        <p className="text-gray-600 mb-1">
-          STEP, STL, 3MF oder OBJ – mit 3D-Vorschau, Richtpreis und Druckbarkeits-Check. SVG wird ohne Vorschau übermittelt.
+        {stepLabel && <p className="label-caps mb-2">{stepLabel}</p>}
+        <Upload className="mx-auto mb-3 h-8 w-8 text-ink-muted" aria-hidden="true" />
+        <h2 className="mb-1 text-2xl font-semibold text-ink">Modell reinziehen.</h2>
+        <p className="mx-auto max-w-xl text-ink-soft">STEP ist mir am liebsten – da stimmen Maße und Radien.</p>
+        <p className="num mx-auto mt-2 text-sm text-ink-muted">
+          STEP · STL · 3MF · OBJ mit 3D-Ansicht · SVG ohne Vorschau · bis {QUOTE_UPLOAD_LIMITS.maxFiles} Dateien, je {QUOTE_UPLOAD_LIMITS.maxFileMb} MB,
+          zusammen {QUOTE_UPLOAD_LIMITS.maxTotalMb} MB
         </p>
-        <p className="text-sm text-gray-500 mb-4">
-          Bis {QUOTE_UPLOAD_LIMITS.maxFiles} Dateien, je max. {QUOTE_UPLOAD_LIMITS.maxFileMb} MB, zusammen max.{' '}
-          {QUOTE_UPLOAD_LIMITS.maxTotalMb} MB. Datei hierher ziehen oder auswählen.
-        </p>
-        <button
-          type="button"
-          onClick={() => inputRef.current?.click()}
-          className="inline-flex items-center justify-center bg-primary-700 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-primary-800 transition-colors"
-        >
-          Dateien auswählen
+        <button type="button" onClick={() => inputRef.current?.click()} className="tech-btn tech-btn-primary mt-5 px-6 text-base">
+          Datei auswählen
         </button>
         <input
           ref={inputRef}
@@ -88,41 +117,21 @@ const QuoteWorkbench = ({ catalog, stepLabel, footer, onInteract, printCheckMode
             event.target.value = '';
           }}
         />
-        <div className="mx-auto mt-5 max-w-2xl rounded-lg border border-primary-200 bg-primary-50/75 p-3 text-left">
-          <p className="text-sm text-gray-700 inline-flex items-start gap-2">
-            <ShieldCheck className="h-4 w-4 text-primary-700 mt-0.5 shrink-0" aria-hidden="true" />
+        <div className="mx-auto mt-6 max-w-2xl space-y-1 border-t border-line pt-4 text-left">
+          <LocalStatus />
+          <p className="flex items-start gap-2 text-xs text-ink-muted">
+            <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
             <span>
-              Vorschau, Richtpreis und Druckbarkeits-Check entstehen ausschließlich in Ihrem Browser. Ihre Dateien werden erst beim
-              Absenden der Anfrage verschlüsselt übertragen, in der EU (Rechenzentrum Frankfurt) gespeichert, nur
-              zur Prüfung Ihres Projekts genutzt und nach {UPLOAD_POLICY.retentionDays} Tagen automatisch gelöscht.{' '}
-              <Link to="/datenschutz/" className="text-primary-700 underline hover:text-primary-800">
+              Ansicht, Richtpreis und Druckbarkeitsprüfung laufen in Ihrem Browser. Beim Absenden der Anfrage wird verschlüsselt übertragen, in der
+              EU (Rechenzentrum Frankfurt) gespeichert und nach {UPLOAD_POLICY.retentionDays} Tagen gelöscht. Auf Wunsch vorher eine NDA.{' '}
+              <Link to="/datenschutz/" className="text-accent underline">
                 Datenschutzerklärung
               </Link>
             </span>
           </p>
-          <p className="text-xs text-gray-600 mt-2 ml-6">
-            Auf Wunsch stellen wir vor dem Datenaustausch eine NDA-Vereinbarung bereit.
-          </p>
         </div>
-        {addErrors.length > 0 && (
-          <div className="mt-4 text-sm text-red-700 flex items-start justify-center gap-2" role="alert">
-            <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" aria-hidden="true" />
-            <span>{addErrors.join(' • ')}</span>
-          </div>
-        )}
       </div>
-
-      {session.entries.length > 0 && (
-        <Suspense
-          fallback={
-            <div className="flex items-center justify-center gap-2 py-10 text-sm text-gray-600">
-              <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> Vorschau und Rechner werden geladen …
-            </div>
-          }
-        >
-          <QuoteDetails catalog={catalog} footer={footer} onInteract={onInteract} printCheckMode={printCheckMode} />
-        </Suspense>
-      )}
+      {errors}
     </div>
   );
 };

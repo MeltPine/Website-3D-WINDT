@@ -5,8 +5,9 @@ export default defineConfig({
   plugins: [react()],
   build: {
     // The only chunk above Vite's 500 kB default is the lazily loaded three.js
-    // viewer (fetched after a model was analysed), so the limit is raised to it.
-    chunkSizeWarningLimit: 600,
+    // viewer with its tools and the picking BVH (fetched after a model was
+    // analysed, ~175 kB gzip), so the limit is raised to it.
+    chunkSizeWarningLimit: 700,
     rollupOptions: {
       output: {
         manualChunks(id) {

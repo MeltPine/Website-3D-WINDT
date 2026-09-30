@@ -1,6 +1,5 @@
-import { ArrowRight, ClipboardCheck, Lock, ScanSearch } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import GlassSurface from '../components/GlassSurface';
 import PrintCheckExplainer from '../components/printcheck/PrintCheckExplainer';
 import QuoteWorkbench from '../components/quote/QuoteWorkbench';
 import { getQuoteSession } from '../lib/quote/quoteSession';
@@ -16,17 +15,14 @@ import { WERKSTOFFE_PATH } from '../lib/werkstoffe/families';
 
 const differentiators = [
   {
-    icon: ScanSearch,
     title: 'Gemessen statt geraten',
     text: 'Wandstärken über die Medialachse, Überhänge flächengenau, sechs Drucklagen im Vergleich – mit Messwert und Grenzwert je Befund.',
   },
   {
-    icon: Lock,
     title: 'Ihre Datei bleibt bei Ihnen',
     text: 'Die Analyse läuft im Browser. Für die Prüfung wird nichts hochgeladen – ein Argument, wenn Konstruktionsdaten unter NDA stehen.',
   },
   {
-    icon: ClipboardCheck,
     title: 'Vom Befund zur Lösung',
     text: 'Jeder Befund ist erklärt und im 3D-Modell markiert. Was sich nicht automatisch klären lässt, prüfen unsere Techniker kostenlos.',
   },
@@ -45,78 +41,67 @@ const DruckbarkeitPruefen = () => {
   };
 
   return (
-    <div className="py-16 animate-fade-in">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <GlassSurface as="section" variant="hero" density="normal" className="p-8 md:p-10">
-          <p className="text-xs uppercase tracking-wide text-primary-700 font-semibold mb-2">Kostenloser Druckbarkeits-Check</p>
-          <h1 className="font-display text-4xl font-bold text-gray-900 mb-3">3D-Druck-Datei prüfen: Druckbarkeit online checken</h1>
-          <p className="text-lg text-gray-700 max-w-3xl">
-            STL, STEP, 3MF oder OBJ hineinziehen – wir prüfen Wandstärken, feine Merkmale, Überhänge, Bohrungen, Bauraum
-            und Drucklage für den FDM-3D-Druck. Auf Deutsch, mit Erklärung je Befund und Markierung im 3D-Modell. Die
-            Prüfung läuft direkt in Ihrem Browser.
+    <div className="tech pb-16">
+      <header className="blueprint border-b border-line">
+        <div className="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8 md:py-8">
+          <p className="label-caps mb-1">Kostenloser Druckbarkeits-Check</p>
+          <h1 className="text-[32px] font-semibold leading-[36px] text-ink md:text-[40px] md:leading-[44px]">
+            3D-Druck-Datei prüfen: Druckbarkeit online checken
+          </h1>
+          <p className="mt-2 max-w-3xl text-lg text-ink-soft">
+            STL, STEP, 3MF oder OBJ reinziehen – geprüft werden Wandstärken, feine Merkmale, Überhänge, Bohrungen, Bauraum und Drucklage für
+            den FDM-Druck. Auf Deutsch, mit Erklärung je Befund und Markierung im 3D-Modell. Die Prüfung läuft in Ihrem Browser.
           </p>
-        </GlassSurface>
+          <p className="mt-2 inline-flex items-center gap-2 text-sm text-ink">
+            <span className="inline-block h-2.5 w-2.5 bg-ok" aria-hidden="true" /> Lokal · nichts übertragen
+          </p>
+        </div>
+      </header>
 
-        <QuoteWorkbench
-          printCheckMode="calculator"
-          footer={
-            <button
-              type="button"
-              onClick={goToRequest}
-              className="w-full bg-primary-700 text-white px-5 py-3 rounded-lg font-semibold hover:bg-primary-800 transition-colors inline-flex items-center justify-center gap-2"
-            >
-              Verbindliches Angebot anfragen
-              <ArrowRight className="h-5 w-5" aria-hidden="true" />
-            </button>
-          }
-        />
+      <div className="mx-auto max-w-[1440px] space-y-10 px-4 pt-6 sm:px-6 lg:px-8">
+        <QuoteWorkbench printCheckMode="calculator" onRequest={goToRequest} />
 
-        <section aria-labelledby="printcheck-why" className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <h2 id="printcheck-why" className="sr-only">
-            Warum dieser Druckbarkeits-Check
+        <section aria-labelledby="printcheck-why" className="tech-panel p-5 md:p-6">
+          <h2 id="printcheck-why" className="mb-3 text-2xl font-semibold text-ink">
+            Warum dieser Check
           </h2>
-          {differentiators.map(({ icon: Icon, title, text }) => (
-            <div key={title} className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-              <Icon className="h-7 w-7 text-primary-700 mb-3" aria-hidden="true" />
-              <h3 className="font-semibold text-gray-900 mb-1">{title}</h3>
-              <p className="text-sm text-gray-700">{text}</p>
-            </div>
-          ))}
+          <dl className="divide-y divide-[var(--border-soft)]">
+            {differentiators.map(({ title, text }) => (
+              <div key={title} className="grid grid-cols-1 gap-1 py-3 md:grid-cols-[16rem_1fr] md:gap-6">
+                <dt className="font-medium text-ink">{title}</dt>
+                <dd className="text-ink-soft">{text}</dd>
+              </div>
+            ))}
+          </dl>
         </section>
 
         <PrintCheckExplainer headingId="printcheck-landing-checks" linkToLanding={false} />
 
-        <section className="rounded-xl border border-primary-200 bg-primary-50 p-6 md:p-8">
-          <h2 className="font-display text-2xl font-semibold text-gray-900 mb-2">Und nach der Vorprüfung?</h2>
-          <p className="text-gray-700 mb-4 max-w-3xl">
-            Mit einem Klick geht Ihre Datei samt Prüfergebnis an unsere Techniker. Sie erhalten eine verbindliche
-            Einschätzung zu Drucklage, Material und Toleranzen – und auf Wunsch einen Vorschlag zur Nachkonstruktion.
+        <section className="tech-panel p-5 md:p-6">
+          <h2 className="mb-2 text-2xl font-semibold text-ink">Und nach der Vorprüfung?</h2>
+          <p className="mb-4 max-w-3xl text-ink-soft">
+            Mit einem Klick geht Ihre Datei samt Prüfergebnis an mich. Sie bekommen eine verbindliche Einschätzung zu Drucklage, Werkstoff und
+            Toleranzen – und auf Wunsch einen Vorschlag zur Nachkonstruktion.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Link
-              to="/projekt-starten/"
-              className="inline-flex items-center justify-center gap-2 bg-primary-700 text-white px-5 py-3 rounded-lg font-semibold hover:bg-primary-800"
-            >
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Link to="/projekt-starten/" className="tech-btn tech-btn-primary">
               Technische Prüfung anfragen <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
-            <Link
-              to="/3d-druck-preisrechner/"
-              className="inline-flex items-center justify-center gap-2 border border-primary-700 text-primary-700 px-5 py-3 rounded-lg font-semibold hover:bg-white"
-            >
+            <Link to="/3d-druck-preisrechner/" className="tech-btn tech-btn-secondary">
               Zum Preisrechner
             </Link>
           </div>
-          <p className="mt-4 text-sm text-gray-600">
+          <p className="mt-4 text-sm text-ink-muted">
             Weiterlesen:{' '}
-            <Link to={WERKSTOFFE_PATH} className="text-primary-700 underline hover:text-primary-800">
+            <Link to={WERKSTOFFE_PATH} className="text-accent underline">
               Werkstoff-Bibliothek
             </Link>{' '}
             ·{' '}
-            <Link to="/wissen/fdm-toleranzen-im-industriealltag/" className="text-primary-700 underline hover:text-primary-800">
+            <Link to="/wissen/fdm-toleranzen-im-industriealltag/" className="text-accent underline">
               FDM-Toleranzen im Industriealltag
             </Link>{' '}
             ·{' '}
-            <Link to="/ersatzteile-3d-drucken/" className="text-primary-700 underline hover:text-primary-800">
+            <Link to="/ersatzteile-3d-drucken/" className="text-accent underline">
               Ersatzteile per 3D-Druck
             </Link>
           </p>

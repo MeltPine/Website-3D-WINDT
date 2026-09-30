@@ -46,25 +46,25 @@ import PrintCheckPrintReport from './PrintCheckPrintReport';
 export type PrintCheckMode = 'calculator' | 'request';
 
 const STATUS_STYLE: Record<FindingStatus, { badge: string; icon: typeof CheckCircle2; iconClass: string }> = {
-  ok: { badge: 'bg-green-50 text-green-800 border-green-200', icon: CheckCircle2, iconClass: 'text-green-600' },
-  hint: { badge: 'bg-amber-50 text-amber-800 border-amber-200', icon: AlertTriangle, iconClass: 'text-amber-600' },
-  critical: { badge: 'bg-red-50 text-red-700 border-red-200', icon: XCircle, iconClass: 'text-red-600' },
-  'not-checked': { badge: 'bg-gray-50 text-gray-600 border-gray-200', icon: MinusCircle, iconClass: 'text-gray-500' },
+  ok: { badge: 'bg-ok-bg text-ok border-line', icon: CheckCircle2, iconClass: 'text-ok' },
+  hint: { badge: 'bg-warn-bg text-warn border-line', icon: AlertTriangle, iconClass: 'text-warn' },
+  critical: { badge: 'bg-crit-bg text-crit border-line', icon: XCircle, iconClass: 'text-crit' },
+  'not-checked': { badge: 'bg-panel-2 text-ink-muted border-line', icon: MinusCircle, iconClass: 'text-ink-muted' },
 };
 
 const VERDICT_STYLE: Record<VerdictLevel, { box: string; icon: typeof CheckCircle2; iconClass: string }> = {
-  direct: { box: 'border-green-200 bg-green-50', icon: CheckCircle2, iconClass: 'text-green-600' },
-  adjust: { box: 'border-amber-200 bg-amber-50', icon: AlertTriangle, iconClass: 'text-amber-600' },
-  redesign: { box: 'border-red-200 bg-red-50', icon: Wrench, iconClass: 'text-red-600' },
-  unsuitable: { box: 'border-red-200 bg-red-50', icon: XCircle, iconClass: 'text-red-600' },
-  incomplete: { box: 'border-gray-200 bg-gray-50', icon: MinusCircle, iconClass: 'text-gray-500' },
+  direct: { box: 'border-line bg-ok-bg', icon: CheckCircle2, iconClass: 'text-ok' },
+  adjust: { box: 'border-line bg-warn-bg', icon: AlertTriangle, iconClass: 'text-warn' },
+  redesign: { box: 'border-line bg-crit-bg', icon: Wrench, iconClass: 'text-crit' },
+  unsuitable: { box: 'border-line bg-crit-bg', icon: XCircle, iconClass: 'text-crit' },
+  incomplete: { box: 'border-line bg-panel-2', icon: MinusCircle, iconClass: 'text-ink-muted' },
 };
 
 const StatusBadge = ({ status }: { status: FindingStatus }) => {
   const style = STATUS_STYLE[status];
   const Icon = style.icon;
   return (
-    <span className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-semibold ${style.badge}`}>
+    <span className={`inline-flex shrink-0 items-center gap-1 rounded border px-2 py-0.5 text-xs font-medium ${style.badge}`}>
       <Icon className={`h-3.5 w-3.5 ${style.iconClass}`} aria-hidden="true" />
       {STATUS_LABEL[status]}
     </span>
@@ -82,7 +82,7 @@ const FindingRow = ({ finding, highlightAvailable, active, onToggleHighlight }: 
   const [open, setOpen] = useState(finding.status === 'critical');
   const detailsId = `pc-${finding.id.replace(/\./g, '-')}`;
   return (
-    <li className="rounded-lg border border-gray-200 bg-white p-3">
+    <li className="rounded border border-line bg-panel p-3">
       <div className="flex items-start gap-2">
         <StatusBadge status={finding.status} />
         <button
@@ -92,16 +92,16 @@ const FindingRow = ({ finding, highlightAvailable, active, onToggleHighlight }: 
           aria-controls={detailsId}
           onClick={() => setOpen((value) => !value)}
         >
-          <span className="block text-sm font-semibold text-gray-900">{finding.title}</span>
-          <span className="block text-sm text-gray-700">{finding.measured}</span>
+          <span className="block text-sm font-medium text-ink">{finding.title}</span>
+          <span className="block text-sm text-ink-soft">{finding.measured}</span>
         </button>
         {finding.highlight && highlightAvailable && (
           <button
             type="button"
             onClick={() => onToggleHighlight(finding.highlight as HighlightId)}
             aria-pressed={active}
-            className={`inline-flex shrink-0 items-center gap-1 rounded-md border px-2 py-1 text-xs font-semibold transition-colors ${
-              active ? 'border-primary-600 bg-primary-700 text-white' : 'border-gray-300 text-gray-700 hover:border-primary-500'
+            className={`inline-flex shrink-0 items-center gap-1 rounded-md border px-2 py-1 text-xs font-medium transition-colors ${
+              active ? 'border-accent bg-accent text-accent-contrast' : 'border-line-strong text-ink hover:border-accent'
             }`}
           >
             {active ? <EyeOff className="h-3.5 w-3.5" aria-hidden="true" /> : <Eye className="h-3.5 w-3.5" aria-hidden="true" />}
@@ -110,24 +110,24 @@ const FindingRow = ({ finding, highlightAvailable, active, onToggleHighlight }: 
         )}
       </div>
       {open && (
-        <div id={detailsId} className="mt-2 space-y-1.5 border-t border-gray-200 pt-2 text-sm text-gray-700">
+        <div id={detailsId} className="mt-2 space-y-1.5 border-t border-line pt-2 text-sm text-ink-soft">
           <p>
-            <span className="font-semibold text-gray-900">Grenzwert:</span> {finding.threshold}
+            <span className="font-medium text-ink">Grenzwert:</span> {finding.threshold}
           </p>
           {finding.explanation && <p>{finding.explanation}</p>}
           {finding.recommendation && (
             <p>
-              <span className="font-semibold text-gray-900">Empfehlung:</span> {finding.recommendation}
+              <span className="font-medium text-ink">Empfehlung:</span> {finding.recommendation}
             </p>
           )}
           {finding.link && (
             <p>
-              <Link to={finding.link.href} className="text-primary-700 underline hover:text-primary-800">
+              <Link to={finding.link.href} className="text-accent underline">
                 {finding.link.label}
               </Link>
             </p>
           )}
-          <p className="text-xs text-gray-500">Grundlage: {BASIS_LABEL[finding.basis]}</p>
+          <p className="text-xs text-ink-muted">Grundlage: {BASIS_LABEL[finding.basis]}</p>
         </div>
       )}
     </li>
@@ -143,14 +143,14 @@ const WallHistogram = ({ report }: { report: PrintCheckReport }) => {
   const bins = histogram.bins.slice(0, last + 1);
   const max = Math.max(...bins, 1e-9);
   return (
-    <figure className="rounded-lg border border-gray-200 bg-white p-3">
-      <figcaption className="mb-2 text-xs font-semibold text-gray-700">
+    <figure className="rounded border border-line bg-panel p-3">
+      <figcaption className="mb-2 text-xs font-medium text-ink-soft">
         Wandstärken-Verteilung (Volumenanteil je {fmtMm(histogram.binWidth)})
       </figcaption>
       <div className="flex h-20 items-end gap-px" role="img" aria-label="Histogramm der Wandstärken">
         {bins.map((value, index) => {
           const from = index * histogram.binWidth;
-          const tone = from < 0.4 ? 'bg-red-500' : from < 0.8 ? 'bg-amber-500' : 'bg-primary-500';
+          const tone = from < 0.4 ? 'bg-crit' : from < 0.8 ? 'bg-warn' : 'bg-accent';
           return (
             <div
               key={from}
@@ -161,7 +161,7 @@ const WallHistogram = ({ report }: { report: PrintCheckReport }) => {
           );
         })}
       </div>
-      <div className="mt-1 flex justify-between text-[11px] text-gray-500">
+      <div className="mt-1 flex justify-between text-[11px] text-ink-muted">
         <span>0 mm</span>
         <span>{fmtMm((last + 1) * histogram.binWidth)}</span>
       </div>
@@ -169,11 +169,19 @@ const WallHistogram = ({ report }: { report: PrintCheckReport }) => {
   );
 };
 
-const OrientationTable = ({ report }: { report: PrintCheckReport }) => (
-  <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
-    <table className="w-full min-w-[520px] text-left text-xs text-gray-700">
+const OrientationTable = ({
+  report,
+  onApplyPose,
+  appliedPoseId,
+}: {
+  report: PrintCheckReport;
+  onApplyPose?: (poseId: number) => void;
+  appliedPoseId?: number | null;
+}) => (
+  <div className="overflow-x-auto rounded border border-line bg-panel">
+    <table className="w-full min-w-[520px] text-left text-xs text-ink-soft">
       <caption className="sr-only">Vergleich der sechs Drucklagen</caption>
-      <thead className="bg-gray-50 text-gray-900">
+      <thead className="bg-panel-2 text-ink">
         <tr>
           <th scope="col" className="px-2 py-1.5">Lage</th>
           <th scope="col" className="px-2 py-1.5 text-right">Höhe</th>
@@ -181,11 +189,16 @@ const OrientationTable = ({ report }: { report: PrintCheckReport }) => (
           <th scope="col" className="px-2 py-1.5 text-right">Auflage</th>
           <th scope="col" className="px-2 py-1.5">Bauraum</th>
           <th scope="col" className="px-2 py-1.5 text-right">Bewertung</th>
+          {onApplyPose && (
+            <th scope="col" className="px-2 py-1.5">
+              <span className="sr-only">Im Viewer</span>
+            </th>
+          )}
         </tr>
       </thead>
       <tbody>
         {report.orientationRows.map((row) => (
-          <tr key={row.poseId} className={row.recommended ? 'bg-primary-50 font-semibold text-gray-900' : ''}>
+          <tr key={row.poseId} className={row.recommended ? 'bg-accent-soft font-medium text-ink' : ''}>
             <td className="px-2 py-1.5">
               {row.label}
               {row.recommended ? ' – empfohlen' : ''}
@@ -194,7 +207,18 @@ const OrientationTable = ({ report }: { report: PrintCheckReport }) => (
             <td className="px-2 py-1.5 text-right">{row.criticalShare.toFixed(1).replace('.', ',')} %</td>
             <td className="px-2 py-1.5 text-right">{(row.bedContact / 100).toFixed(1).replace('.', ',')} cm²</td>
             <td className="px-2 py-1.5">{row.fits === 'axis' ? 'passt' : row.fits === 'diagonal' ? 'diagonal' : 'zu groß'}</td>
-            <td className="px-2 py-1.5 text-right">{Math.round(row.score)}</td>
+            <td className="num px-2 py-1.5 text-right">{Math.round(row.score)}</td>
+            {onApplyPose && (
+              <td className="px-2 py-1 text-right">
+                {appliedPoseId === row.poseId ? (
+                  <span className="text-xs text-ink-muted">im Viewer</span>
+                ) : (
+                  <button type="button" onClick={() => onApplyPose(row.poseId)} className="min-h-[32px] text-xs font-medium text-accent underline">
+                    Im Viewer übernehmen
+                  </button>
+                )}
+              </td>
+            )}
           </tr>
         ))}
       </tbody>
@@ -205,10 +229,10 @@ const OrientationTable = ({ report }: { report: PrintCheckReport }) => (
 const ToleranceTable = ({ report }: { report: PrintCheckReport }) => {
   if (!report.toleranceRows) return null;
   return (
-    <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
-      <table className="w-full min-w-[460px] text-left text-xs text-gray-700">
+    <div className="overflow-x-auto rounded border border-line bg-panel">
+      <table className="w-full min-w-[460px] text-left text-xs text-ink-soft">
         <caption className="sr-only">Maßhaltigkeit je Hauptmaß</caption>
-        <thead className="bg-gray-50 text-gray-900">
+        <thead className="bg-panel-2 text-ink">
           <tr>
             <th scope="col" className="px-2 py-1.5">Maß</th>
             <th scope="col" className="px-2 py-1.5 text-right">Nennmaß</th>
@@ -224,7 +248,7 @@ const ToleranceTable = ({ report }: { report: PrintCheckReport }) => {
               <td className="px-2 py-1.5 text-right">{fmtMm(row.nominal)}</td>
               <td className="px-2 py-1.5 text-right">{row.isoM === null ? '–' : `±${fmtMm(row.isoM)}`}</td>
               <td className="px-2 py-1.5 text-right">{row.isoC === null ? '–' : `±${fmtMm(row.isoC)}`}</td>
-              <td className={`px-2 py-1.5 text-right ${row.withinGeneral ? '' : 'font-semibold text-amber-800'}`}>
+              <td className={`px-2 py-1.5 text-right ${row.withinGeneral ? '' : 'font-medium text-warn'}`}>
                 ±{fmtMm(row.expectedDeviation)}
               </td>
             </tr>
@@ -243,9 +267,23 @@ interface PrintCheckPanelProps {
   onToggleHighlight: (id: HighlightId) => void;
   /** False when the viewer has no geometry (memory budget) or no flags yet. */
   highlightAvailable: boolean;
+  /** Shows a pose of the orientation study in the viewer. */
+  onApplyPose?: (poseId: number) => void;
+  appliedPoseId?: number | null;
 }
 
-const PrintCheckPanel = ({ entry, report, mode, activeHighlight, onToggleHighlight, highlightAvailable }: PrintCheckPanelProps) => {
+const SEVERITY: Readonly<Record<FindingStatus, number>> = { critical: 0, hint: 1, ok: 2, 'not-checked': 3 };
+
+const PrintCheckPanel = ({
+  entry,
+  report,
+  mode,
+  activeHighlight,
+  onToggleHighlight,
+  highlightAvailable,
+  onApplyPose,
+  appliedPoseId,
+}: PrintCheckPanelProps) => {
   const navigate = useNavigate();
   const check = entry.printCheck;
   const [printRequested, setPrintRequested] = useState(false);
@@ -253,10 +291,15 @@ const PrintCheckPanel = ({ entry, report, mode, activeHighlight, onToggleHighlig
 
   const grouped = useMemo(() => {
     if (!report) return [];
+    // categories and findings sorted critical -> hint -> OK -> not checked
     return CATEGORY_ORDER.map((category) => ({
       category,
-      findings: report.findings.filter((finding) => finding.category === category),
-    }));
+      findings: report.findings
+        .filter((finding) => finding.category === category)
+        .sort((a, b) => SEVERITY[a.status] - SEVERITY[b.status]),
+    }))
+      .map((group) => ({ ...group, worst: Math.min(...group.findings.map((finding) => SEVERITY[finding.status]), 3) }))
+      .sort((a, b) => a.worst - b.worst || CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category));
   }, [report]);
 
   useEffect(() => {
@@ -290,12 +333,12 @@ const PrintCheckPanel = ({ entry, report, mode, activeHighlight, onToggleHighlig
 
   if (check.status === 'none' || check.status === 'unavailable') {
     return (
-      <section className="rounded-xl border border-gray-200 bg-white p-4" aria-labelledby="printcheck-title">
-        <h3 id="printcheck-title" className="font-semibold text-gray-900">Druckbarkeits-Check</h3>
-        <p className="mt-1 text-sm text-gray-600">
+      <section className="rounded-md border border-line bg-panel p-4" aria-labelledby="printcheck-title">
+        <h3 id="printcheck-title" className="font-medium text-ink">Druckbarkeits-Check</h3>
+        <p className="mt-1 text-sm text-ink-muted">
           {check.status === 'none'
             ? 'Startet automatisch, sobald das Modell eingelesen ist.'
-            : `Für diese Datei nicht verfügbar (${check.note ?? 'kein 3D-Modell'}). Wir prüfen sie bei der technischen Prüfung.`}
+            : `Für diese Datei nicht verfügbar (${check.note ?? 'kein 3D-Modell'}). Ich prüfe sie bei der technischen Prüfung von Hand.`}
         </p>
       </section>
     );
@@ -305,14 +348,14 @@ const PrintCheckPanel = ({ entry, report, mode, activeHighlight, onToggleHighlig
   const VerdictIcon = verdictStyle?.icon ?? Loader2;
 
   return (
-    <section className="space-y-3 rounded-xl border border-gray-200 bg-white p-4 shadow-sm" aria-labelledby="printcheck-title">
+    <section className="space-y-3 rounded-md border border-line bg-panel p-4 " aria-labelledby="printcheck-title">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
-          <h3 id="printcheck-title" className="font-display text-lg font-semibold text-gray-900">
+          <h3 id="printcheck-title" className="font-display text-lg font-medium text-ink">
             Druckbarkeits-Check
           </h3>
-          <p className="inline-flex items-center gap-1 text-xs text-gray-600">
-            <ShieldCheck className="h-3.5 w-3.5 text-primary-700" aria-hidden="true" />
+          <p className="inline-flex items-center gap-1 text-xs text-ink-muted">
+            <ShieldCheck className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
             Läuft lokal in Ihrem Browser – die Datei wird für die Prüfung nicht hochgeladen.
           </p>
         </div>
@@ -323,7 +366,7 @@ const PrintCheckPanel = ({ entry, report, mode, activeHighlight, onToggleHighlig
               trackEvent('printcheck_report_printed', { form: 'quote', verdict: report.verdict.level });
               setPrintRequested(true);
             }}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-semibold text-gray-800 hover:border-primary-500"
+            className="inline-flex items-center gap-1.5 rounded border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:border-accent"
           >
             <Printer className="h-4 w-4" aria-hidden="true" /> Prüfbericht drucken / PDF
           </button>
@@ -331,25 +374,25 @@ const PrintCheckPanel = ({ entry, report, mode, activeHighlight, onToggleHighlig
       </div>
 
       {running && (
-        <div className="rounded-lg border border-primary-200 bg-primary-50 p-3" role="status" aria-live="polite">
-          <div className="flex items-center justify-between gap-2 text-sm text-gray-800">
+        <div className="rounded border border-line bg-accent-soft p-3" role="status" aria-live="polite">
+          <div className="flex items-center justify-between gap-2 text-sm text-ink">
             <span className="inline-flex items-center gap-2">
-              <Loader2 className="h-4 w-4 animate-spin text-primary-700" aria-hidden="true" />
+              <Loader2 className="h-4 w-4 animate-spin text-accent" aria-hidden="true" />
               {check.status === 'queued' ? 'Wartet auf die Prüfung …' : `${check.stage ? STAGE_LABEL[check.stage] : 'Prüfung'} …`}
             </span>
             {check.status === 'running' && (
               <button
                 type="button"
                 onClick={() => cancelPrintCheck(entry.id)}
-                className="text-xs font-semibold text-primary-700 underline hover:text-primary-800"
+                className="text-xs font-medium text-accent underline"
               >
                 Abbrechen
               </button>
             )}
           </div>
-          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-primary-100">
+          <div className="mt-2 h-1.5 w-full overflow-hidden rounded bg-panel-2">
             <div
-              className="h-full bg-primary-600 transition-[width]"
+              className="h-full bg-accent transition-[width]"
               style={{
                 width: `${Math.round(
                   (((check.stage ? PRINTCHECK_STAGES.indexOf(check.stage) : 0) + check.fraction) / PRINTCHECK_STAGES.length) *
@@ -358,24 +401,24 @@ const PrintCheckPanel = ({ entry, report, mode, activeHighlight, onToggleHighlig
               }}
             />
           </div>
-          <p className="mt-1 text-xs text-gray-600">Teilergebnisse erscheinen unten, sobald sie vorliegen.</p>
+          <p className="mt-1 text-xs text-ink-muted">Teilergebnisse erscheinen unten, sobald sie vorliegen.</p>
         </div>
       )}
 
       {check.status === 'partial' && check.note && (
-        <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800" role="status">
+        <p className="rounded border border-line bg-warn-bg px-3 py-2 text-sm text-warn" role="status">
           {check.note}. Die bis dahin abgeschlossenen Prüfungen sind unten aufgeführt, der Rest ist als „nicht geprüft“ markiert.
         </p>
       )}
 
       {report && verdictStyle && (
-        <div className={`rounded-lg border p-3 ${verdictStyle.box}`} aria-live="polite">
-          <p className="flex items-center gap-2 font-display text-xl font-bold text-gray-900">
+        <div className={`rounded border p-3 ${verdictStyle.box}`} aria-live="polite">
+          <p className="flex items-center gap-2 font-display text-xl font-semibold text-ink">
             <VerdictIcon className={`h-6 w-6 shrink-0 ${verdictStyle.iconClass}`} aria-hidden="true" />
             {running ? `Vorläufig: ${report.verdict.title}` : report.verdict.title}
           </p>
-          <p className="mt-1 text-sm text-gray-800">{report.verdict.text}</p>
-          <p className="mt-2 text-xs text-gray-600">
+          <p className="mt-1 text-sm text-ink">{report.verdict.text}</p>
+          <p className="mt-2 text-xs text-ink-muted">
             {report.counts.critical} kritisch · {report.counts.hint} Hinweise · {report.counts.ok} OK ·{' '}
             {report.counts['not-checked']} nicht geprüft
             {report.resolutionMm !== null && ` · Prüfraster ${fmtMm(report.resolutionMm)}`}
@@ -384,17 +427,17 @@ const PrintCheckPanel = ({ entry, report, mode, activeHighlight, onToggleHighlig
       )}
 
       {report && mode === 'calculator' && !running && (
-        <div className="rounded-lg border border-primary-200 bg-primary-50 p-3">
-          <p className="text-sm text-gray-800">
+        <div className="rounded border border-line bg-accent-soft p-3">
+          <p className="text-sm text-ink">
             {report.verdict.level === 'direct'
-              ? 'Sicher gehen? Wir prüfen Ihr Modell kostenlos am Originaldatensatz und bestätigen Drucklage, Material und Toleranzen.'
-              : 'Unsere Techniker prüfen jeden Befund am Originaldatensatz und sagen Ihnen, was sich ohne Änderung fertigen lässt.'}
+              ? 'Sicher gehen? Ich prüfe Ihr Modell kostenlos am Originaldatensatz und bestätige Drucklage, Werkstoff und Toleranzen.'
+              : 'Befund ist keine Absage: Ich prüfe jeden Punkt am Originaldatensatz und sage Ihnen, was sich ohne Änderung fertigen lässt.'}
           </p>
           <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
             <button
               type="button"
               onClick={() => requestReview('technische-pruefung')}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-700 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-800"
+              className="tech-btn tech-btn-secondary text-sm"
             >
               <ClipboardCheck className="h-4 w-4" aria-hidden="true" /> Kostenlose technische Prüfung anfordern
             </button>
@@ -402,18 +445,18 @@ const PrintCheckPanel = ({ entry, report, mode, activeHighlight, onToggleHighlig
               <button
                 type="button"
                 onClick={() => requestReview('nachkonstruktion')}
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-primary-700 px-4 py-2 text-sm font-semibold text-primary-700 hover:bg-white"
+                className="tech-btn tech-btn-secondary text-sm"
               >
                 <Wrench className="h-4 w-4" aria-hidden="true" /> Nachkonstruktion/Optimierung anfragen
               </button>
             )}
           </div>
-          <p className="mt-2 text-xs text-gray-600">
+          <p className="mt-2 text-xs text-ink-muted">
             Datei und Prüfergebnis werden in die Anfrage übernommen. Mehrere Ersatzteile im Betrieb?{' '}
             <Link
               to="/ersatzteile-3d-drucken/#check"
               onClick={() => trackEvent('printcheck_cta_clicked', { form: 'quote', cta: 'ersatzteil-check' })}
-              className="text-primary-700 underline hover:text-primary-800"
+              className="text-accent underline"
             >
               Ersatzteil-Check vor Ort buchen
             </Link>
@@ -421,7 +464,7 @@ const PrintCheckPanel = ({ entry, report, mode, activeHighlight, onToggleHighlig
         </div>
       )}
       {report && mode === 'request' && (
-        <p className="text-xs text-gray-600">Das Ergebnis dieser Vorprüfung wird mit Ihrer Anfrage übermittelt.</p>
+        <p className="text-xs text-ink-muted">Das Ergebnis dieser Vorprüfung wird mit Ihrer Anfrage übermittelt.</p>
       )}
 
       {report && (
@@ -430,12 +473,12 @@ const PrintCheckPanel = ({ entry, report, mode, activeHighlight, onToggleHighlig
             const critical = findings.filter((finding) => finding.status === 'critical').length;
             const hints = findings.filter((finding) => finding.status === 'hint').length;
             return (
-              <details key={category} className="group rounded-lg border border-gray-200 bg-gray-50" open={critical > 0}>
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2 text-sm font-semibold text-gray-900">
+              <details key={category} className="group rounded border border-line bg-panel-2" open={critical > 0}>
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2 text-sm font-medium text-ink">
                   <span>
                     {CATEGORY_ORDER.indexOf(category) + 1}. {CATEGORY_LABEL[category]}
                   </span>
-                  <span className="text-xs font-normal text-gray-600">
+                  <span className="text-xs font-normal text-ink-muted">
                     {critical > 0 ? `${critical} kritisch` : hints > 0 ? `${hints} Hinweis${hints === 1 ? '' : 'e'}` : findings.every((f) => f.status === 'not-checked') ? 'nicht geprüft' : 'OK'}
                   </span>
                 </summary>
@@ -452,7 +495,9 @@ const PrintCheckPanel = ({ entry, report, mode, activeHighlight, onToggleHighlig
                     ))}
                   </ul>
                   {category === 'walls' && <WallHistogram report={report} />}
-                  {category === 'orientation' && report.orientationRows.length > 0 && <OrientationTable report={report} />}
+                  {category === 'orientation' && report.orientationRows.length > 0 && (
+                    <OrientationTable report={report} onApplyPose={onApplyPose} appliedPoseId={appliedPoseId} />
+                  )}
                   {category === 'holes' && <ToleranceTable report={report} />}
                 </div>
               </details>
@@ -461,8 +506,8 @@ const PrintCheckPanel = ({ entry, report, mode, activeHighlight, onToggleHighlig
         </div>
       )}
 
-      <p className="text-xs text-gray-500">
-        Automatische Vorprüfung – verbindlich erst nach technischer Prüfung durch 3D-WINDT. Punkte mit „Heuristik“
+      <p className="text-xs text-ink-muted">
+        Automatische Vorprüfung – verbindlich erst nach meiner technischen Prüfung. Punkte mit „Heuristik“
         beruhen auf Erfahrungswerten; was im Browser nicht geprüft werden konnte, ist als „nicht geprüft“ markiert.
         {!highlightAvailable && check.status === 'done' && ' 3D-Markierung nicht verfügbar (Vorschau aus Speichergründen abgeschaltet).'}
       </p>

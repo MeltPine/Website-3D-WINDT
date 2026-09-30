@@ -223,3 +223,32 @@ describe('creased normals', () => {
     expect(normals[5]).toBeGreaterThan(0.9);
   });
 });
+
+describe('feature edges', () => {
+  it('finds the 12 edges of a cube (split diagonals are not features)', async () => {
+    const { buildAdjacency, featureEdgesFrom } = await import('../src/components/quote/viewer/normals');
+    // unit cube, 12 triangles
+    const v = [
+      [0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0],
+      [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1],
+    ];
+    const quads = [[0, 3, 2, 1], [4, 5, 6, 7], [0, 1, 5, 4], [1, 2, 6, 5], [2, 3, 7, 6], [3, 0, 4, 7]];
+    const soup: number[] = [];
+    for (const [a, b, c, d] of quads) soup.push(...v[a], ...v[b], ...v[c], ...v[a], ...v[c], ...v[d]);
+    const positions = new Float32Array(soup);
+    const edges = featureEdgesFrom(positions, buildAdjacency(positions));
+    expect(edges.segments.length / 6).toBe(12);
+    // every triangle has exactly two feature edges (its diagonal is not one)
+    for (let t = 0; t < 12; t += 1) {
+      const marked = [0, 1, 2].filter((k) => edges.edgeSegment[t * 3 + k] >= 0).length;
+      expect(marked).toBe(2);
+    }
+  });
+
+  it('reports open edges as features', async () => {
+    const { buildAdjacency, featureEdgesFrom } = await import('../src/components/quote/viewer/normals');
+    const positions = new Float32Array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0]);
+    const edges = featureEdgesFrom(positions, buildAdjacency(positions));
+    expect(edges.segments.length / 6).toBe(4);
+  });
+});
