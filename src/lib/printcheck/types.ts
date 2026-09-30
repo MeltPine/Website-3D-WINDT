@@ -53,6 +53,12 @@ export interface LayerSummary {
   firstLayerIslands: number;
   /** Largest number of separate islands in any layer. */
   maxIslands: number;
+  /**
+   * Cross-section area per voxel slab from the plate upwards (mm², slab
+   * height stepMm), in the pose of VoxelSummary.poseId. Feeds the layer
+   * preview of the viewer (volume share per height, not a slicer result).
+   */
+  areaProfile: { stepMm: number; areas: number[] };
 }
 
 export interface VoidSummary {

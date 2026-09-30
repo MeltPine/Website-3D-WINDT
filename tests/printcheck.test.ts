@@ -450,3 +450,18 @@ describe('lead summary', () => {
     expect(many.length).toBeLessThanOrEqual(MAX_PRINTCHECK_SUMMARY_CHARS);
   });
 });
+
+describe('layer area profile for the viewer layer preview', () => {
+  it('reports the cross-section per slab from the plate up (volume share adds up)', () => {
+    const { geometry } = run(boxPositions(20, 10, 8));
+    const profile = geometry.layers?.areaProfile;
+    expect(profile).toBeDefined();
+    if (!profile) return;
+    const volume = profile.areas.reduce((sum, area) => sum + area, 0) * profile.stepMm;
+    // voxelised box: within a few percent of 20 × 10 × 8 mm³
+    expect(volume / 1600).toBeGreaterThan(0.9);
+    expect(volume / 1600).toBeLessThan(1.1);
+    const filled = profile.areas.filter((area) => area > 0);
+    expect(Math.max(...filled) / Math.min(...filled)).toBeLessThan(1.2);
+  });
+});

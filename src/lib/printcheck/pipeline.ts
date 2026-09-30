@@ -210,6 +210,7 @@ export function runPrintCheck(
       firstLayerArea: first ? first.area : 0,
       firstLayerIslands: first ? first.islands : 0,
       maxIslands: layers.reduce((max, layer) => Math.max(max, layer.islands), 0),
+      areaProfile: { stepMm: grid.h, areas: layers.map((layer) => layer.area) },
     };
     const poseSize = geometry.orientation?.poses[pose.id].size ?? [box.size[0], box.size[1], box.size[2]];
     const slender = slenderStats(
