@@ -1,9 +1,14 @@
 import { evaluatePrintCheck } from '../printcheck/evaluate';
 import { toPrintCheckMaterial } from '../printcheck/material';
+import { POSES } from '../printcheck/pose';
 import { buildPrintCheckSummary, type PrintCheckSummaryInput } from '../printcheck/summary';
+import { buildBreakdownSummary } from './breakdownDisplay';
+import { formatCivilDate, tryShipWindow } from './leadDate';
 import { MATERIAL_CATALOG, findMaterial } from './materials';
+import { breakdownProject } from './pricing';
 import { PRICING_CONFIG } from './pricingConfig';
-import type { QuoteSessionState } from './quoteSession';
+import { quoteReferenceId } from './quoteId';
+import { USE_PURPOSES, type QuoteSessionState } from './quoteSession';
 import { computeSessionEstimate } from './sessionEstimate';
 import { buildModelSummary, buildPriceRangeSummary } from './summary';
 
@@ -26,6 +31,36 @@ export interface RequestQuoteSummary {
   printCheckSummary: string;
   /** Request intent chosen in the printability report, as lead field value. */
   printCheckRequest: string;
+  /** "Richtpreis-ID" shown in the calculator (empty without analysed files). */
+  quoteReference: string;
+  /** Breakdown text as shown in the calculator (empty without price). */
+  priceBreakdown: string;
+  /** Shipping window as shown (empty without price or outside the calendar). */
+  shipWindow: string;
+  /** Chosen print pose per analysed file. */
+  printPose: string;
+  /** Optional purpose label. */
+  usePurpose: string;
+}
+
+/** Reference id of the current session, or '' if no analysed file has a hash. */
+export function sessionQuoteReference(session: QuoteSessionState, now: Date): string {
+  const hashes = session.entries.filter((entry) => entry.status === 'ready' && entry.sha256).map((entry) => entry.sha256 as string);
+  if (hashes.length === 0) return '';
+  const dateIso = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Berlin' }).format(now);
+  return quoteReferenceId({ fileHashes: hashes, selection: session.selection, dateIso });
+}
+
+/** Ship window sentence, e.g. "Versand zwischen Mo 05.10. und Mi 07.10., Freigabe bis Do 01.10. 12:00". */
+export function shipWindowText(leadTimeId: string, now: Date): string {
+  const leadTime = PRICING_CONFIG.leadTimeOptions.find((option) => option.id === leadTimeId);
+  if (!leadTime) return '';
+  const window = tryShipWindow(now, leadTime);
+  if (!window) return '';
+  return (
+    `Versand zwischen ${formatCivilDate(window.earliest)} und ${formatCivilDate(window.latest, true)} ` +
+    `(${leadTime.label}), Freigabe des Angebots bis ${formatCivilDate(window.approvalBy)} ${window.cutoffHour}:00`
+  );
 }
 
 const INTENT_LABEL = {
@@ -53,13 +88,18 @@ function printCheckInputs(session: QuoteSessionState): PrintCheckSummaryInput[] 
     });
 }
 
-export function summarizeQuoteSession(session: QuoteSessionState): RequestQuoteSummary {
-  const estimate = computeSessionEstimate(
+export function summarizeQuoteSession(session: QuoteSessionState, now: Date = new Date()): RequestQuoteSummary {
+  const sessionEstimate = computeSessionEstimate(
     session.entries,
     session.selection,
     MATERIAL_CATALOG,
     PRICING_CONFIG,
-  ).estimate;
+  );
+  const estimate = sessionEstimate.estimate;
+  const breakdown =
+    estimate?.status === 'ok'
+      ? breakdownProject(sessionEstimate.parts, session.selection, MATERIAL_CATALOG, PRICING_CONFIG)
+      : null;
   const infill = PRICING_CONFIG.infillOptions.find((option) => option.id === session.selection.infillId);
   const leadTime = PRICING_CONFIG.leadTimeOptions.find((option) => option.id === session.selection.leadTimeId);
   return {
@@ -76,5 +116,13 @@ export function summarizeQuoteSession(session: QuoteSessionState): RequestQuoteS
     expressSelected: session.selection.leadTimeId === 'express',
     printCheckSummary: buildPrintCheckSummary(printCheckInputs(session)),
     printCheckRequest: session.requestIntent ? INTENT_LABEL[session.requestIntent] : '',
+    quoteReference: sessionQuoteReference(session, now),
+    priceBreakdown: buildBreakdownSummary(breakdown, PRICING_CONFIG),
+    shipWindow: estimate?.status === 'ok' ? shipWindowText(session.selection.leadTimeId, now) : '',
+    printPose: session.entries
+      .filter((entry) => entry.status === 'ready')
+      .map((entry) => `${entry.file.name}: ${entry.chosenPoseId === null ? 'wie geladen' : POSES[entry.chosenPoseId].label}`)
+      .join('\n'),
+    usePurpose: USE_PURPOSES.find((purpose) => purpose.id === session.usePurpose)?.label ?? '',
   };
 }

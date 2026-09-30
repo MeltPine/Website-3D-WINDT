@@ -61,16 +61,28 @@ export interface QuoteFileEntry {
   sha256: string | null;
   error: string | null;
   printCheck: PrintCheckState;
+  /** Print pose chosen in the viewer (printcheck POSES id); null = as loaded. */
+  chosenPoseId: number | null;
 }
 
 /** What the customer asked for from the printability report (prefills the request form). */
 export type QuoteRequestIntent = 'technische-pruefung' | 'nachkonstruktion';
+
+/** Optional purpose of the part(s), asked in the "Anfrage" tab. */
+export const USE_PURPOSES = [
+  { id: 'ersatzteil', label: 'Ersatzteil' },
+  { id: 'vorrichtung', label: 'Vorrichtung / Lehre' },
+  { id: 'prototyp', label: 'Prototyp / Funktionsmuster' },
+  { id: 'serie', label: 'Kleinserie' },
+] as const;
+export type UsePurpose = (typeof USE_PURPOSES)[number]['id'];
 
 export interface QuoteSessionState {
   entries: readonly QuoteFileEntry[];
   selectedId: string | null;
   selection: QuoteSelection;
   requestIntent: QuoteRequestIntent | null;
+  usePurpose: UsePurpose | null;
 }
 
 /** Upper bound for retained viewer geometry across all files. */
@@ -81,6 +93,7 @@ const INITIAL_STATE: QuoteSessionState = {
   selectedId: null,
   selection: { ...INITIAL_QUOTE_SELECTION },
   requestIntent: null,
+  usePurpose: null,
 };
 
 let state: QuoteSessionState = INITIAL_STATE;
@@ -296,6 +309,7 @@ export function addQuoteFiles(files: readonly File[]): string[] {
       positions: null,
       sha256: null,
       error: null,
+      chosenPoseId: null,
       printCheck: format
         ? PRINTCHECK_NONE
         : { ...PRINTCHECK_NONE, status: 'unavailable', note: 'Dateiformat ohne 3D-Analyse' },
@@ -340,6 +354,18 @@ export function updateQuoteSelection(patch: Partial<QuoteSelection>): void {
 
 export function setQuoteRequestIntent(intent: QuoteRequestIntent | null): void {
   setState({ ...state, requestIntent: intent });
+}
+
+export function setQuoteUsePurpose(purpose: UsePurpose | null): void {
+  setState({ ...state, usePurpose: purpose });
+}
+
+/** Pose the customer chose in the viewer for this file (null = as loaded). */
+export function setQuoteFilePose(id: string, poseId: number | null): void {
+  if (poseId !== null && !(Number.isInteger(poseId) && poseId >= 0 && poseId < 6)) {
+    throw new RangeError(`Invalid pose id ${poseId}.`);
+  }
+  updateEntry(id, { chosenPoseId: poseId });
 }
 
 export function resetQuoteSession(): void {

@@ -116,6 +116,35 @@ describe('POST /api/lead', () => {
     expect(sales.text).toContain('Anliegen (Druckbarkeits-Check): Kostenlose technische Prüfung angefordert');
   });
 
+  it('keeps the next-gen calculator fields (reference id, breakdown, ship window, pose, purpose)', async () => {
+    const fields = {
+      quote_reference: '7F3A-21C9',
+      price_breakdown: 'Fertigung (Material 56 g PETG + Maschinenzeit ca. 1,43 h): 13,08 € · Rüsten & Prüfung: 15,00 € · Punktwert 39,00 €',
+      ship_window: 'Versand zwischen Mo 05.10. und Mi 07.10.2026 (Standard), Freigabe des Angebots bis Do 01.10. 12:00',
+      print_pose: 'halter.step: Modellseite −Z unten',
+      use_purpose: 'Ersatzteil',
+    };
+    const response = await handleLead(jsonLead({ ...CONTACT, 'form-name': 'project-request', ...fields }), deps());
+    expect(response.status).toBe(200);
+    const [record] = storedLeads();
+    for (const [name, value] of Object.entries(fields)) expect(record.fields[name]).toBe(value);
+    const sales = sendMail.mock.calls[0][0];
+    expect(sales.text).toContain('Richtpreis-ID: 7F3A-21C9');
+    expect(sales.text).toContain('Einsatzzweck: Ersatzteil');
+    expect(sales.text).toContain('Rechenweg (Kunde gesehen)');
+    expect(sales.text).toContain('Gewählte Drucklage: halter.step');
+  });
+
+  it('caps the new fields at their schema length', async () => {
+    const response = await handleLead(
+      jsonLead({ ...CONTACT, 'form-name': 'project-request', quote_reference: 'X'.repeat(500) }),
+      deps(),
+    );
+    expect(response.status).toBe(200);
+    const [record] = storedLeads();
+    expect(record.fields.quote_reference).toBe('X'.repeat(20));
+  });
+
   it('keeps the lead and reports success when Resend fails', async () => {
     sendMail.mockRejectedValue(new Error('Resend down'));
     const response = await handleLead(jsonLead(CONTACT), deps());

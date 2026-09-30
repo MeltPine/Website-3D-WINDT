@@ -198,6 +198,11 @@ const ProjectStart = () => {
     formData.set('calc_lead_time', hasFiles ? summary.leadTimeLabel : '');
     formData.set('calc_quantity', hasFiles ? String(summary.quantity) : '');
     formData.set('estimated_price', summary.hasPriceRange ? 'richtpreis_spanne' : 'individuelles_angebot');
+    formData.set('quote_reference', summary.quoteReference);
+    formData.set('price_breakdown', hasFiles ? summary.priceBreakdown : '');
+    formData.set('ship_window', hasFiles ? summary.shipWindow : '');
+    formData.set('print_pose', summary.printPose);
+    formData.set('use_purpose', summary.usePurpose);
 
     try {
       await submitLead(
@@ -350,6 +355,11 @@ const ProjectStart = () => {
             <input type="hidden" name="calc_infill" value="" />
             <input type="hidden" name="calc_lead_time" value="" />
             <input type="hidden" name="calc_quantity" value="" />
+            <input type="hidden" name="quote_reference" value="" />
+            <input type="hidden" name="price_breakdown" value="" />
+            <input type="hidden" name="ship_window" value="" />
+            <input type="hidden" name="print_pose" value="" />
+            <input type="hidden" name="use_purpose" value="" />
             <p className="hidden">
               <label>
                 Nicht ausfüllen: <input name="bot-field" />
