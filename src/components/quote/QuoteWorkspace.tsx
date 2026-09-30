@@ -391,6 +391,7 @@ const QuoteWorkspace = ({ catalog = MATERIAL_CATALOG, mode, onInteract, onReques
             printTime={selectedPart ? { totalHours: selectedPart.printHours, fixedHours: PRICING_CONFIG.heatupMinutes / 60 } : null}
             layerHeightMm={PRICING_CONFIG.layerProfile.layerHeightMm}
             buildVolumeMm={PRICING_CONFIG.buildVolumeMm}
+            oversize={selectedPart !== null && !selectedPart.fitsBuildVolume}
           />
         </Suspense>
       );

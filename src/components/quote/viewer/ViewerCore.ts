@@ -588,6 +588,39 @@ export class ViewerCore {
     return 0;
   }
 
+  /**
+   * Moves the camera to the flagged region (keeps the view direction). Only
+   * when the region is clearly smaller than the part; otherwise auto-frame.
+   */
+  focusFlagged(flags: Uint16Array, mask: number): void {
+    if (flags.length !== this.triangles) return;
+    const positions = this.geometry.getAttribute('position').array as Float32Array;
+    const box = new Box3();
+    const point = new Vector3();
+    let count = 0;
+    for (let t = 0; t < this.triangles; t += 1) {
+      if ((flags[t] & mask) === 0) continue;
+      count += 1;
+      for (let k = 0; k < 3; k += 1) {
+        const o = t * 9 + k * 3;
+        box.expandByPoint(point.set(positions[o], positions[o + 1], positions[o + 2]));
+      }
+    }
+    if (count === 0) return;
+    box.applyMatrix4(this.mesh.matrixWorld);
+    const size = box.getSize(new Vector3());
+    const regionRadius = Math.max(boxRadius([size.x, size.y, size.z]), this.frameRadius() * 0.35);
+    if (regionRadius >= this.frameRadius() * 0.8) {
+      this.frameCamera(true);
+      return;
+    }
+    const dir = this.perspective.position.clone().sub(this.controls.target).normalize();
+    const aspect = this.perspective.aspect > 0 ? this.perspective.aspect : 1;
+    const distance = perspectiveFrameDistance(regionRadius, PERSPECTIVE_FOV, aspect);
+    const target = box.getCenter(new Vector3());
+    this.moveCamera(target.clone().add(dir.multiplyScalar(distance)), target, true);
+  }
+
   /* -------------------------------------------------------------- pose */
 
   /** Row-major 3×3 rotation into the print pose (null = as loaded). */

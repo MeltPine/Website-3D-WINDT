@@ -66,6 +66,8 @@ interface ModelViewerProps {
   printTime: { totalHours: number; fixedHours: number } | null;
   layerHeightMm: number;
   buildVolumeMm: readonly [number, number, number];
+  /** Part does not fit the build volume: start with the build volume shown. */
+  oversize: boolean;
 }
 
 type Tool = 'none' | 'measure' | 'section' | 'layers';
@@ -149,6 +151,7 @@ const ModelViewer = ({
   printTime,
   layerHeightMm,
   buildVolumeMm,
+  oversize,
 }: ModelViewerProps) => {
   const stageRef = useRef<HTMLDivElement>(null);
   const canvasHostRef = useRef<HTMLDivElement>(null);
@@ -240,6 +243,23 @@ const ModelViewer = ({
     const palette = HEATMAP_PALETTES[resolvedTheme];
     core.setHighlight(highlight?.flags ?? null, highlight?.spec.layers ?? [], palette);
   }, [highlight, resolvedTheme, positions]);
+
+  // a newly chosen finding: camera moves to its region (after a pose change settles)
+  const highlightId = highlight?.spec.id ?? null;
+  useEffect(() => {
+    const core = coreRef.current;
+    if (!core || !highlight || highlight.spec.layers.length === 0) return undefined;
+    const mask = highlight.spec.layers.reduce((bits, layer) => bits | layer.mask, 0);
+    const timer = window.setTimeout(() => core.focusFlagged(highlight.flags, mask), reducedMotion ? 0 : 350);
+    return () => window.clearTimeout(timer);
+    // only when the finding changes, not on theme changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [highlightId, positions]);
+
+  // oversize parts start in the build volume, the axis that does not fit is marked red
+  useEffect(() => {
+    if (oversize) setInBuildVolume(true);
+  }, [oversize, positions]);
 
   // layers tool shows the pose the printability check sliced
   const layerPose = tool === 'layers' && layerProfile ? layerProfile.poseValue : null;
