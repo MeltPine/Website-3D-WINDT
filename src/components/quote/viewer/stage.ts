@@ -435,6 +435,33 @@ export class Stage {
     }
   }
 
+  private captureState: { background: Scene['background']; plate: boolean; shadow: boolean; dimensions: boolean; volume: boolean } | null = null;
+
+  /** White background, no plate, shadow, dimensions or build volume (for PDF views). */
+  setCaptureMode(on: boolean): void {
+    if (on && !this.captureState) {
+      this.captureState = {
+        background: this.scene.background,
+        plate: this.plate.visible,
+        shadow: this.shadowPlane.visible,
+        dimensions: this.dimensions.visible,
+        volume: this.buildVolume.visible,
+      };
+      this.scene.background = new Color('#ffffff');
+      this.plate.visible = false;
+      this.shadowPlane.visible = false;
+      this.dimensions.visible = false;
+      this.buildVolume.visible = false;
+    } else if (!on && this.captureState) {
+      this.scene.background = this.captureState.background;
+      this.plate.visible = this.captureState.plate;
+      this.shadowPlane.visible = this.captureState.shadow;
+      this.dimensions.visible = this.captureState.dimensions;
+      this.buildVolume.visible = this.captureState.volume;
+      this.captureState = null;
+    }
+  }
+
   get handles(): StageHandles {
     return {
       scene: this.scene,

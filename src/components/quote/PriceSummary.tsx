@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, Loader2, X } from 'lucide-react';
+import { ArrowRight, FileDown, Loader2, X } from 'lucide-react';
 import { formatCents } from '../../lib/quote/breakdownDisplay';
 import { formatCivilDate, type ShipWindow } from '../../lib/quote/leadDate';
 import type { ProjectBreakdown } from '../../lib/quote/pricing';
@@ -28,6 +28,15 @@ export interface SummaryModel {
 
 export interface SummaryCta {
   label: string;
+  onClick: () => void;
+}
+
+/** Secondary action under the CTA (estimate PDF). */
+export interface SummarySecondary {
+  label: string;
+  note: string;
+  busy: boolean;
+  error: string | null;
   onClick: () => void;
 }
 
@@ -71,7 +80,15 @@ const StateText = ({ model }: { model: SummaryModel }) => {
   return null;
 };
 
-export const PriceSummaryPanel = ({ model, cta }: { model: SummaryModel; cta: SummaryCta | null }) => {
+export const PriceSummaryPanel = ({
+  model,
+  cta,
+  secondary = null,
+}: {
+  model: SummaryModel;
+  cta: SummaryCta | null;
+  secondary?: SummarySecondary | null;
+}) => {
   const { breakdown, state } = model;
   const minimum = breakdown?.lines.find((line) => line.key === 'minimumOrder' && line.amountCents > 0) ?? null;
   const ship = shipText(model.shipWindow);
@@ -142,6 +159,21 @@ export const PriceSummaryPanel = ({ model, cta }: { model: SummaryModel; cta: Su
         </div>
       )}
 
+      {secondary && state.kind === 'ok' && (
+        <div className="space-y-1">
+          <button type="button" onClick={secondary.onClick} disabled={secondary.busy} className="tech-btn tech-btn-secondary w-full text-sm">
+            {secondary.busy ? <Loader2 className="h-4 w-4 animate-spin motion-reduce:animate-none" aria-hidden="true" /> : <FileDown className="h-4 w-4" aria-hidden="true" />}
+            {secondary.label}
+          </button>
+          <p className="text-xs text-ink-muted">{secondary.note}</p>
+          {secondary.error && (
+            <p className="text-xs text-crit" role="alert">
+              {secondary.error}
+            </p>
+          )}
+        </div>
+      )}
+
       <table className="w-full border border-line text-xs" aria-label="Schriftfeld">
         <tbody>
           <tr className="border-b border-line">
@@ -190,7 +222,15 @@ export const PriceSummaryBar = ({ model, cta }: { model: SummaryModel; cta: Summ
 };
 
 /** Phone: fixed bottom bar with a sheet for the breakdown. */
-export const PriceSummaryMobile = ({ model, cta }: { model: SummaryModel; cta: SummaryCta | null }) => {
+export const PriceSummaryMobile = ({
+  model,
+  cta,
+  secondary = null,
+}: {
+  model: SummaryModel;
+  cta: SummaryCta | null;
+  secondary?: SummarySecondary | null;
+}) => {
   const [open, setOpen] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
   const ship = shipText(model.shipWindow);
@@ -237,7 +277,7 @@ export const PriceSummaryMobile = ({ model, cta }: { model: SummaryModel; cta: S
                 <X className="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
-            <PriceSummaryPanel model={model} cta={null} />
+            <PriceSummaryPanel model={model} cta={null} secondary={secondary} />
           </div>
         </div>
       )}

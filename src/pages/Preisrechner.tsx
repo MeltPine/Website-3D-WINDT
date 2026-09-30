@@ -4,6 +4,7 @@ import PrintCheckExplainer from '../components/printcheck/PrintCheckExplainer';
 import QuoteWorkbench from '../components/quote/QuoteWorkbench';
 import { PRICING_CONFIG } from '../lib/quote/pricingConfig';
 import { getQuoteSession, updateQuoteSelection } from '../lib/quote/quoteSession';
+import { parseShareParams } from '../lib/quote/shareLink';
 import { trackEvent } from '../lib/tracking';
 import {
   CALCULATOR_MATERIAL_PARAM,
@@ -27,6 +28,19 @@ const Preisrechner = () => {
   const [searchParams] = useSearchParams();
   const requestedMaterial = searchParams.get(CALCULATOR_MATERIAL_PARAM);
   const [preselection, setPreselection] = useState<Preselection | null>(null);
+  const [shared, setShared] = useState<{ reference: string | null; rejected: string[] } | null>(null);
+  const searchKey = searchParams.toString();
+
+  // Parameter link (infill, quantity, lead time, reference id; never geometry).
+  useEffect(() => {
+    const params = new URLSearchParams(searchKey);
+    const parsed = parseShareParams(params, PRICING_CONFIG);
+    const hasShared = Object.keys(parsed.selection).length > 0 || parsed.reference !== null || parsed.rejected.some((name) => name !== CALCULATOR_MATERIAL_PARAM);
+    if (!hasShared) return;
+    if (Object.keys(parsed.selection).length > 0) updateQuoteSelection(parsed.selection);
+    setShared({ reference: parsed.reference, rejected: parsed.rejected.filter((name) => name !== CALCULATOR_MATERIAL_PARAM) });
+    trackEvent('quote_share_link_opened', { form: 'quote', rejected: parsed.rejected.length });
+  }, [searchKey]);
 
   // `?material=<id>` (links from the material library) preselects a material.
   // The catalog lives in the lazy calculator chunk, so it is imported here
@@ -118,6 +132,14 @@ const Preisrechner = () => {
             ) : (
               'Die Werkstoffauswahl konnte nicht geladen werden. Bitte wählen Sie nach dem Laden einen aus.'
             )}
+          </p>
+        )}
+
+        {shared && (
+          <p className="mb-4 rounded border border-line bg-panel px-4 py-3 text-sm text-ink-soft" role="status">
+            Parameter aus dem Link übernommen{shared.reference ? ` (Richtpreis-ID ${shared.reference})` : ''}. Laden Sie die Datei, die Sie
+            mitgeschickt bekommen haben – der Link enthält keine Geometrie.
+            {shared.rejected.length > 0 && ' Einige Angaben im Link waren ungültig und wurden nicht übernommen.'}
           </p>
         )}
 

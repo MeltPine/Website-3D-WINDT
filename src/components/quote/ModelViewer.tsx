@@ -29,7 +29,8 @@ import { formatHours, layerCountFor, layerState, type AreaProfile } from './view
 import { formatDimension } from './viewer/dimensions';
 import { describeMeasurement, type Measurement } from './viewer/tools/measure';
 import { SECTION_AXES, clampOffset, sectionRange, type SectionAxis } from './viewer/tools/section';
-import { ViewerCore, type DisplayMode, type PrepState, type ViewerPerf } from './viewer/ViewerCore';
+import { composeSnapshot, downloadBlob, type SnapshotTitle } from './viewer/snapshot';
+import { ViewerCore, type DisplayMode, type PrepState, type ViewCapture, type ViewerPerf } from './viewer/ViewerCore';
 
 /*
  * 3D viewer with tools (lazy chunk with three.js). The engine lives in
@@ -68,6 +69,14 @@ interface ModelViewerProps {
   buildVolumeMm: readonly [number, number, number];
   /** Part does not fit the build volume: start with the build volume shown. */
   oversize: boolean;
+  /** Title strip of the PNG export. */
+  snapshotTitle: SnapshotTitle;
+  /** Gives the workspace access to view captures (estimate PDF); null when the viewer closes. */
+  onApi?: (api: ViewerApi | null) => void;
+}
+
+export interface ViewerApi {
+  captureViews: (widthPx: number, heightPx: number) => ViewCapture[];
 }
 
 type Tool = 'none' | 'measure' | 'section' | 'layers';
@@ -152,6 +161,8 @@ const ModelViewer = ({
   layerHeightMm,
   buildVolumeMm,
   oversize,
+  snapshotTitle,
+  onApi,
 }: ModelViewerProps) => {
   const stageRef = useRef<HTMLDivElement>(null);
   const canvasHostRef = useRef<HTMLDivElement>(null);
@@ -209,11 +220,13 @@ const ModelViewer = ({
       return undefined;
     }
     coreRef.current = core;
+    onApi?.({ captureViews: (width, height) => core.captureViews(width, height) });
     if (!viewerLoadTracked) {
       viewerLoadTracked = true;
       trackEvent('quote_viewer_loaded', { form: 'quote' });
     }
     return () => {
+      onApi?.(null);
       coreRef.current = null;
       core.dispose();
     };
@@ -348,16 +361,15 @@ const ModelViewer = ({
   const savePng = useCallback(async () => {
     const core = coreRef.current;
     if (!core) return;
-    const blob = await core.snapshot();
-    if (!blob) return;
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${label.split(',')[0].replace(/\.[^.]+$/, '')}-ansicht.png`;
-    link.click();
-    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-    setAnnouncement('Ansicht als PNG gespeichert');
-  }, [label]);
+    try {
+      const blob = await composeSnapshot(core.captureCurrent(2), snapshotTitle, 2);
+      downloadBlob(blob, `${snapshotTitle.file.replace(/\.[^.]+$/, '')}-ansicht.png`);
+      setAnnouncement('Ansicht als PNG gespeichert');
+      trackEvent('quote_viewer_png', { form: 'quote' });
+    } catch {
+      setAnnouncement('PNG konnte nicht erzeugt werden');
+    }
+  }, [snapshotTitle]);
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const core = coreRef.current;

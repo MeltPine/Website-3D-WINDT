@@ -111,6 +111,16 @@ export interface ViewerPerf {
   lastPickMs: number | null;
 }
 
+export interface ViewCapture {
+  id: ViewPresetId | 'current';
+  label: string;
+  dataUrl: string;
+  widthPx: number;
+  heightPx: number;
+  /** Horizontal and vertical extent of the part in this view, mm (null for perspective views). */
+  extentMm: [number, number] | null;
+}
+
 export interface ViewerCallbacks {
   /** Short German text for the aria-live region. */
   onAnnounce: (text: string) => void;
@@ -1074,10 +1084,107 @@ export class ViewerCore {
 
   /* ----------------------------------------------------------- snapshot */
 
-  /** PNG of the current view (rendered once more, so no preserveDrawingBuffer is needed). */
-  snapshot(): Promise<Blob | null> {
+  /**
+   * Current view as PNG data URL at `scale` × the stage size. Rendered and
+   * read in the same task, so no preserveDrawingBuffer is needed.
+   */
+  captureCurrent(scale: number): ViewCapture {
+    const width = this.container.clientWidth;
+    const height = this.container.clientHeight;
+    const previousRatio = this.renderer.getPixelRatio();
+    this.renderer.setPixelRatio(scale);
+    this.renderer.setSize(width, height, false);
     this.renderer.render(this.stage.scene, this.camera);
-    return new Promise((resolve) => this.renderer.domElement.toBlob((blob) => resolve(blob), 'image/png'));
+    const dataUrl = this.renderer.domElement.toDataURL('image/png');
+    this.renderer.setPixelRatio(previousRatio);
+    this.renderer.setSize(width, height, false);
+    this.renderNow();
+    return { id: 'current', label: 'Aktuelle Ansicht', dataUrl, widthPx: width * scale, heightPx: height * scale, extentMm: null };
+  }
+
+  /**
+   * Isometric view plus front, top and right view (orthographic) on white,
+   * without plate and shadow, for the estimate PDF. The interactive view is
+   * restored afterwards.
+   */
+  captureViews(widthPx: number, heightPx: number): ViewCapture[] {
+    const container = { width: this.container.clientWidth, height: this.container.clientHeight };
+    const previousRatio = this.renderer.getPixelRatio();
+    const saved = {
+      camera: this.camera,
+      position: this.perspective.position.clone(),
+      target: this.controls.target.clone(),
+      zoom: this.orthographic.zoom,
+      aspect: this.perspective.aspect,
+    };
+    const box = this.worldBox();
+    const size = box.getSize(new Vector3());
+    const center = box.getCenter(new Vector3());
+    const radius = boxRadius([size.x, size.y, size.z]);
+    const aspect = widthPx / heightPx;
+    this.stage.setCaptureMode(true);
+    this.renderer.setPixelRatio(1);
+    this.renderer.setSize(widthPx, heightPx, false);
+    const views: Array<{ id: ViewPresetId; extent: [number, number] }> = [
+      { id: 'iso', extent: [size.x, size.z] },
+      { id: 'front', extent: [size.x, size.z] },
+      { id: 'top', extent: [size.x, size.y] },
+      { id: 'right', extent: [size.y, size.z] },
+    ];
+    const captures: ViewCapture[] = [];
+    try {
+      for (const view of views) {
+        const preset = VIEW_PRESETS.find((entry) => entry.id === view.id);
+        if (!preset) continue;
+        const dir = directionFromAngles(preset.azimuthDeg, Math.max(-89.9, Math.min(89.9, preset.elevationDeg)));
+        const direction = new Vector3(dir[0], dir[1], dir[2]);
+        let camera: PerspectiveCamera | OrthographicCamera;
+        if (view.id === 'iso') {
+          this.perspective.aspect = aspect;
+          const distance = perspectiveFrameDistance(radius, PERSPECTIVE_FOV, aspect, 0.85);
+          this.perspective.position.copy(center.clone().add(direction.multiplyScalar(distance)));
+          this.perspective.lookAt(center);
+          this.perspective.updateProjectionMatrix();
+          camera = this.perspective;
+        } else {
+          // the part's projected extent fills 85 % of the image
+          const halfHeight = Math.max(view.extent[1] / 2, view.extent[0] / 2 / aspect) / 0.85;
+          this.orthographic.left = -halfHeight * aspect;
+          this.orthographic.right = halfHeight * aspect;
+          this.orthographic.top = halfHeight;
+          this.orthographic.bottom = -halfHeight;
+          this.orthographic.zoom = 1;
+          this.orthographic.position.copy(center.clone().add(direction.multiplyScalar(radius * 4)));
+          this.orthographic.lookAt(center);
+          this.orthographic.updateProjectionMatrix();
+          camera = this.orthographic;
+        }
+        this.renderer.render(this.stage.scene, camera);
+        captures.push({
+          id: view.id,
+          label: preset.label,
+          dataUrl: this.renderer.domElement.toDataURL('image/png'),
+          widthPx,
+          heightPx,
+          extentMm: view.id === 'iso' ? null : view.extent,
+        });
+      }
+    } finally {
+      this.stage.setCaptureMode(false);
+      this.renderer.setPixelRatio(previousRatio);
+      this.renderer.setSize(container.width, container.height, false);
+      this.perspective.aspect = saved.aspect;
+      this.perspective.position.copy(saved.position);
+      this.perspective.updateProjectionMatrix();
+      this.orthographic.position.copy(saved.position);
+      this.orthographic.zoom = saved.zoom;
+      this.updateOrthographicFrustum();
+      this.controls.target.copy(saved.target);
+      this.camera = saved.camera;
+      this.controls.update();
+      this.renderNow();
+    }
+    return captures;
   }
 
   get canvas(): HTMLCanvasElement {

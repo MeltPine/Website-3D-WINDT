@@ -38,4 +38,9 @@ export const OWNER_DECISIONS = {
    * and no photo; the copy uses first person without naming anyone.
    */
   showReviewerName: false,
+  /**
+   * Validity of the estimate PDF in days (spec proposal 14). Default: none is
+   * stated - the PDF says that only the binding offer counts.
+   */
+  quoteValidityDays: null as number | null,
 } as const;

@@ -30,7 +30,12 @@ import {
   type QuoteFileEntry,
   type UsePurpose,
 } from '../../lib/quote/quoteSession';
-import { sessionQuoteReference } from '../../lib/quote/requestPayload';
+import { breakdownDisplayLines, formatCents } from '../../lib/quote/breakdownDisplay';
+import { OWNER_DECISIONS } from '../../lib/quote/ownerDecisions';
+import { sessionQuoteReference, shipWindowText } from '../../lib/quote/requestPayload';
+import { buildShareUrl } from '../../lib/quote/shareLink';
+import { familyForCatalogMaterial, werkstoffPath } from '../../lib/werkstoffe/families';
+import { SITE } from '../../lib/brand';
 import { computeSessionEstimate } from '../../lib/quote/sessionEstimate';
 import { formatDimensions, formatEur, formatMegabytes } from '../../lib/quote/summary';
 import {
@@ -48,9 +53,11 @@ import MaterialCompare from './MaterialCompare';
 import MaterialPicker from './MaterialPicker';
 import ModelReport from './ModelReport';
 import PriceBreakdown from './PriceBreakdown';
-import { PriceSummaryBar, PriceSummaryMobile, PriceSummaryPanel, type SummaryModel } from './PriceSummary';
+import { PriceSummaryBar, PriceSummaryMobile, PriceSummaryPanel, type SummaryModel, type SummarySecondary } from './PriceSummary';
 import QuantityCurve from './QuantityCurve';
-import type { PoseChoice } from './ModelViewer';
+import type { PoseChoice, ViewerApi } from './ModelViewer';
+import { formatDimension } from './viewer/dimensions';
+import { LOGO_PNG_PATH, downloadBlob } from './viewer/snapshot';
 import { lookForPolymer } from './viewer/materialLook';
 
 /*
@@ -166,6 +173,12 @@ const QuoteWorkspace = ({ catalog = MATERIAL_CATALOG, mode, onInteract, onReques
   const [pinned, setPinned] = useState<string[]>([]);
   const [dragging, setDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const viewerApiRef = useRef<ViewerApi | null>(null);
+  const onViewerApi = useCallback((api: ViewerApi | null) => {
+    viewerApiRef.current = api;
+  }, []);
+  const [pdfState, setPdfState] = useState<{ busy: boolean; error: string | null }>({ busy: false, error: null });
+  const [shareState, setShareState] = useState<'idle' | 'copied' | 'failed'>('idle');
   const tabRefs = useRef<Partial<Record<TabId, HTMLButtonElement | null>>>({});
   const now = useMemo(() => new Date(), [session.selection, session.entries]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -337,6 +350,94 @@ const QuoteWorkspace = ({ catalog = MATERIAL_CATALOG, mode, onInteract, onReques
   };
   const cta = mode === 'calculator' && onRequest ? { label: 'Verbindliches Angebot anfordern', onClick: onRequest } : null;
 
+  const VIEW_AXES: Readonly<Record<string, string>> = { front: 'B × H', top: 'B × T', right: 'T × H' };
+  const createPdf = async () => {
+    if (!breakdown) return;
+    setPdfState({ busy: true, error: null });
+    try {
+      const captures = viewerApiRef.current?.captureViews(900, 600) ?? [];
+      const [{ buildQuotePdf, dataUrlToBytes }, logoBytes] = await Promise.all([
+        import('../../lib/quote/quotePdf'),
+        fetch(LOGO_PNG_PATH)
+          .then((response) => (response.ok ? response.arrayBuffer() : null))
+          .catch(() => null),
+      ]);
+      const family = selectedMaterial ? familyForCatalogMaterial(selectedMaterial) : null;
+      const bytes = await buildQuotePdf({
+        reference,
+        createdAt: now,
+        files: session.entries.map((entry) => ({
+          name: entry.file.name,
+          sha256: entry.sha256,
+          dimensions: entry.analysis ? formatDimensions(entry.analysis.bbox.size) : null,
+          pose: entry.chosenPoseId === null ? 'wie geladen' : POSES[entry.chosenPoseId].label,
+        })),
+        material: {
+          name: selectedMaterial?.name ?? '–',
+          libraryUrl: family ? `${SITE.url}${werkstoffPath(family.slug)}` : null,
+        },
+        parameters: { infill: infill.label, quantity: session.selection.quantity, leadTime: `${leadTime.label} (${leadTime.days})` },
+        breakdown: breakdownDisplayLines(breakdown, PRICING_CONFIG).map((line) => ({
+          label: line.label,
+          detail: line.detail,
+          amount: formatCents(line.amountCents, line.key === 'minimumOrder'),
+        })),
+        pointEstimate: formatCents(breakdown.totalCents),
+        range: `${formatEur(breakdown.estimate.lowEur)} – ${formatEur(breakdown.estimate.highEur)}`,
+        rangeNote:
+          'Spanne: Stützen, Ausrichtung und Nacharbeit klären sich erst in der technischen Prüfung; Nachbearbeitung ist nicht enthalten.',
+        quantities: (curve ?? []).map((point) => ({
+          quantity: point.quantity,
+          perUnit: formatCents(Math.round(point.perUnitEur * 100)),
+          total: formatCents(Math.round(point.totalEur * 100)),
+          minimumOrder: point.minimumOrderApplied,
+        })),
+        unitLabel: parts.length > 1 ? 'Satz' : 'Stück',
+        shipWindow: shipWindowText(session.selection.leadTimeId, now) || 'Termin kommt mit dem Angebot.',
+        printCheck: report ? printCheckHeadline(report) : null,
+        views: captures.map((capture) => ({
+          label: capture.label,
+          png: dataUrlToBytes(capture.dataUrl),
+          caption: capture.extentMm
+            ? `${formatDimension(capture.extentMm[0])} × ${formatDimension(capture.extentMm[1])} mm (${VIEW_AXES[capture.id] ?? ''})`
+            : null,
+        })),
+        logoPng: logoBytes ? new Uint8Array(logoBytes) : null,
+        validityDays: OWNER_DECISIONS.quoteValidityDays,
+      });
+      downloadBlob(new Blob([bytes], { type: 'application/pdf' }), `Richtpreis-${reference || 'ohne-ID'}.pdf`);
+      trackEvent('quote_pdf_created', { form: 'quote', views: captures.length });
+      setPdfState({ busy: false, error: null });
+    } catch {
+      setPdfState({ busy: false, error: 'Das PDF konnte nicht erzeugt werden. Die Aufschlüsselung steht weiter oben als Text.' });
+    }
+  };
+  const secondary: SummarySecondary | null =
+    mode === 'calculator'
+      ? {
+          label: 'Richtpreis-PDF',
+          note: 'Zum Weiterleiten an den Einkauf. Entsteht in Ihrem Browser.',
+          busy: pdfState.busy,
+          error: pdfState.error,
+          onClick: () => void createPdf(),
+        }
+      : null;
+  const copyShareLink = async () => {
+    try {
+      await navigator.clipboard.writeText(buildShareUrl(window.location.origin, session.selection, reference));
+      setShareState('copied');
+    } catch {
+      setShareState('failed');
+    }
+  };
+  const snapshotTitle = {
+    file: selected?.file.name ?? '',
+    dimensions: selected?.analysis ? formatDimensions(selected.analysis.bbox.size) : '–',
+    material: selectedMaterial?.name ?? '–',
+    reference,
+    date: summaryModel.titleBlock.date,
+  };
+
   /* --------------------------------------------------------- tabs */
 
   const tabs: TabId[] = mode === 'calculator' ? ['model', 'printcheck', 'material', 'request'] : ['model', 'printcheck', 'material'];
@@ -392,6 +493,8 @@ const QuoteWorkspace = ({ catalog = MATERIAL_CATALOG, mode, onInteract, onReques
             layerHeightMm={PRICING_CONFIG.layerProfile.layerHeightMm}
             buildVolumeMm={PRICING_CONFIG.buildVolumeMm}
             oversize={selectedPart !== null && !selectedPart.fitsBuildVolume}
+            snapshotTitle={snapshotTitle}
+            onApi={onViewerApi}
           />
         </Suspense>
       );
@@ -727,6 +830,20 @@ const QuoteWorkspace = ({ catalog = MATERIAL_CATALOG, mode, onInteract, onReques
                   </Link>
                 </div>
               )}
+              <div className="space-y-1 border-t border-line pt-3">
+                <button type="button" onClick={() => void copyShareLink()} className="tech-btn tech-btn-secondary text-sm">
+                  Link mit Parametern kopieren
+                </button>
+                <p className="text-xs text-ink-muted" aria-live="polite">
+                  {shareState === 'copied'
+                    ? 'Kopiert. '
+                    : shareState === 'failed'
+                      ? 'Kopieren nicht möglich – bitte die Adresse aus dem PDF nehmen. '
+                      : ''}
+                  Im Link stehen nur Werkstoff, Füllgrad, Stückzahl, Lieferstufe und Richtpreis-ID. Die Datei schicken Sie Ihrem Kollegen wie
+                  gewohnt – ich lade nichts hoch.
+                </p>
+              </div>
               <p className="text-sm text-ink-soft">
                 Mit „Verbindliches Angebot anfordern“ geht es zum Anfrageformular – Dateien, Parameter, Drucklage und Richtpreis-ID sind dort schon
                 eingetragen. Hochgeladen wird erst beim Absenden.
@@ -739,7 +856,7 @@ const QuoteWorkspace = ({ catalog = MATERIAL_CATALOG, mode, onInteract, onReques
       {/* summary: desktop sidebar (request form: also inline below xl) */}
       <aside className={mode === 'calculator' ? 'hidden xl:col-span-4 xl:block' : ''}>
         <div className={mode === 'calculator' ? 'xl:sticky xl:top-24' : ''}>
-          <PriceSummaryPanel model={summaryModel} cta={cta} />
+          <PriceSummaryPanel model={summaryModel} cta={cta} secondary={secondary} />
         </div>
       </aside>
 
@@ -747,7 +864,7 @@ const QuoteWorkspace = ({ catalog = MATERIAL_CATALOG, mode, onInteract, onReques
         <div className="md:hidden">
           {/* reserve space so the fixed bar never covers content */}
           <div className="h-28" aria-hidden="true" />
-          <PriceSummaryMobile model={summaryModel} cta={cta} />
+          <PriceSummaryMobile model={summaryModel} cta={cta} secondary={secondary} />
         </div>
       )}
     </div>
