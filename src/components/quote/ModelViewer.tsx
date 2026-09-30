@@ -605,13 +605,14 @@ const ModelViewer = ({
               <span className="viewer-swatch-neutral inline-block h-3 w-4 shrink-0 rounded-sm border border-line" aria-hidden="true" />
               nicht betroffen
             </p>
+            <p className="text-ink-muted">Markierung je Dreieck – große Flächen werden ganz eingefärbt.</p>
           </div>
         )}
 
         {/* bottom bar: pose, PNG, fullscreen, help */}
         <div className="absolute inset-x-2 bottom-2 z-10 flex flex-wrap items-end gap-2">
-          <div className="min-w-0 max-w-full rounded border border-line bg-panel px-2 py-1.5">
-            <label htmlFor="viewer-pose" className="label-caps block">
+          <div className="min-w-0 max-w-full rounded border border-line bg-panel px-2 py-1 md:py-1.5">
+            <label htmlFor="viewer-pose" className="label-caps sr-only md:not-sr-only md:block">
               Ausrichtung (P)
             </label>
             <select
