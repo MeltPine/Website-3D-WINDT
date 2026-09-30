@@ -17,6 +17,25 @@ export default {
           800: '#115e59',
           900: '#134e4a',
         },
+        // Technical surface tokens (calculator, printability check). Values are
+        // CSS variables scoped to `.tech` in src/index.css (light + dark).
+        canvas: 'var(--canvas)',
+        panel: 'var(--surface-0)',
+        'panel-2': 'var(--surface-1)',
+        line: 'var(--border-soft)',
+        'line-strong': 'var(--border-strong)',
+        ink: 'var(--text-strong)',
+        'ink-soft': 'var(--text-soft)',
+        'ink-muted': 'var(--text-muted)',
+        accent: {
+          DEFAULT: 'var(--accent)',
+          hover: 'var(--accent-hover)',
+          contrast: 'var(--accent-contrast)',
+          soft: 'var(--accent-soft)',
+        },
+        ok: { DEFAULT: 'var(--status-ok)', bg: 'var(--status-ok-bg)' },
+        warn: { DEFAULT: 'var(--status-warn)', bg: 'var(--status-warn-bg)' },
+        crit: { DEFAULT: 'var(--status-crit)', bg: 'var(--status-crit-bg)' },
         gray: {
           50: '#f9fafb',
           100: '#f3f4f6',
@@ -31,8 +50,10 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['"IBM Plex Sans"', 'Inter', 'system-ui', 'sans-serif'],
-        display: ['Rajdhani', '"IBM Plex Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        // Self-hosted in public/fonts (SIL OFL), declared in src/index.css.
+        sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
+        display: ['"IBM Plex Sans Condensed"', '"IBM Plex Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

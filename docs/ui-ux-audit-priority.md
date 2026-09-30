@@ -24,4 +24,13 @@ Stand: 2026-03-13
 
 - Keine neue Farbwelt: Nur vorhandene Primary/Gray-Familie mit Transparenzstufen.
 - Subtiles Glassmorphism: Navigation, Hero, Case-/Info-Cards und CTA-Flächen.
+  **Ausnahme (seit 2026-09-30):** Preisrechner (`/3d-druck-preisrechner/`), Druckbarkeits-Check
+  (`/druckbarkeit-pruefen/`) und der eingebettete Rechner in `/projekt-starten/` folgen der
+  technischen Richtung „Messplatz“ statt Glas: Klasse `.tech` in `src/index.css` (Graphit-Skala,
+  ein Teal-Akzent, Statusfarben immer mit Icon + Wort, Radius 4/6 px, kein `backdrop-filter`,
+  Blueprint-Raster nur in Viewer-Bühne, Upload-Fläche und Seitenkopf). Grundlage:
+  `02_FDM-BUSINESS/Marketing/2026-09-30_nextgen-kalkulator-spec.md` §5. Der Rest der Website
+  folgt schrittweise; bis dahin gilt dort die Glas-Leitplanke weiter.
+- Schriften: IBM Plex Sans / Plex Sans Condensed / Plex Mono, selbst gehostet in `public/fonts/`
+  (SIL OFL, Latin-Subset, `font-display: swap`, CSP `font-src 'self'` unverändert). Rajdhani entfällt.
 - Formulare bleiben überwiegend solid für Lesbarkeit und Eingabesicherheit.

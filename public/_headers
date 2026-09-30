@@ -40,6 +40,10 @@
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Self-hosted IBM Plex (file names are not content-hashed: rename on update).
+/fonts/*
+  Cache-Control: public, max-age=2592000
+
 /favicon.ico
   Cache-Control: public, max-age=31536000, immutable
 
