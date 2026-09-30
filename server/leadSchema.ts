@@ -40,6 +40,8 @@ export const LEAD_FIELDS: readonly LeadFieldSpec[] = [
   { name: 'upload_status', label: 'Upload-Status', maxLength: 40 },
   { name: 'uploaded_files', label: 'Dateien', maxLength: 8000 },
   { name: 'model_summary', label: 'Modellanalyse', maxLength: 8000 },
+  { name: 'printcheck_request', label: 'Anliegen (Druckbarkeits-Check)', maxLength: 100 },
+  { name: 'printcheck_summary', label: 'Druckbarkeits-Check (automatische Vorprüfung)', maxLength: 4000 },
   { name: 'message', label: 'Nachricht', maxLength: 5000 },
   { name: 'business_intent', label: 'Geschäftliche Anfrage bestätigt', maxLength: 20 },
   { name: 'privacy_consent', label: 'Datenschutzhinweise akzeptiert', maxLength: 20 },

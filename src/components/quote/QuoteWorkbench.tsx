@@ -21,9 +21,11 @@ interface QuoteWorkbenchProps {
   footer?: React.ReactNode;
   /** Called on the first user interaction (file added or parameter changed). */
   onInteract?: () => void;
+  /** Where the workbench is embedded; the calculator shows the printability CTAs. */
+  printCheckMode: 'calculator' | 'request';
 }
 
-const QuoteWorkbench = ({ catalog, stepLabel, footer, onInteract }: QuoteWorkbenchProps) => {
+const QuoteWorkbench = ({ catalog, stepLabel, footer, onInteract, printCheckMode }: QuoteWorkbenchProps) => {
   const session = useQuoteSession();
   const [addErrors, setAddErrors] = useState<string[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -62,7 +64,7 @@ const QuoteWorkbench = ({ catalog, stepLabel, footer, onInteract }: QuoteWorkben
         <Upload className="h-10 w-10 text-gray-400 mx-auto mb-3" aria-hidden="true" />
         <h2 className="font-display text-lg font-semibold text-gray-900 mb-1">3D-Modell hochladen</h2>
         <p className="text-gray-600 mb-1">
-          STEP, STL, 3MF oder OBJ – mit 3D-Vorschau, Maßen und Richtpreis. SVG wird ohne Vorschau übermittelt.
+          STEP, STL, 3MF oder OBJ – mit 3D-Vorschau, Richtpreis und Druckbarkeits-Check. SVG wird ohne Vorschau übermittelt.
         </p>
         <p className="text-sm text-gray-500 mb-4">
           Bis {QUOTE_UPLOAD_LIMITS.maxFiles} Dateien, je max. {QUOTE_UPLOAD_LIMITS.maxFileMb} MB, zusammen max.{' '}
@@ -90,7 +92,7 @@ const QuoteWorkbench = ({ catalog, stepLabel, footer, onInteract }: QuoteWorkben
           <p className="text-sm text-gray-700 inline-flex items-start gap-2">
             <ShieldCheck className="h-4 w-4 text-primary-700 mt-0.5 shrink-0" aria-hidden="true" />
             <span>
-              Vorschau und Richtpreis entstehen ausschließlich in Ihrem Browser. Ihre Dateien werden erst beim
+              Vorschau, Richtpreis und Druckbarkeits-Check entstehen ausschließlich in Ihrem Browser. Ihre Dateien werden erst beim
               Absenden der Anfrage verschlüsselt übertragen, in der EU (Rechenzentrum Frankfurt) gespeichert, nur
               zur Prüfung Ihres Projekts genutzt und nach {UPLOAD_POLICY.retentionDays} Tagen automatisch gelöscht.{' '}
               <Link to="/datenschutz/" className="text-primary-700 underline hover:text-primary-800">
@@ -118,7 +120,7 @@ const QuoteWorkbench = ({ catalog, stepLabel, footer, onInteract }: QuoteWorkben
             </div>
           }
         >
-          <QuoteDetails catalog={catalog} footer={footer} onInteract={onInteract} />
+          <QuoteDetails catalog={catalog} footer={footer} onInteract={onInteract} printCheckMode={printCheckMode} />
         </Suspense>
       )}
     </div>

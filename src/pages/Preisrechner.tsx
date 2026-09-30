@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { ArrowRight, Calculator, CheckCircle } from 'lucide-react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import GlassSurface from '../components/GlassSurface';
+import PrintCheckExplainer from '../components/printcheck/PrintCheckExplainer';
 import QuoteWorkbench from '../components/quote/QuoteWorkbench';
 import { getQuoteSession, updateQuoteSelection } from '../lib/quote/quoteSession';
 import { trackEvent } from '../lib/tracking';
@@ -14,7 +15,7 @@ import {
 
 const facts = [
   'STL, OBJ, 3MF und STEP direkt im Browser ansehen',
-  'Abmessungen, Volumen und Bauraum-Check sofort',
+  'Druckbarkeits-Check: Wandstärke, Überhänge, Bohrungen, Bauraum – mit 3D-Markierung',
   'Unverbindliche Richtpreis-Spanne nach Material und Stückzahl',
   'Mit einem Klick zur Anfrage – Datei und Parameter sind schon eingetragen',
 ];
@@ -137,6 +138,7 @@ const Preisrechner = () => {
         )}
 
         <QuoteWorkbench
+          printCheckMode="calculator"
           footer={
             <button
               type="button"
@@ -148,6 +150,10 @@ const Preisrechner = () => {
             </button>
           }
         />
+
+        <div className="mt-10">
+          <PrintCheckExplainer headingId="calculator-printcheck" linkToLanding />
+        </div>
 
         <p className="mt-8 text-sm text-gray-600 text-center">
           Keine Datei zur Hand oder ein komplexes Projekt?{' '}

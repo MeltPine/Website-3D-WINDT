@@ -79,8 +79,10 @@ const Datenschutz = () => {
                   technischen Prüfung und zur Bearbeitung Ihres Projekts genutzt.
                 </p>
                 <p className="mt-2">
-                  3D-Vorschau, Maße und Richtpreis im Preisrechner und im Projektformular werden
-                  vollständig in Ihrem Browser berechnet; dabei werden keine Dateien übertragen. Erst
+                  3D-Vorschau, Maße, Richtpreis und Druckbarkeits-Check im Preisrechner und im
+                  Projektformular werden vollständig in Ihrem Browser berechnet; dabei werden keine Dateien
+                  übertragen. Das Ergebnis des Druckbarkeits-Checks (Befunde, Dateiname, Prüfsumme) wird
+                  nur dann übermittelt, wenn Sie die Projektanfrage absenden. Erst
                   wenn Sie die Projektanfrage absenden, werden die Dateien verschlüsselt (HTTPS) an
                   unseren Hosting-Anbieter Cloudflare übertragen und im Speicherdienst Cloudflare R2
                   mit Speicherort in der EU abgelegt. Zugriff erhält nur 3D-WINDT über

@@ -515,6 +515,26 @@
     --tw-gradient-to: rgba(20, 184, 166, 0.16) var(--tw-gradient-to-position);
   }
 
+  .dark .bg-amber-50 {
+    background-color: rgba(120, 53, 15, 0.3);
+  }
+
+  .dark .border-amber-200 {
+    border-color: rgba(251, 191, 36, 0.45);
+  }
+
+  .dark .text-amber-800 {
+    color: #fcd34d;
+  }
+
+  .dark .text-amber-600 {
+    color: #fbbf24;
+  }
+
+  .dark .text-green-700 {
+    color: #86efac;
+  }
+
   .dark .from-green-50 {
     --tw-gradient-from: rgba(22, 101, 52, 0.26) var(--tw-gradient-from-position);
     --tw-gradient-to: rgba(22, 101, 52, 0) var(--tw-gradient-to-position);
@@ -546,4 +566,192 @@
   .reveal-up {
     animation: none !important;
   }
+}
+
+/* Printability report ("Prüfbericht"): printed from a portal in <body>.
+   Fixed colours on purpose - the .dark overrides must never reach paper. */
+.pc-report {
+  display: none;
+}
+
+@media print {
+  body.printcheck-printing > *:not(.pc-report) {
+    display: none !important;
+  }
+
+  body.printcheck-printing {
+    background: #ffffff !important;
+    background-image: none !important;
+  }
+
+  body.printcheck-printing .pc-report {
+    display: block;
+    color: #111827;
+    background: #ffffff;
+    font: 10pt/1.4 'IBM Plex Sans', Inter, system-ui, sans-serif;
+  }
+
+  @page {
+    size: A4;
+    margin: 14mm 12mm;
+  }
+}
+
+.pc-report__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid #0f766e;
+  padding-bottom: 6pt;
+  margin-bottom: 8pt;
+}
+
+.pc-report__brand {
+  color: #0f766e;
+  font-weight: 600;
+  font-size: 9pt;
+  margin: 0;
+}
+
+.pc-report__title {
+  font-size: 16pt;
+  margin: 2pt 0 0;
+  color: #111827;
+}
+
+.pc-report__logo {
+  height: 28pt;
+  width: auto;
+}
+
+.pc-report h2 {
+  font-size: 12pt;
+  margin: 12pt 0 4pt;
+  color: #111827;
+}
+
+.pc-report h3 {
+  font-size: 10pt;
+  margin: 6pt 0 2pt;
+  color: #111827;
+}
+
+.pc-report p {
+  margin: 0 0 4pt;
+}
+
+.pc-report__disclaimer {
+  border: 1px solid #d97706;
+  background: #fffbeb;
+  padding: 4pt 6pt;
+  font-weight: 600;
+}
+
+.pc-report__small {
+  font-size: 8.5pt;
+  color: #4b5563;
+}
+
+.pc-report__mono {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  font-size: 8pt;
+  word-break: break-all;
+}
+
+.pc-report__meta,
+.pc-report__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 6pt 0;
+}
+
+.pc-report__meta th {
+  text-align: left;
+  width: 26%;
+  padding: 2pt 4pt;
+  color: #374151;
+  vertical-align: top;
+}
+
+.pc-report__meta td {
+  padding: 2pt 4pt;
+}
+
+.pc-report__table th,
+.pc-report__table td {
+  border: 1px solid #d1d5db;
+  padding: 3pt 4pt;
+  text-align: left;
+  vertical-align: top;
+  font-size: 8.5pt;
+}
+
+.pc-report__table thead th {
+  background: #f3f4f6;
+}
+
+.pc-report__table tr {
+  break-inside: avoid;
+}
+
+.pc-report__category {
+  color: #6b7280;
+  font-size: 7.5pt;
+}
+
+.pc-report__status {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.pc-report__status--ok {
+  color: #15803d;
+}
+
+.pc-report__status--hint {
+  color: #b45309;
+}
+
+.pc-report__status--critical {
+  color: #b91c1c;
+}
+
+.pc-report__status--not-checked {
+  color: #4b5563;
+}
+
+.pc-report__verdict {
+  border: 2px solid #9ca3af;
+  padding: 6pt 8pt;
+  margin: 8pt 0;
+  break-inside: avoid;
+}
+
+.pc-report__verdict h2 {
+  margin-top: 0;
+}
+
+.pc-report__verdict--direct {
+  border-color: #15803d;
+}
+
+.pc-report__verdict--adjust {
+  border-color: #d97706;
+}
+
+.pc-report__verdict--redesign,
+.pc-report__verdict--unsuitable {
+  border-color: #b91c1c;
+}
+
+.pc-report__note {
+  break-inside: avoid;
+}
+
+.pc-report__footer {
+  margin-top: 12pt;
+  border-top: 1px solid #d1d5db;
+  padding-top: 4pt;
+  font-size: 8pt;
+  color: #4b5563;
 }

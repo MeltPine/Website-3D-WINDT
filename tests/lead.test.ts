@@ -94,6 +94,28 @@ describe('POST /api/lead', () => {
     expect(sendMail.mock.calls.map((call) => call[2])).toEqual([`lead-${body.id}-sales`, `lead-${body.id}-customer`]);
   });
 
+  it('stores the printability summary and shows it escaped in the sales mail', async () => {
+    const summary = 'halter.stl [SHA-256 abcdef012345]: Druckbarkeit <b>mit Anpassungen</b>\nKritisch: Wandstärke';
+    const response = await handleLead(
+      jsonLead({
+        ...CONTACT,
+        'form-name': 'project-request',
+        printcheck_summary: summary,
+        printcheck_request: 'Kostenlose technische Prüfung angefordert',
+      }),
+      deps(),
+    );
+    expect(response.status).toBe(200);
+    const [record] = storedLeads();
+    expect(record.fields.printcheck_summary).toBe(summary);
+    expect(record.fields.printcheck_request).toBe('Kostenlose technische Prüfung angefordert');
+    const sales = sendMail.mock.calls[0][0];
+    expect(sales.html).toContain('Druckbarkeits-Check (automatische Vorprüfung)');
+    expect(sales.html).toContain('&lt;b&gt;mit Anpassungen&lt;/b&gt;<br />Kritisch');
+    expect(sales.html).not.toContain('<b>mit');
+    expect(sales.text).toContain('Anliegen (Druckbarkeits-Check): Kostenlose technische Prüfung angefordert');
+  });
+
   it('keeps the lead and reports success when Resend fails', async () => {
     sendMail.mockRejectedValue(new Error('Resend down'));
     const response = await handleLead(jsonLead(CONTACT), deps());

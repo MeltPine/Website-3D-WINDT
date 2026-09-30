@@ -65,6 +65,8 @@ const ProjectStart = () => {
       setQuantity((current) => current || String(summary.quantity));
       setMaterialPref((current) => current || summary.materialName);
       setExpressDelivery((current) => current || summary.expressSelected);
+      // "Nachkonstruktion/Optimierung anfragen" in the printability report
+      if (session.requestIntent === 'nachkonstruktion') setNeedsCad(true);
     });
     return () => {
       cancelled = true;
@@ -188,6 +190,8 @@ const ProjectStart = () => {
     formData.set('uploaded_files', fileLines.join('\n'));
     formData.set('upload_status', uploadStatus);
     formData.set('model_summary', summary.modelSummary);
+    formData.set('printcheck_summary', summary.printCheckSummary);
+    formData.set('printcheck_request', summary.printCheckRequest);
     formData.set('price_range', hasFiles ? summary.priceRange : '');
     formData.set('calc_material', hasFiles ? summary.materialName : '');
     formData.set('calc_infill', hasFiles ? summary.infillLabel : '');
@@ -339,6 +343,8 @@ const ProjectStart = () => {
             <input type="hidden" name="uploaded_files" value="" />
             <input type="hidden" name="upload_status" value="none" />
             <input type="hidden" name="model_summary" value="" />
+            <input type="hidden" name="printcheck_summary" value="" />
+            <input type="hidden" name="printcheck_request" value="" />
             <input type="hidden" name="price_range" value="" />
             <input type="hidden" name="calc_material" value="" />
             <input type="hidden" name="calc_infill" value="" />
@@ -377,7 +383,7 @@ const ProjectStart = () => {
             )}
 
             <div>
-              <QuoteWorkbench stepLabel="Schritt 1 von 4 (optional)" onInteract={handleFormStart} />
+              <QuoteWorkbench stepLabel="Schritt 1 von 4 (optional)" onInteract={handleFormStart} printCheckMode="request" />
               {quoteSession.entries.length === 0 && (
                 <p className="mt-3 text-sm text-gray-600 text-center">
                   <Calculator className="inline h-4 w-4 mr-1 text-primary-700" aria-hidden="true" />

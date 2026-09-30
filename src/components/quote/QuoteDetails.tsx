@@ -1,5 +1,5 @@
-import React, { Suspense, lazy, useEffect, useMemo } from 'react';
-import { Box, FileText, Loader2, Trash2 } from 'lucide-react';
+import React, { Suspense, lazy, useEffect, useMemo, useState } from 'react';
+import { Box, FileText, Loader2, Trash2, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { MODEL_FORMAT_LABEL } from '../../lib/geometry/format';
 import {
@@ -8,6 +8,9 @@ import {
   type MaterialCatalog,
   type MaterialSpec,
 } from '../../lib/quote/materials';
+import { HIGHLIGHTS, evaluatePrintCheck, type HighlightId, type HighlightTone } from '../../lib/printcheck/evaluate';
+import { toPrintCheckMaterial } from '../../lib/printcheck/material';
+import { POSES, poseMatrix } from '../../lib/printcheck/pose';
 import { PRICING_CONFIG } from '../../lib/quote/pricingConfig';
 import {
   QUOTE_UPLOAD_LIMITS,
@@ -21,6 +24,7 @@ import { computeSessionEstimate } from '../../lib/quote/sessionEstimate';
 import { formatDimensions, formatEur, formatMegabytes, formatVolumeCm3 } from '../../lib/quote/summary';
 import { trackEvent } from '../../lib/tracking';
 import { familyForCatalogMaterial, werkstoffPath } from '../../lib/werkstoffe/families';
+import PrintCheckPanel, { type PrintCheckMode } from '../printcheck/PrintCheckPanel';
 
 /*
  * Everything the workbench shows once at least one file is selected: viewer,
@@ -114,15 +118,23 @@ const MaterialFacts = ({ material }: { material: MaterialSpec }) => {
   );
 };
 
+const LEGEND_SWATCH: Record<HighlightTone, string> = {
+  critical: 'bg-red-600 dark:bg-red-400',
+  hint: 'bg-amber-600 dark:bg-amber-400',
+};
+
 interface QuoteDetailsProps {
   catalog?: MaterialCatalog;
   footer?: React.ReactNode;
   onInteract?: () => void;
+  /** Calculator page shows lead CTAs in the printability report; the request form does not. */
+  printCheckMode: PrintCheckMode;
 }
 
-const QuoteDetails = ({ catalog = MATERIAL_CATALOG, footer, onInteract }: QuoteDetailsProps) => {
+const QuoteDetails = ({ catalog = MATERIAL_CATALOG, footer, onInteract, printCheckMode }: QuoteDetailsProps) => {
   const session = useQuoteSession();
   const materials = useMemo(() => validateMaterialCatalog(catalog), [catalog]);
+  const [activeHighlight, setActiveHighlight] = useState<HighlightId | null>(null);
 
   const { estimate, pendingCount, unpricedCount } = useMemo(
     () => computeSessionEstimate(session.entries, session.selection, materials, PRICING_CONFIG),
@@ -131,6 +143,36 @@ const QuoteDetails = ({ catalog = MATERIAL_CATALOG, footer, onInteract }: QuoteD
   const selected = session.entries.find((entry) => entry.id === session.selectedId) ?? null;
   const selectedMaterial = materials.find((material) => material.id === session.selection.materialId) ?? null;
   const totalBytes = session.entries.reduce((sum, entry) => sum + entry.file.size, 0);
+
+  const checkGeometry = selected?.printCheck.geometry ?? null;
+  const report = useMemo(
+    () => (checkGeometry && selectedMaterial ? evaluatePrintCheck(checkGeometry, toPrintCheckMaterial(selectedMaterial)) : null),
+    [checkGeometry, selectedMaterial],
+  );
+  const selectedId = selected?.id ?? null;
+  useEffect(() => {
+    setActiveHighlight(null);
+  }, [selectedId]);
+
+  const flags = selected?.printCheck.flags ?? null;
+  const highlightSpec = activeHighlight ? HIGHLIGHTS[activeHighlight] : null;
+  const viewerHighlight = useMemo(
+    () => (highlightSpec && flags && highlightSpec.layers.length > 0 ? { flags, spec: highlightSpec } : null),
+    [highlightSpec, flags],
+  );
+  const recommendedPoseId = report?.recommendedPose?.id ?? null;
+  const viewerPose = useMemo(
+    () =>
+      highlightSpec?.pose === 'recommended' && recommendedPoseId !== null ? poseMatrix(POSES[recommendedPoseId]) : null,
+    [highlightSpec, recommendedPoseId],
+  );
+  const toggleHighlight = (id: HighlightId) => {
+    setActiveHighlight((current) => {
+      const next = current === id ? null : id;
+      if (next) trackEvent('printcheck_highlight_shown', { form: 'quote', finding: next });
+      return next;
+    });
+  };
 
   useEffect(() => {
     if (estimate?.status === 'ok' && !priceRangeTracked) {
@@ -154,7 +196,7 @@ const QuoteDetails = ({ catalog = MATERIAL_CATALOG, footer, onInteract }: QuoteD
   return (
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         <div className="lg:col-span-3 space-y-3">
-          <div className="h-72 md:h-96 overflow-hidden rounded-xl border border-gray-200 bg-gray-100">
+          <div className="relative h-72 md:h-96 overflow-hidden rounded-xl border border-gray-200 bg-gray-100">
             {selected?.positions ? (
               <Suspense
                 fallback={
@@ -168,6 +210,8 @@ const QuoteDetails = ({ catalog = MATERIAL_CATALOG, footer, onInteract }: QuoteD
                   label={`${selected.file.name}${
                     selected.analysis ? `, ${formatDimensions(selected.analysis.bbox.size)}` : ''
                   }`}
+                  highlight={viewerHighlight}
+                  poseMatrix={viewerPose}
                 />
               </Suspense>
             ) : (
@@ -178,6 +222,27 @@ const QuoteDetails = ({ catalog = MATERIAL_CATALOG, footer, onInteract }: QuoteD
                   : selected?.status === 'ready'
                     ? 'Vorschau nicht verfügbar (Speicherlimit erreicht) – Maße und Richtpreis sind berechnet.'
                     : 'Für diese Datei ist keine Vorschau verfügbar.'}
+              </div>
+            )}
+            {selected?.positions && highlightSpec && (
+              <div className="absolute bottom-2 left-2 right-2 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-gray-200 bg-white/95 px-3 py-2 text-xs text-gray-800 shadow-sm">
+                {highlightSpec.layers.map((layer) => (
+                  <span key={layer.label} className="inline-flex items-center gap-1.5">
+                    <span className={`inline-block h-3 w-3 rounded-sm ${LEGEND_SWATCH[layer.tone]}`} aria-hidden="true" />
+                    {layer.label}
+                  </span>
+                ))}
+                {viewerPose && <span className="text-gray-600">Ansicht: empfohlene Drucklage</span>}
+                {highlightSpec.layers.length > 0 && (
+                  <span className="text-gray-500">Markierung je Dreieck – große Flächen werden ganz eingefärbt.</span>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setActiveHighlight(null)}
+                  className="ml-auto inline-flex items-center gap-1 font-semibold text-primary-700 hover:text-primary-800"
+                >
+                  <X className="h-3.5 w-3.5" aria-hidden="true" /> Zurücksetzen
+                </button>
               </div>
             )}
           </div>
@@ -213,6 +278,16 @@ const QuoteDetails = ({ catalog = MATERIAL_CATALOG, footer, onInteract }: QuoteD
               Das Netz scheint nicht geschlossen zu sein. Volumen und Richtpreis können abweichen – wir prüfen
               die Datei im Angebot.
             </p>
+          )}
+          {selected && selected.format && (
+            <PrintCheckPanel
+              entry={selected}
+              report={report}
+              mode={printCheckMode}
+              activeHighlight={activeHighlight}
+              onToggleHighlight={toggleHighlight}
+              highlightAvailable={Boolean(selected.positions && flags)}
+            />
           )}
         </div>
 
