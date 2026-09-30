@@ -87,8 +87,41 @@ the structure actually changes, don't let it drift like the old top-level SSoT d
   upload, never-completed multipart uploads aborted after 2 days); the privacy
   page states the numbers from `src/lib/upload/policy.ts` and
   `tests/upload.test.ts` fails if the lifecycle file drifts.
-- Heavy code is lazy: `QuoteDetails` (calculator + material DB), `ModelViewer`
-  (three.js), the STEP kernel and the upload client load only when used.
+- Heavy code is lazy: `QuoteWorkspace` (calculator + material DB), `ModelViewer`
+  (three.js), the PDF builder, the STEP kernel and the upload client load
+  only when used.
+
+## Next-gen calculator workspace (added 2026-09-30)
+- Spec: `02_FDM-BUSINESS/Marketing/2026-09-30_nextgen-kalkulator-spec.md`
+  (German). Calculator, printability landing page and the embedded request
+  step use the technical surface `.tech` (`src/index.css`): graphite scale,
+  one teal accent, status colours, no glass (exception noted in
+  `docs/ui-ux-audit-priority.md`). IBM Plex Sans/Condensed/Mono are
+  self-hosted in `public/fonts/` (OFL), CSP unchanged.
+- `QuoteWorkbench` (main bundle) = empty drop zone; with files it loads
+  `QuoteWorkspace` (lazy): parts bar, viewer, tabs, `PriceSummary` (the only
+  primary CTA). Request mode (form) has no CTA and no "Anfrage" tab.
+- Viewer: `ModelViewer.tsx` (UI, keyboard, text equivalents) +
+  `viewer/ViewerCore.ts` (three.js, on-demand rendering). Pure, tested
+  helpers in `viewer/*.ts` and `viewer/tools/*.ts`. Creased normals, feature
+  edges and the picking BVH (`three-mesh-bvh`, indirect) come from
+  `viewer/viewerPrep.worker.ts`, which gets one copy of the positions; the
+  viewer geometry itself shares the session's positions buffer. Stage colours are
+  CSS variables (`--stage-*`), read on theme change.
+- Pricing UX only re-computes the existing model: `breakdownProject`,
+  `quantityCurve`, `minimumOrderQuantityLimit` (`pricing.ts`, lines add up to
+  the point estimate to the cent). Ship dates: `leadDate.ts` with the Hessen
+  holiday table 2026-2027 - extend it every year, `tests/leadDate.test.ts`
+  fails when the current year is missing. Owner decisions (machine rate
+  visible, colours, cut-off, range narrowing, validity, name) are single
+  constants in `src/lib/quote/ownerDecisions.ts`.
+- Request: `requestPayload.ts` sends `quote_reference`, `price_breakdown`,
+  `ship_window`, `print_pose`, `use_purpose`; they are allowlisted in
+  `server/leadSchema.ts`.
+- Estimate PDF (`quotePdf.ts`, pdf-lib, lazy on click) and the PNG export
+  are generated in the browser; the logo for them is
+  `public/logo/3dw-logo-mark.png`. Parameter links (`shareLink.ts`) carry
+  only material, infill, quantity, lead time and the reference id.
 
 ## Material library `/werkstoffe/` (added 2026-09-28)
 - Families + routing: `src/lib/werkstoffe/families.ts` (light, main bundle;

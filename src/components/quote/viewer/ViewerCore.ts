@@ -80,8 +80,8 @@ import { sectionPlane, type SectionAxis } from './tools/section';
  * - Rendering is on demand: a frame is drawn only after a change (orbit,
  *   tool, theme), never in a permanent loop. Camera moves animate for 300 ms
  *   unless reduced motion is requested.
- * - The positions buffer is shared with the quote session and never copied
- *   on the main thread. A prep worker gets one copy and returns creased
+ * - The viewer geometry shares the positions buffer of the quote session.
+ *   The prep worker gets exactly one copy and returns creased
  *   normals, feature edges and the picking BVH; until then the part is drawn
  *   with flat shading, edges and measuring report "wird vorbereitet".
  * - Above LARGE_MODEL_TRIANGLES the pixel ratio drops to 1 while the camera
