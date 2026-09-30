@@ -21,6 +21,9 @@ export interface LeadTimeOption {
   id: string;
   label: string;
   days: string;
+  /** Workdays from the approval of the binding offer to shipping (same numbers as `days`, tested). */
+  minWorkdays: number;
+  maxWorkdays: number;
   factor: number;
 }
 
@@ -73,9 +76,9 @@ export const PRICING_CONFIG: PricingConfig = {
     { id: 'i100', label: '100 % – Vollmaterial', fraction: 1 },
   ],
   leadTimeOptions: [
-    { id: 'eco', label: 'Eco', days: '7–9 Werktage', factor: 0.9 },
-    { id: 'standard', label: 'Standard', days: '3–5 Werktage', factor: 1 },
-    { id: 'express', label: 'Express', days: '1–2 Werktage', factor: 1.35 },
+    { id: 'eco', label: 'Eco', days: '7–9 Werktage', minWorkdays: 7, maxWorkdays: 9, factor: 0.9 },
+    { id: 'standard', label: 'Standard', days: '3–5 Werktage', minWorkdays: 3, maxWorkdays: 5, factor: 1 },
+    { id: 'express', label: 'Express', days: '1–2 Werktage', minWorkdays: 1, maxWorkdays: 2, factor: 1.35 },
   ],
   quantityDiscounts: [
     { minQuantity: 100, discount: 0.3 },
