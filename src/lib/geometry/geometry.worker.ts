@@ -20,12 +20,20 @@ async function loadOcct(): Promise<OcctModule> {
   return occtimportjs({ locateFile: () => occtWasmUrl });
 }
 
+async function sha256Hex(buffer: ArrayBuffer): Promise<string | null> {
+  if (!scope.crypto?.subtle) return null;
+  const digest = new Uint8Array(await scope.crypto.subtle.digest('SHA-256', buffer));
+  return Array.from(digest, (byte) => byte.toString(16).padStart(2, '0')).join('');
+}
+
 scope.onmessage = async (event: MessageEvent<GeometryWorkerRequest>) => {
   const { format, buffer } = event.data;
   try {
+    // hash first: the STEP kernel may take ownership of the bytes
+    const sha256 = await sha256Hex(buffer);
     const mesh = await parseModel(format, buffer, { loadOcct });
     const analysis = analyzeMesh(mesh);
-    const response: GeometryWorkerResponse = { ok: true, analysis, positions: mesh.positions };
+    const response: GeometryWorkerResponse = { ok: true, analysis, positions: mesh.positions, sha256 };
     scope.postMessage(response, [mesh.positions.buffer]);
   } catch (error) {
     if (!(error instanceof GeometryParseError)) {

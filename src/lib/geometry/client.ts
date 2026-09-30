@@ -11,6 +11,7 @@ export const ANALYSIS_TIMEOUT_MS = 120_000;
 export interface AnalyzedModel {
   analysis: MeshAnalysis;
   positions: Float32Array;
+  sha256: string | null;
 }
 
 export class ModelAnalysisError extends Error {
@@ -64,7 +65,7 @@ export async function analyzeModelFile(file: File, format: ModelFormat): Promise
         window.clearTimeout(timer);
         const data = event.data;
         if (data.ok) {
-          resolve({ analysis: data.analysis, positions: data.positions });
+          resolve({ analysis: data.analysis, positions: data.positions, sha256: data.sha256 });
         } else {
           reject(new ModelAnalysisError(data.error));
         }
