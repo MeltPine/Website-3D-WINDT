@@ -3,6 +3,7 @@ import Home from '../pages/Home';
 import Services from '../pages/Services';
 import ProjectStart from '../pages/ProjectStart';
 import Preisrechner from '../pages/Preisrechner';
+import DruckbarkeitPruefen from '../pages/DruckbarkeitPruefen';
 import Sustainability from '../pages/Sustainability';
 import Gallery from '../pages/Gallery';
 import About from '../pages/About';
@@ -30,6 +31,7 @@ const AppRoutes = () => {
       <Route path="/leistungen/" element={<Services />} />
       <Route path="/projekt-starten/" element={<ProjectStart />} />
       <Route path="/3d-druck-preisrechner/" element={<Preisrechner />} />
+      <Route path="/druckbarkeit-pruefen/" element={<DruckbarkeitPruefen />} />
       <Route path="/nachhaltigkeit/" element={<Sustainability />} />
       <Route path="/galerie/" element={<Gallery />} />
       <Route path="/ueber-uns/" element={<About />} />

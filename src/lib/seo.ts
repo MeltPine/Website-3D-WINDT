@@ -1,4 +1,5 @@
 import { BRAND, CONTACT, SITE } from './brand';
+import { PRINTCHECK_FAQ, PRINTCHECK_PATH, PRINTCHECK_ROUTE_KEY, faqSchema as printCheckFaqSchema } from './printcheck/content';
 import { knowledgePages, knowledgePath, knowledgeRouteKey } from './knowledgePages';
 import {
   WERKSTOFFE_PATH,
@@ -204,17 +205,39 @@ const baseRouteSeo: Record<string, RouteSeoConfig> = {
   '/3d-druck-preisrechner': {
     title: `3D-Druck Preisrechner mit STEP- & STL-Viewer | ${BRAND.publicName}`,
     description:
-      'CAD-Datei (STEP, STL, 3MF, OBJ) hochladen, 3D-Vorschau und Masse sehen und sofort eine unverbindliche Richtpreis-Spanne fuer industriellen FDM-3D-Druck erhalten.',
+      'CAD-Datei (STEP, STL, 3MF, OBJ) hochladen: 3D-Vorschau, Druckbarkeits-Check und sofort eine unverbindliche Richtpreis-Spanne fuer industriellen FDM-3D-Druck.',
     path: '/3d-druck-preisrechner/',
-    schema: {
-      '@context': 'https://schema.org',
-      '@type': 'WebApplication',
-      name: `3D-Druck Preisrechner ${BRAND.publicName}`,
-      url: `${SITE_URL}/3d-druck-preisrechner/`,
-      applicationCategory: 'BusinessApplication',
-      operatingSystem: 'Web',
-      offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
-    },
+    schema: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: `3D-Druck Preisrechner ${BRAND.publicName}`,
+        url: `${SITE_URL}/3d-druck-preisrechner/`,
+        applicationCategory: 'BusinessApplication',
+        operatingSystem: 'Web',
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+      },
+      printCheckFaqSchema(PRINTCHECK_FAQ),
+    ],
+  },
+  [PRINTCHECK_ROUTE_KEY]: {
+    title: `3D-Druck-Datei prüfen: Druckbarkeit online checken (STL, STEP) | ${BRAND.publicName}`,
+    description:
+      'STL, STEP, 3MF oder OBJ kostenlos auf FDM-Druckbarkeit prüfen: Wandstärke, Überhänge, Bohrungen, Bauraum und Drucklage – auf Deutsch, lokal im Browser, mit 3D-Markierung.',
+    path: PRINTCHECK_PATH,
+    schema: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: `Druckbarkeits-Check ${BRAND.publicName}`,
+        url: `${SITE_URL}${PRINTCHECK_PATH}`,
+        applicationCategory: 'DesignApplication',
+        operatingSystem: 'Web',
+        inLanguage: 'de-DE',
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+      },
+      printCheckFaqSchema(PRINTCHECK_FAQ),
+    ],
   },
   '/kontakt': {
     title: `Kontakt: 3D-Druck-Anfrage & technische Beratung | ${BRAND.publicName}`,

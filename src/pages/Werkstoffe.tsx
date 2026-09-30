@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { PRINTCHECK_PATH } from '../lib/printcheck/content';
 import { ArrowRight, Calculator, FlaskConical } from 'lucide-react';
 import GlassSurface from '../components/GlassSurface';
 import Breadcrumbs from '../components/werkstoffe/Breadcrumbs';
@@ -62,6 +63,12 @@ const Werkstoffe = () => {
             >
               <Calculator className="h-5 w-5" aria-hidden="true" />
               Zum Preisrechner
+            </Link>
+            <Link
+              to={PRINTCHECK_PATH}
+              className="border border-primary-700 text-primary-700 px-6 py-3 rounded-lg font-medium hover:bg-primary-50 transition-colors inline-flex items-center justify-center gap-2"
+            >
+              Druckbarkeit prüfen
             </Link>
           </div>
         </GlassSurface>

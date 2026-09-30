@@ -72,6 +72,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/druckbarkeit-pruefen/" className="text-gray-300 hover:text-primary-400 transition-colors">
+                  Druckbarkeit prüfen
+                </Link>
+              </li>
+              <li>
                 <Link to="/leistungen/" className="text-gray-300 hover:text-primary-400 transition-colors">
                   Leistungen
                 </Link>

@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Factory } from 'lucide-react';
 import GlassSurface from './GlassSurface';
+import PrintCheckTeaser from './printcheck/PrintCheckTeaser';
 
 interface IndustryLandingPageProps {
   headline: string;
@@ -73,6 +74,8 @@ const IndustryLandingPage = ({
         </GlassSurface>
 
         {children}
+
+        <PrintCheckTeaser />
 
         <GlassSurface as="section" variant="cta" density="normal" className="p-8 text-center">
           <h2 className="font-display text-2xl font-bold text-white mb-3">

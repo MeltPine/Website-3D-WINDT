@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
+import { PRINTCHECK_PATH } from '../lib/printcheck/content';
 import { AlertTriangle, ArrowRight, Calculator, CheckCircle, FileText, XCircle } from 'lucide-react';
 import GlassSurface from '../components/GlassSurface';
 import Breadcrumbs from '../components/werkstoffe/Breadcrumbs';
@@ -319,6 +320,11 @@ const WerkstoffDetail = () => {
               <li>
                 <Link to={WERKSTOFFE_PATH} className="text-primary-700 underline hover:text-primary-800">
                   Alle Werkstoffe im Vergleich
+                </Link>
+              </li>
+              <li>
+                <Link to={PRINTCHECK_PATH} className="text-primary-700 underline hover:text-primary-800">
+                  Druckbarkeit Ihrer Datei prüfen (Verzug, Wandstärke, Überhänge)
                 </Link>
               </li>
             </ul>

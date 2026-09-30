@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Printer, PenTool, Scan as Scan3D, Package, Clock, Shield, ArrowRight } from 'lucide-react';
 import GlassSurface from '../components/GlassSurface';
+import PrintCheckTeaser from '../components/printcheck/PrintCheckTeaser';
 
 const Services = () => {
   const serviceHighlights = [
@@ -173,6 +174,8 @@ const Services = () => {
             </div>
           </GlassSurface>
         </section>
+
+        <PrintCheckTeaser />
 
         <section className="reveal-up">
           <GlassSurface variant="cta" density="normal" className="p-8 text-center">
